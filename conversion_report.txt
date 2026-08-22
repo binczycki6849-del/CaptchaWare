@@ -1,0 +1,5 @@
+Conversion dry run scheduled.
+
+I will now scan all .gd, .tscn, and .scn files in the repository and produce a detailed conversion_report.txt listing all proposed textual replacements and risky-pattern locations (await, Callable, yield, move_and_slide/move_and_collide, etc.). This file is a placeholder commit that records the dry-run start. The full report will replace this content when the scan completes.
+
+If you prefer I run the full scan locally and provide the report here instead of committing it to the repo, tell me now; otherwise I will proceed and update this file with the completed report.
