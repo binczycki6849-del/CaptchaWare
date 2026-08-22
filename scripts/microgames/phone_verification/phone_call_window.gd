@@ -1,28 +1,28 @@
 extends Control
 
-var correct_one: bool = false
+var correct_one = false
 
-var cur_number_text: String = ""
+var cur_number_text = ""
 
-@onready var phone_number_node: Label = $PhoneNumber
-@onready var anim: AnimationPlayer = $anim
+onready var phone_number_node = $PhoneNumber
+onready var anim = $anim
 
-@onready var phone_audio: AudioStreamPlayer = $phoneAudio
+onready var phone_audio = $phoneAudio
 
-@onready var answer: AudioStreamPlayer = $sounds/answer
-@onready var decline: AudioStreamPlayer = $sounds/decline
-@onready var ringing: AudioStreamPlayer = $sounds/ringing
+onready var answer = $sounds/answer
+onready var decline = $sounds/decline
+onready var ringing = $sounds/ringing
 
-@onready var ring_time: Timer = $ring_time
+onready var ring_time = $ring_time
 
-var declined : bool = false
+var declined = false
 
-signal call_answered()
-signal call_declined()
+signal call_answered
+signal call_declined
 
-var answered: bool = false
+var answered = false
 
-func _on_decline_pressed() -> void:
+func _on_decline_pressed():
 	ring_time.stop()
 	ringing.stop()
 	decline.play()
@@ -30,7 +30,7 @@ func _on_decline_pressed() -> void:
 	call_declined.emit()
 	end_call()
 
-func _on_accept_pressed() -> void:
+func _on_accept_pressed():
 	if answered:
 		end_call()
 		return
@@ -43,16 +43,16 @@ func _on_accept_pressed() -> void:
 	anim.play("answered")
 	answer.play()
 
-	await get_tree().create_timer(0.5).timeout
+	yield(get_tree().create_timer(0.5), "timeout")
 
 	if declined: return
 	phone_audio.play()
 
 
-func _on_phone_audio_finished() -> void:
+func _on_phone_audio_finished():
 	end_call()
 
-func end_call() -> void:
+func end_call():
 	declined = true
 	
 	phone_audio.stop()
@@ -64,16 +64,16 @@ func end_call() -> void:
 	else:
 		anim.play("ignored")
 	
-	await get_tree().create_timer(0.5).timeout
+	yield(get_tree().create_timer(0.5), "timeout")
 	
 	queue_free()
 
-func _on_ring_time_timeout() -> void:
+func _on_ring_time_timeout():
 	call_declined.emit()
 	end_call()
 
 
-func _on_x_pressed() -> void:
+func _on_x_pressed():
 	ring_time.stop()
 
 	if answered:
