@@ -37,12 +37,12 @@ onready var popup = $popup
 
 func _ready() -> void:
 	phonenumber_label.text = generate_number()
-	how_many_fake_calls = randi_range(1, 3)
+	how_many_fake_calls = 1 + randi() % 3
 
 func pop_up_window() -> void:
 	var phone_call_window = PHONE_CALL_WINDOW.instance()
-	phone_call_window.call_answered.connect(on_call_answered)
-	phone_call_window.call_declined.connect(on_call_declined)
+	phone_call_window.connect("call_answered", self, "on_call_answered")
+	phone_call_window.connect("call_declined", self, "on_call_declined")
 	add_child(phone_call_window)
 
 	set_camera_shake.emit(10, 0.5)
@@ -61,14 +61,16 @@ func get_phone_call_audio():
 	if real_number_calling:
 		path += "automated_message.mp3"
 	else:
-		path += "fake_numbers/" + fake_number_type[randi_range(0, fake_number_type.size() - 1)]
+		path += "fake_numbers/" + fake_number_type[randi() % fake_number_type.size()]
 		var audio_phone_final = get_file_list(path, ".mp3")
-		path += "/" + audio_phone_final[randi_range(0, audio_phone_final.size() - 1)]
+		path += "/" + audio_phone_final[randi() % audio_phone_final.size()]
 	return load(path)
 
 func generate_number() -> String:
 	var number_text = ""
-	phone_number = randi_range(1000000000, 9999999999)
+	var prefix = 1000 + randi() % 9000
+	var suffix = randi() % 1000000
+	phone_number = prefix * 1000000 + suffix
 	var number_array = str(phone_number).split("")
 	number_text = "+1 ("
 	for i in range(10):

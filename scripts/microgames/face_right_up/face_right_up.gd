@@ -8,13 +8,13 @@ const ROTATE_INTERVAL = 45
 
 const DIFFICULTY_AMOUNT = [1, 1, 2, 3]
 
-@onready var hbox_container: HBoxContainer = $HBoxContainer
-@onready var the_ball: Node2D = $Circle
-@onready var anims: AnimationPlayer = $anims
-@onready var align_timer: Timer = $alignTimer
-@onready var ball_image: TextureRect = $Circle/circle/image
+onready var hbox_container: HBoxContainer = $HBoxContainer
+onready var the_ball: Node2D = $Circle
+onready var anims: AnimationPlayer = $anims
+onready var align_timer: Timer = $alignTimer
+onready var ball_image: TextureRect = $Circle/circle/image
 
-var image_pool : PackedStringArray = []
+var image_pool : PoolStringArray = []
 
 var how_many_balls : int = 1
 var current_ball : int = 1
@@ -25,7 +25,6 @@ var cur_degrees : float = 0.0
 
 var can_spin : bool = true
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	how_many_balls = DIFFICULTY_AMOUNT[difficulty - 1]
 
@@ -35,14 +34,14 @@ func _ready() -> void:
 	cur_degrees = the_ball.rotation_degrees
 
 	for i in range(how_many_balls):
-		var dot_instance = load(DOT_INSTANCE).instantiate()
+		var dot_instance = load(DOT_INSTANCE).instance()
 		hbox_container.add_child(dot_instance)
 
 func set_random_rotation() -> float:
 	var target_rotation : float = 0.0
 
 	while target_rotation == 0.0:
-		target_rotation = (randi_range(-7, 7) * ROTATE_INTERVAL)
+		target_rotation = ((randi() % 15 - 7) * ROTATE_INTERVAL)
 	
 	return target_rotation
 
@@ -68,11 +67,13 @@ func push_ball() -> void:
 		anims.stop()
 	anims.play("bounce")
 
-	var ball_tween := create_tween()
+	var ball_tween = Tween.new()
+	add_child(ball_tween)
 	
 	var target_rotation : float = cur_degrees + (ROTATE_INTERVAL * ball_spin_dir)
 
-	ball_tween.tween_property(the_ball, "rotation_degrees", target_rotation, 0.4).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	ball_tween.interpolate_property(the_ball, "rotation_degrees", the_ball.rotation_degrees, target_rotation, 0.4, Tween.TRANS_EXPO, Tween.EASE_OUT)
+	ball_tween.start()
 
 	cur_degrees = target_rotation
 
@@ -120,7 +121,7 @@ func _on_align_timer_timeout() -> void:
 		anims.play("switch")
 		return
 	
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	finished = true
 
 	if skipped: return
@@ -129,7 +130,7 @@ func _on_align_timer_timeout() -> void:
 func isWinning() -> bool:
 	return current_ball >= how_many_balls && (!align_timer.is_stopped() || finished)
 
-func _on_anims_animation_finished(anim_name: StringName) -> void:
+func _on_anims_animation_finished(anim_name: String) -> void:
 	if anim_name != "switch":
 		return
 	

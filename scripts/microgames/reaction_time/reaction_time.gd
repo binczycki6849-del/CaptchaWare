@@ -4,15 +4,15 @@ const BLUE_COLOR := Color("2b87d1")
 const RED_COLOR := Color("ce2636")
 const GREEN_COLOR := Color("4bdb6a")
 
-@onready var reaction_timer: Timer = $reactionTimer
-@onready var reaction_time_button: Button = $reactionTimeButton
+onready var reaction_timer: Timer = $reactionTimer
+onready var reaction_time_button: Button = $reactionTimeButton
 
-@onready var anim: AnimationPlayer = $cowboy/anim
-@onready var cowboy: Control = $cowboy
-@onready var result_text: Label = $cowboy/result
+onready var anim: AnimationPlayer = $cowboy/anim
+onready var cowboy: Control = $cowboy
+onready var result_text: Label = $cowboy/result
 
-@onready var ticking_sound: AudioStreamPlayer = $ticking
-@onready var ding_sound: AudioStreamPlayer = $ding
+onready var ticking_sound: AudioStreamPlayer = $ticking
+onready var ding_sound: AudioStreamPlayer = $ding
 
 var test_is_active := false
 var click_now := false
@@ -30,7 +30,7 @@ var done := false
 func _ready() -> void:
 	minimum_time = difficulty_window[difficulty - 1]
 
-	await get_tree().create_timer(1).timeout
+	yield(get_tree().create_timer(1), "timeout")
 
 	_on_reaction_time_button_pressed()
 	reaction_time_button.disabled = false
@@ -52,7 +52,7 @@ func _on_reaction_time_button_pressed() -> void:
 		ticking_sound.play()
 		set_button_color(RED_COLOR)
 
-		reaction_timer.wait_time = randf_range(1.0, 2.0)
+		reaction_timer.wait_time = rand_range(1.0, 2.0)
 		reaction_timer.start()
 	
 	test_is_active = !test_is_active
@@ -70,10 +70,10 @@ func finish_test() -> void:
 	click_now = false
 
 func result() -> void:
-	freeze_timer()
+	emit_signal("freeze_timer_signal")
 	cowboy.visible = true
 
-	set_camera_shake.emit(10, 0.5)
+	emit_signal("set_camera_shake", 10, 0.5)
 
 	if reaction_time_start_time <= minimum_time && click_now:
 		anim.play("win")
@@ -111,5 +111,5 @@ func isWinning() -> bool:
 func canSkip() -> bool:
 	return done
 
-func _on_anim_animation_finished(_anim_name: StringName) -> void:
-	end_microgame.emit()
+func _on_anim_animation_finished(_anim_name: String) -> void:
+	emit_signal("end_microgame")

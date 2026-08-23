@@ -1,6 +1,6 @@
 extends Microgame
 
-const INGREDIENT_INSTANCE := preload("uid://ciwbi38tanbmb")
+const INGREDIENT_INSTANCE := preload("res://instances/burgerGame/ingredient.tscn")
 
 enum Ingredients {
 	TOP_BUN,
@@ -50,19 +50,19 @@ const DIFFICULTY_INGREDIENT_AMOUNT_RANGE := [
 var used_ingredients := []
 
 var cur_order_array := []
-var cur_order_string : PackedStringArray = []
+var cur_order_string : PoolStringArray = []
 
 var cur_order : = 0
 
-@onready var burger_pos: Marker2D = $burger_pos
+onready var burger_pos: Position2D = $burger_pos
 
-@onready var button_grid: GridContainer = $'ingredients tab/ButtonGrid'
+onready var button_grid: GridContainer = $'ingredients tab/ButtonGrid'
 
-@onready var fail_text: Label = $'Fail text'
+onready var fail_text: Label = $'Fail text'
 
-@onready var ingredients_list_text: RichTextLabel = $notepad/Label
+onready var ingredients_list_text: RichTextLabel = $notepad/Label
 
-var prev_ingredient: Ingredients = Ingredients.BOTTOM_BUN
+var prev_ingredient: int = Ingredients.BOTTOM_BUN
 var prev_ingredient_pos : Vector2 = Vector2.ZERO
 
 var bottom_bun_placed: bool = false
@@ -71,9 +71,9 @@ var finished_burger : bool = false
 
 var stop_game : bool = false
 
-@onready var slap_ingredient_sound: AudioStreamPlayer = $sounds/SlapIngredientSound
-@onready var ding_sound: AudioStreamPlayer = $sounds/DingSound
-@onready var buzzer_sound: AudioStreamPlayer = $sounds/BuzzerSound
+onready var slap_ingredient_sound: AudioStreamPlayer = $sounds/SlapIngredientSound
+onready var ding_sound: AudioStreamPlayer = $sounds/DingSound
+onready var buzzer_sound: AudioStreamPlayer = $sounds/BuzzerSound
 
 func _ready() -> void:
 	set_random_order()
@@ -84,8 +84,10 @@ func set_random_order() -> void:
 	var available_ingredients := [Ingredients.ONION, Ingredients.LETTUCE, Ingredients.TOMATO, Ingredients.CHEESE]
 	
 	var range_set : Array = DIFFICULTY_INGREDIENT_AMOUNT_RANGE[difficulty - 1]
-	for i in range(randi_range(range_set[0], range_set[1])):
-		var cur_ingredient : int = available_ingredients.pick_random()
+	var count = range_set[0] + randi() % (range_set[1] - range_set[0] + 1)
+	for i in range(count):
+		var idx = randi() % available_ingredients.size()
+		var cur_ingredient : int = available_ingredients[idx]
 
 		cur_order_array.append(cur_ingredient)
 		available_ingredients.erase(cur_ingredient)
@@ -99,12 +101,12 @@ func set_random_order() -> void:
 
 	update_ingredients_list(true)
 
-func update_ingredients_list(setting_up_text := false, cur_ingredient : Ingredients = Ingredients.BOTTOM_BUN) -> void:
+func update_ingredients_list(setting_up_text := false, cur_ingredient : int = Ingredients.BOTTOM_BUN) -> void:
 	if !setting_up_text:
 		var cur_string := cur_order_string[cur_order]
 
-		if cur_order_array[cur_order] != cur_ingredient: #when you fail
-			set_camera_shake.emit(5, .5)
+		if cur_order_array[cur_order] != cur_ingredient:
+			emit_signal("set_camera_shake", 5, .5)
 			complete_microgame()
 
 			buzzer_sound.play()
@@ -120,9 +122,9 @@ func update_ingredients_list(setting_up_text := false, cur_ingredient : Ingredie
 		ingredients_list_text.text += cur_order_string[i] + "[br]"
 
 func _input(event: InputEvent) -> void:
-	if stop_game || !(event is InputEventKey and event.pressed) || !KEYBIND_ARRAY.has(event.keycode): return
+	if stop_game || !(event is InputEventKey and event.pressed) || !KEYBIND_ARRAY.has(event.scancode): return
 
-	var cur_ingred_index := KEYBIND_ARRAY.find(event.keycode)
+	var cur_ingred_index := KEYBIND_ARRAY.find(event.scancode)
 
 	button_grid.get_child(cur_ingred_index)._on_button_pressed()
 		
@@ -130,10 +132,10 @@ func stop_all_buttons() -> void:
 	for child in button_grid.get_children():
 		child.disabled()
 
-func place_ingredient(ingredient_type: Ingredients) -> void:
+func place_ingredient(ingredient_type: int) -> void:
 	if used_ingredients.has(ingredient_type) : return
 
-	var cur_ingredient := INGREDIENT_INSTANCE.instantiate()
+	var cur_ingredient = INGREDIENT_INSTANCE.instance()
 	cur_ingredient.set_ingredient(ingredient_type)
 
 	burger_pos.add_child(cur_ingredient)
@@ -160,7 +162,7 @@ func place_ingredient(ingredient_type: Ingredients) -> void:
 
 func complete_microgame() -> void:
 	stop_game = true
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	stop_all_buttons()
 
 func canSkip() -> bool:

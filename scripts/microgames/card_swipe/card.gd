@@ -3,9 +3,9 @@ extends Node2D
 const FAST_CAP = 0.35
 const SLOW_CAP = 0.7
 
-@onready var reader_text: Label = $'../topPart/Label'
-@onready var lights: Sprite2D = $'../topPart/lights'
-@onready var sounds: Node = $'../sounds'
+onready var reader_text: Label = $'../topPart/Label'
+onready var lights: Sprite = $'../topPart/lights'
+onready var sounds: Node = $'../sounds'
 
 var mouse_prev_position_x = 0.0
 
@@ -21,32 +21,36 @@ var card_tweening := false
 
 var can_win_card := true
 
-var tween_card_pos : Tween
+var tween_card_pos = null
 
 signal swipe_completed
 
-# x109.0 y371.265
 func _input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton:
 		if Input.is_action_just_pressed("Left Click") && card_hovered:
 			if !card_tweening:
 				sounds.get_node("insert").play()
-				var tween_card_size := create_tween()
-				tween_card_pos = create_tween()
+				var tween_card_size = Tween.new()
+				add_child(tween_card_size)
+				tween_card_pos = Tween.new()
+				add_child(tween_card_pos)
 
-				tween_card_pos.tween_property(self, "position", Vector2(6.0, 148.265), .75)
-				tween_card_size.tween_property(self, "scale", Vector2.ONE * 1.36, .75)
+				tween_card_pos.interpolate_property(self, "position", position, Vector2(6.0, 148.265), .75, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+				tween_card_size.interpolate_property(self, "scale", scale, Vector2.ONE * 1.36, .75, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 
-				tween_card_size.finished.connect(card_on_reader)
+				tween_card_size.connect("tween_all_completed", self, "card_on_reader")
 
+				tween_card_pos.start()
+				tween_card_size.start()
 				card_tweening = true
 				return
 
 			if !card_can_swipe: return
 			mouse_prev_position_x = get_global_mouse_position().x
 
-			tween_card_pos.stop()
+			if tween_card_pos != null:
+				tween_card_pos.stop_all()
 			card_grabbed = true
 			sounds.get_node("swipe").play()
 
@@ -56,21 +60,26 @@ func _input(event: InputEvent) -> void:
 
 			var success_check = check_card_reader()
 
-			tween_card_pos = create_tween()
+			tween_card_pos = Tween.new()
+			add_child(tween_card_pos)
 				
 			if success_check:
 				card_can_swipe = false
 				lights.frame = 1
 				sounds.get_node("accept").play()
 
-				var tween_card_size := create_tween()
+				var tween_card_size = Tween.new()
+				add_child(tween_card_size)
 
-				tween_card_pos.tween_property(self, "position", Vector2(109.0, 371.265), .75)
-				tween_card_size.tween_property(self, "scale", Vector2.ONE * 1, .75)
+				tween_card_pos.interpolate_property(self, "position", position, Vector2(109.0, 371.265), .75, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+				tween_card_size.interpolate_property(self, "scale", scale, Vector2.ONE * 1, .75, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+				tween_card_pos.start()
+				tween_card_size.start()
 			else:
 				sounds.get_node("denied").play()
 				lights.frame = 0
-				tween_card_pos.tween_property(self, "position", Vector2(6.0, 148.265), 1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+				tween_card_pos.interpolate_property(self, "position", position, Vector2(6.0, 148.265), 1, Tween.TRANS_EXPO, Tween.EASE_OUT)
+				tween_card_pos.start()
 			
 			card_swipe_timer = 0
 	
@@ -80,7 +89,7 @@ func _input(event: InputEvent) -> void:
 		if !(mouse_prev_position_x + 10 < get_global_mouse_position().x || mouse_prev_position_x - 10 > get_global_mouse_position().x): return
 
 		card_moving = !(position.x <= 6.0 || position.x >= 406.0)
-		position = Vector2(clampf(get_global_mouse_position().x - 400, 6.0, 406.0) ,148.265)
+		position = Vector2(clamp(get_global_mouse_position().x - 400, 6.0, 406.0) ,148.265)
 
 func _process(delta):
 	if card_moving:
@@ -103,7 +112,7 @@ func check_card_reader() -> bool:
 
 	if card_swipe_timer >= FAST_CAP && card_swipe_timer <= SLOW_CAP:
 		reader_text.text = "ACCEPTED CARD. THANK YOU."
-		swipe_completed.emit()
+		emit_signal("swipe_completed")
 		return true
 	
 	return false

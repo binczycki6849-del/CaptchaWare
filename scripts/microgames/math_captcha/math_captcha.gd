@@ -1,16 +1,14 @@
 extends Microgame
 
-@onready var line_edit: LineEdit = $LineEdit
+onready var line_edit: LineEdit = $LineEdit
 
 var cur_text_problem : String = ""
 var answer : int = 0
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	line_edit.grab_focus.call_deferred()
 	generate_math_eq()
-	override_instruction_text.emit(cur_text_problem)
-	pass # Replace with function body.
+	emit_signal("override_instruction_text", cur_text_problem, "")
 
 func generate_math_eq() -> void:
 	var equation_array : Array = generate_equation()
@@ -19,26 +17,25 @@ func generate_math_eq() -> void:
 	answer = equation_array[3]
 
 func generate_equation() -> Array:
-	var first_num : int = randi_range(0, 7)
-	var second_num : int = randi_range(0, 7)
-	var cur_math_signs : String = ["+", "-"].pick_random()
+	var first_num : int = randi() % 8
+	var second_num : int = randi() % 8
+	var cur_math_signs : String = ["+", "-"][randi() % 2]
 	var set_answer : int = 0
 	
 	if cur_math_signs == "-":
 		while first_num - second_num <= 0:
-			first_num = randi_range(0, 7)
-			second_num = randi_range(0, 7)
+			first_num = randi() % 8
+			second_num = randi() % 8
 		set_answer = first_num - second_num
 	else:
 		while first_num == 0 && second_num == 0:
-			first_num = randi_range(0, 7)
-			second_num = randi_range(0, 7)
+			first_num = randi() % 8
+			second_num = randi() % 8
 		set_answer = first_num + second_num
 	
 	return [first_num, second_num, cur_math_signs, set_answer]
 
 func isWinning() -> bool:
-	super.isWinning()
 	return answer == int(line_edit.text)
 
 func canSkip() -> bool:
@@ -46,4 +43,4 @@ func canSkip() -> bool:
 
 func _on_line_edit_text_changed(_new_text: String) -> void:
 	if is_intro: return
-	set_camera_shake.emit(3, 0.25)
+	emit_signal("set_camera_shake", 3, 0.25)

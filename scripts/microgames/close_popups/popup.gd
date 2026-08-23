@@ -2,10 +2,10 @@ extends Control
 
 const AD_IMAGES_PATH := "res://sprites/close_popups/"
 
-@onready var ad_sprite: TextureRect = $ad
-@onready var window_texture: ColorRect = $ad/window
+onready var ad_sprite: TextureRect = $ad
+onready var window_texture: ColorRect = $ad/window
 
-@onready var bang_particles: CPUParticles2D = $bang
+onready var bang_particles: CPUParticles2D = $bang
 
 var is_blocker := false
 
@@ -22,11 +22,11 @@ func _ready():
 	if !is_blocker: return
 	ad_sprite.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
-func set_popup_image(texture_file : Texture2D) -> void:
+func set_popup_image(texture_file) -> void:
 	ad_sprite.texture = texture_file
 
 func _on_x_pressed() -> void:
-	popup_closed.emit()
+	emit_signal("popup_closed")
 	queue_free()
 
 func destroyed() -> void:
@@ -54,9 +54,9 @@ func _input(event: InputEvent) -> void:
 	if !focused || clicked: return
 
 	if event is InputEventMouseButton:
-		if Input.is_action_just_pressed("Left Click") && get_parent().get_child(-1) == self:
+		if Input.is_action_just_pressed("Left Click") && get_parent().get_child(get_parent().get_child_count() - 1) == self:
 			clicked = true
-			block_popups.emit()
+			emit_signal("block_popups")
 
 func _on_ad_mouse_exited() -> void:
 	if is_blocker:

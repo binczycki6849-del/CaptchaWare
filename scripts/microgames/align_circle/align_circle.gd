@@ -1,25 +1,25 @@
 extends Microgame
 
-@onready var circle_1_sprite: Sprite2D = $circle1
-@onready var circle_2_sprite: Sprite2D = $circle2
+onready var circle_1_sprite: Sprite = $circle1
+onready var circle_2_sprite: Sprite = $circle2
 
-@onready var text_slider: Label = $slider/text
+onready var text_slider: Label = $slider/text
 
-@onready var slide_in_sound: AudioStreamPlayer = $slideIn
-@onready var sliding_sound: AudioStreamPlayer = $sliding
+onready var slide_in_sound: AudioStreamPlayer = $slideIn
+onready var sliding_sound: AudioStreamPlayer = $sliding
 
-@onready var slider: HSlider = $slider
+onready var slider: HSlider = $slider
 var value_velocity : float = 0.0
 var prev_value_slider : float = 0.0
 
 var inserted : bool = false
 
-var rotation_range : Array[float] = [0.0, 0.0]
+var rotation_range : Array = [0.0, 0.0]
 
 var cur_rand_rotation_set : float = 0.0
 
 const ROTATION_THRESHHOLD = 7.5
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	set_up_circles()
 
@@ -29,14 +29,15 @@ func set_up_circles() -> void:
 	
 	const FILE_PATH = "res://sprites/align_circle/images/"
 
-	var image_file_path : String = FILE_PATH + get_file_list(FILE_PATH, ".png").pick_random()
+	var all_files = get_file_list(FILE_PATH, ".png")
+	var image_file_path : String = FILE_PATH + all_files[randi() % all_files.size()]
 
 	texture_rect1.texture = load(image_file_path)
 	texture_rect2.texture = load(image_file_path)
 
 	var rand_rotation : float = 0.0
 	while abs(rand_rotation) < 15.0:
-		rand_rotation = randf_range(-90.0, 90.0)
+		rand_rotation = rand_range(-90.0, 90.0)
 	
 	cur_rand_rotation_set = rand_rotation
 	
@@ -52,14 +53,14 @@ func _physics_process(delta: float) -> void:
 
 	if !inserted:
 		value_velocity = abs(prev_value_slider - slider.value)
-		sliding_sound.volume_db = lerpf(-3.0, 7.0, minf(value_velocity * 10, 1.0)) if value_velocity > 0.01 else -80.0
+		sliding_sound.volume_db = lerp(-3.0, 7.0, min(value_velocity * 10, 1.0)) if value_velocity > 0.01 else -80.0
 	else:
 		sliding_sound.volume_db = -80.0
 	
 	prev_value_slider = slider.value
 
 func _on_slider_value_changed(value: float) -> void:
-	var value_to_degrees := lerpf(cur_rand_rotation_set + 90.0,cur_rand_rotation_set - 90.0, value)
+	var value_to_degrees := lerp(cur_rand_rotation_set + 90.0, cur_rand_rotation_set - 90.0, value)
 
 	if value_to_degrees >= rotation_range[0] && value_to_degrees <= rotation_range[1]:
 		circle_2_sprite.rotation_degrees = 0.0

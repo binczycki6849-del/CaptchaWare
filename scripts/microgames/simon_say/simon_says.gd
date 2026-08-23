@@ -26,28 +26,27 @@ const GREEN = 3
 
 const SEQUENCE_COLOR = "b1b1b1"
 
-var simon_says_sequence : PackedInt32Array = []
+var simon_says_sequence : PoolIntArray = []
 
 var how_many_presses := 3
 var cur_button_index := 0
 
-@onready var buttons: GridContainer = $buttons
+onready var buttons: GridContainer = $buttons
 
-@onready var press_sound: AudioStreamPlayer = $press
-@onready var win_sound: AudioStreamPlayer = $win
-@onready var lose_sound: AudioStreamPlayer = $lose
+onready var press_sound: AudioStreamPlayer = $press
+onready var win_sound: AudioStreamPlayer = $win
+onready var lose_sound: AudioStreamPlayer = $lose
 
 var finished_game := false
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	how_many_presses = DIFFICULTY_ARRAY[difficulty - 1].amount
 
 	for i in range(how_many_presses):
-		var value := randi_range(0, 3)
+		var value := randi() % 4
 		simon_says_sequence.append(value)
 
-	await get_tree().create_timer(.5).timeout
+	yield(get_tree().create_timer(.5), "timeout")
 
 	start_simon_says_sequence()
 
@@ -57,7 +56,7 @@ func start_simon_says_sequence() -> void:
 	for i in range(how_many_presses):
 		press_buttons_simon(simon_says_sequence[i])
 
-		await get_tree().create_timer(cur_speed).timeout
+		yield(get_tree().create_timer(cur_speed), "timeout")
 	
 	activate_buttons()
 
@@ -66,15 +65,15 @@ func activate_buttons() -> void:
 		var the_button := button.get_child(0)
 
 		the_button.disabled = false
-		the_button.self_modulate = Color.WHITE
+		the_button.self_modulate = Color.white
 
 func press_buttons_simon(button_index : int) -> void:
 	var cur_button := buttons.get_child(button_index).get_child(0)
 
-	cur_button.self_modulate = Color.WHITE
+	cur_button.self_modulate = Color.white
 	buttons.get_child(button_index).get_child(1).play()
 
-	await get_tree().create_timer(.15).timeout
+	yield(get_tree().create_timer(.15), "timeout")
 
 	cur_button.self_modulate = Color(SEQUENCE_COLOR)
 
@@ -95,12 +94,12 @@ func button_check(button_index : int) -> void:
 func results(failed := false) -> void:
 	if failed:
 		lose_sound.play()
-		set_camera_shake.emit(5, .5)
+		emit_signal("set_camera_shake", 5, .5)
 		color_each_button(Color("ea2840"))
 	else:
 		win_sound.play()
 		color_each_button(Color("00df41"))
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	finished_game = true
 
 func color_each_button(the_color_in_question : Color) -> void:
@@ -108,10 +107,12 @@ func color_each_button(the_color_in_question : Color) -> void:
 		var the_button := button.get_child(0)
 		the_button.disabled = true
 		
-		var flash_tween := create_tween()
 		var brighter_color := the_color_in_question
 		brighter_color.v += .6
-		flash_tween.tween_property(the_button, "modulate", the_color_in_question, .5).from(brighter_color).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+		var flash_tween = Tween.new()
+		add_child(flash_tween)
+		flash_tween.interpolate_property(the_button, "modulate", brighter_color, the_color_in_question, .5, Tween.TRANS_EXPO, Tween.EASE_OUT)
+		flash_tween.start()
 
 func _on_green_pressed() -> void:
 	button_check(GREEN)
