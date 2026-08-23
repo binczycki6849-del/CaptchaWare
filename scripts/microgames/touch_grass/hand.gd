@@ -1,21 +1,25 @@
 extends Node2D
 
-const GRASS_PARTICLES = preload("uid://ck1pnmnev0nln")
+const GRASS_PARTICLES = preload("res://instances/touchGrass/grass_particles.tscn")
 
-@onready var hand_position: Marker2D = $"../handPosition"
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
+onready var hand_position = $"../handPosition"
+onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-@onready var grass: TextureRect = $".."
-@onready var particles: Node2D = $particles
+onready var grass = $".."
+onready var particles: Node2D = $particles
 
-@export var gameplay_code : Microgame
+export var gameplay_code : NodePath
 var thumb_anim_played = false
 
+var _gameplay : Node = null
+
 func _ready() -> void:
+	if gameplay_code:
+		_gameplay = get_node(gameplay_code)
 	set_hand_pos()
 
 func _input(event: InputEvent) -> void:
-	if gameplay_code.finished: 
+	if _gameplay != null and _gameplay.finished: 
 		if !thumb_anim_played:
 			animation_player.play("thumbs up")
 			thumb_anim_played = true
@@ -33,12 +37,12 @@ func _input(event: InputEvent) -> void:
 		animation_player.play("open")
 
 func set_hand_pos() -> void:
-	global_position = Vector2(clampf(get_global_mouse_position().x, 414.0, 814.0), clampf(get_global_mouse_position().y, 356.0, 600))
+	global_position = Vector2(clamp(get_global_mouse_position().x, 414.0, 814.0), clamp(get_global_mouse_position().y, 356.0, 600))
 	
 	global_rotation = global_position.direction_to(hand_position.global_position).angle() + 250
 
 func spawn_grass_particle():
-	var grass_instance = GRASS_PARTICLES.instantiate()
+	var grass_instance = GRASS_PARTICLES.instance()
 	grass_instance.texture = grass.texture
 	particles.add_child(grass_instance)
 	grass_instance.restart()
