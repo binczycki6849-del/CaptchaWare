@@ -2,31 +2,31 @@ extends Node2D
 
 const JSON_FILE_LOCATION : String = "res://scripts/microgames/microgames.json"
 
-@export var force_microgame : String = ""
-@export_range(1, 4, 1) var cur_difficulty_test : int = 0 
+export var force_microgame : String = ""
+export (int, 1, 4) var cur_difficulty_test : int = 1
 
-@onready var bg: TextureRect = $bg
+onready var bg: TextureRect = $bg
 
-@onready var resource_preloader: ResourcePreloader = $ResourcePreloader
+onready var resource_preloader: ResourcePreloader = $ResourcePreloader
 
-@onready var timer: Timer = $Timer
-@onready var cur_wait_time := timer.wait_time
-@onready var total_wait_time := cur_wait_time
-@onready var og_wait_time := cur_wait_time
+onready var timer: Timer = $Timer
+onready var cur_wait_time := timer.wait_time
+onready var total_wait_time := cur_wait_time
+onready var og_wait_time := cur_wait_time
 
-@onready var captcha_window: TextureRect = $window/captcha_window
+onready var captcha_window: TextureRect = $window/captcha_window
 
-@onready var captcha_bg: TextureRect = $bg
+onready var captcha_bg: TextureRect = $bg
 
-@onready var camera: Camera2D = $camera
-@onready var intermission_text: Control = $window/intermissionText/judgement
-@onready var ui_captcha_window: Control = $window
-@onready var sounds: Node = $sounds
+onready var camera: Camera2D = $camera
+onready var intermission_text: Control = $window/intermissionText/judgement
+onready var ui_captcha_window: Control = $window
+onready var sounds: Node = $sounds
 
-@onready var verify_button: Button = $window/captcha_window/lowbar/verifyButton
+onready var verify_button: Button = $window/captcha_window/lowbar/verifyButton
 
-@onready var cur_game: ColorRect = $window/captcha_window/curGame
-@onready var music: AudioStreamPlayer = $"../Mosik"
+onready var cur_game: ColorRect = $window/captcha_window/curGame
+onready var music: AudioStreamPlayer = $"../Mosik"
 
 var cur_microgame : Node = null
 
@@ -74,7 +74,7 @@ func get_microgame_data(force_game: String = "") -> void:
 	else:
 		cur_microgame = get_microgame(force_game)
 	
-	var local_game_data : MicrogameData = cur_microgame.microgame_data
+	var local_game_data = cur_microgame.microgame_data
 	
 	for i in cur_microgame_data:
 		if ["instructionsSmall", "set_size"].has(i): continue
@@ -122,15 +122,15 @@ func change_game():
 
 	on_transition_complete.emit()
 
-	if  !cur_microgame_data.noTimer:
-		if cur_microgame_data.has("staticTimer") && cur_microgame_data.staticTimer:
+	if  not cur_microgame_data.noTimer:
+		if cur_microgame_data.has("staticTimer") and cur_microgame_data.staticTimer:
 			total_wait_time = og_wait_time + cur_microgame_data.bonusTime
 		else:
 			total_wait_time = cur_wait_time + cur_microgame_data.bonusTime
 		timer.wait_time = total_wait_time
 		timer.start()
 
-func override_instructions(big:String = "..n",small:String = "..n",ref:Texture2D = null) -> void:
+func override_instructions(big:String = "..n",small:String = "..n",ref = null) -> void:
 	var txt : Array = [big,small]
 	for text_index in range(txt.size()):
 		if txt[text_index] == "":
@@ -145,7 +145,7 @@ func override_instructions(big:String = "..n",small:String = "..n",ref:Texture2D
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
-		if Input.is_action_just_pressed("ui_text_submit") && !verify_button.disabled:
+		if Input.is_action_just_pressed("ui_text_submit") and not verify_button.disabled:
 			skip_game()
 
 func skip_game() -> void:
@@ -168,15 +168,14 @@ func get_microgame(force_game : String) -> Node:
 	var cur_game : Node
 	
 	if force_microgame == "": return null
-	cur_game = load("res://microgames/" + force_game + ".tscn").instantiate()
+	cur_game = load("res://microgames/" + force_game + ".tscn").instance()
 	return cur_game
-
 
 func _on_timer_timeout() -> void:
 	cur_microgame.end_microgame.emit()
 
 func results() -> void:
-	if cur_microgame == null || cur_microgame.skipped: return
+	if cur_microgame == null or cur_microgame.skipped: return
 
 	cur_microgame.skipped = true
 
