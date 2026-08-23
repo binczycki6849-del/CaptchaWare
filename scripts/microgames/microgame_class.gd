@@ -2,10 +2,10 @@ extends Node
 
 class_name Microgame
 
-@export var microgame_data : MicrogameData = null
+export var microgame_data : Resource = null
 
-signal override_instruction_text(big:String, small:String)
-signal set_camera_shake(intensity : float, duration : float)
+signal override_instruction_text(big, small)
+signal set_camera_shake(intensity, duration)
 signal skip_timer
 signal end_microgame
 signal freeze_timer_signal
@@ -25,29 +25,35 @@ func stop_microgame() -> void:
 	force_stopped = true
 
 func force_end_mircogame() -> void:
-	end_microgame.emit()
+	emit_signal("end_microgame")
 
 func freeze_timer() -> void:
-	freeze_timer_signal.emit()
+	emit_signal("freeze_timer_signal")
 
-func get_file_list(path : String, file_type : String = ".png") -> Array:
-	var dir := ResourceLoader.list_directory(path)
-	
-	if !dir:
+func get_file_list(path, file_type = ".png"):
+	var results = []
+	var dir = Directory.new()
+	if dir.open(path) != OK:
 		print_debug(error_string(FAILED))
-		return []
-	
-	var dir_array : Array = []
-	
-	for file in dir:
-		if !file.contains(file_type): continue
-		dir_array.append(file)
-	
-	return dir_array
+		return results
+	dir.list_dir_begin(true, true)
+	var file_name = dir.get_next()
+	while file_name != "":
+		if file_type in file_name:
+			results.append(file_name)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return results
 
-func get_json_data(path : String) -> Dictionary:
-	var dir := FileAccess.open(path + ".json", FileAccess.READ) 
-	return JSON.parse_string(dir.get_as_text())
+func get_json_data(path):
+	var file = File.new()
+	if file.open(path + ".json", File.READ) != OK:
+		return {}
+	var parsed = JSON.parse(file.get_as_text())
+	file.close()
+	if parsed.error == OK:
+		return parsed.result
+	return {}
 
 func canSkip() -> bool:
 	return isWinning()

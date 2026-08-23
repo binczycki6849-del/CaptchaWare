@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends KinematicBody2D
 
 class_name Fish
 
@@ -26,7 +26,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if grabbed:
 		return
-	position.x += (speed * delta) * cur_dir
+	move_and_collide(Vector2(speed * cur_dir * delta, 0))
 
 func _process(_delta: float) -> void:
 	if not grabbed:
@@ -35,8 +35,16 @@ func _process(_delta: float) -> void:
 
 func get_fish_sprite():
 	var fish_dir := FISH_IMAGE_DIR + fish_type + "/"
-	var fish_sprite_list := ResourceLoader.list_directory(fish_dir)
-	var random_image := fish_sprite_list[randi() % max(1, fish_sprite_list.size())]
+	var dir = Directory.new()
+	var fish_sprite_list = []
+	if dir.open(fish_dir) == OK:
+		dir.list_dir_begin(true, true)
+		var file_name = dir.get_next()
+		while file_name != "":
+			fish_sprite_list.append(file_name)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	var random_image = fish_sprite_list[randi() % max(1, fish_sprite_list.size())]
 
 	if cur_dir == 1:
 		sprite.flip_h = true
@@ -44,7 +52,7 @@ func get_fish_sprite():
 	return load(fish_dir + random_image)
 
 func run_away() -> void:
-	if fish_type == "shark": 
+	if fish_type == "shark":
 		speed = 0
 		sprite.modulate = Color.white
 		return
@@ -59,9 +67,9 @@ func _on_input_event(_viewport, _event, _shape_idx) -> void:
 		return
 
 	if Input.is_action_just_pressed("Left Click"):
-		fish_grabbed.emit(self)
+		emit_signal("fish_grabbed", self)
 
 func _on_mouse_entered() -> void:
 	if fish_type == "fish":
 		return
-	failed_microgame.emit()
+	emit_signal("failed_microgame")
