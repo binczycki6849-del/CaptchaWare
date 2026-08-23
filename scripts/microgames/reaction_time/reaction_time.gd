@@ -1,115 +1,78 @@
 extends Microgame
 
-const BLUE_COLOR := Color("2b87d1")
-const RED_COLOR := Color("ce2636")
-const GREEN_COLOR := Color("4bdb6a")
+const REACTION_TIME = [
+	2.0,
+	1.8,
+	1.6,
+	1.4
+]
 
-@onready var reaction_timer: Timer = $reactionTimer
-@onready var reaction_time_button: Button = $reactionTimeButton
+onready var countdown_timer = $CountdownTimer
+onready var reaction_timer = $ReactionTimer
+onready var instruction_label = $instruction
+onready var result_label = $result
+onready var success_sound = $sounds/Success
+onready var fail_sound = $sounds/Fail
 
-@onready var anim: AnimationPlayer = $cowboy/anim
-@onready var cowboy: Control = $cowboy
-@onready var result_text: Label = $cowboy/result
-
-@onready var ticking_sound: AudioStreamPlayer = $ticking
-@onready var ding_sound: AudioStreamPlayer = $ding
-
-var test_is_active := false
-var click_now := false
-var test_done := false
-
-var reaction_time_start_time := 0.0
-
-var difficulty_window = [1, .8, .6, .4]
-
-var minimum_time := 0.0
-
-var success := false
-var done := false
+var can_press = false
+var pressed = false
+var won = false
+var lost = false
 
 func _ready() -> void:
-	minimum_time = difficulty_window[difficulty - 1]
+	instruction_label.text = "WAIT..."
+	result_label.text = ""
+	countdown_timer.wait_time = REACTION_TIME[difficulty - 1]
+	countdown_timer.start()
 
-	await get_tree().create_timer(1).timeout
+func _input(event) -> void:
+	if not (event is InputEventMouseButton):
+		return
+	if not event.pressed:
+		return
+	if event.button_index != BUTTON_LEFT:
+		return
 
-	_on_reaction_time_button_pressed()
-	reaction_time_button.disabled = false
+	if lost or won:
+		return
 
-func _process(delta: float) -> void:
-	if !click_now: return
+	if not can_press:
+		lost = true
+		instruction_label.text = "TOO SOON"
+		result_label.text = "FAILED"
+		fail_sound.play()
+		force_end_mircogame()
+		return
 
-	reaction_time_start_time += delta
+	if pressed:
+		return
 
-	if reaction_time_start_time > minimum_time:
-		finish_test()
+	pressed = true
+	won = true
+	instruction_label.text = "CLICKED"
+	result_label.text = "SUCCESS"
+	success_sound.play()
+	force_end_mircogame()
 
-func _on_reaction_time_button_pressed() -> void:
-	if test_done: return
+func _on_CountdownTimer_timeout() -> void:
+	can_press = true
+	instruction_label.text = "CLICK!"
 
-	if test_is_active:
-		finish_test()
-	else:
-		ticking_sound.play()
-		set_button_color(RED_COLOR)
+	reaction_timer.wait_time = 0.75
+	reaction_timer.start()
 
-		reaction_timer.wait_time = randf_range(1.0, 2.0)
-		reaction_timer.start()
-	
-	test_is_active = !test_is_active
+func _on_ReactionTimer_timeout() -> void:
+	if pressed or won:
+		return
 
-func finish_test() -> void:
-	ticking_sound.stop()
-	ding_sound.stop()
-
-	test_done = true
-
-	reaction_timer.stop()
-
-	result()
-
-	click_now = false
-
-func result() -> void:
-	freeze_timer()
-	cowboy.visible = true
-
-	set_camera_shake.emit(10, 0.5)
-
-	if reaction_time_start_time <= minimum_time && click_now:
-		anim.play("win")
-		success = true
-		done = true
-		result_text.text = "Nice Shot!"
-	else:
-		done = true
-		anim.play("lose")
-		if reaction_time_start_time > minimum_time:
-			result_text.text = "Too Late!"
-		else:
-			result_text.text = "Too Early!"
-
-func set_button_color(color: Color) -> void:
-	for i in reaction_time_button.get_children():
-		i.visible = false
-	
-	var colors_array := [BLUE_COLOR, RED_COLOR, GREEN_COLOR]
-	
-	reaction_time_button.get_child(colors_array.find(color)).visible = true
-	
-	reaction_time_button.self_modulate = color
-
-func _on_reaction_timer_timeout() -> void:
-	set_button_color(GREEN_COLOR)
-	ding_sound.play()
-	ticking_sound.stop()
-
-	click_now = true
+	lost = true
+	instruction_label.text = "TOO LATE"
+	result_label.text = "FAILED"
+	fail_sound.play()
+	force_end_mircogame()
 
 func isWinning() -> bool:
-	return success
+	return won
 
 func canSkip() -> bool:
-	return done
-
-func _on_anim_animation_finished(_anim_name: StringName) -> void:
-	end_microgame.emit()
+	return won or lost
