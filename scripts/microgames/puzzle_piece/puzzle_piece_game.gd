@@ -95,5 +95,4 @@ func count_puzzles() -> void:
 		finished = true
 
 func isWinning() -> bool:
-	.isWinning()
 	return finished

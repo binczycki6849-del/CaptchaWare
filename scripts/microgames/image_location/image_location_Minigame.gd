@@ -60,7 +60,6 @@ func set_image() -> void:
 		button_node.connect("count_selected", self, "count_selected")
 
 func isWinning() -> bool:
-	.isWinning()
 	return points >= min_points
 
 func canSkip() -> bool:

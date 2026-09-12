@@ -132,7 +132,6 @@ func canSkip() -> bool:
 	return answered >= how_many_should_answer
 
 func isWinning() -> bool:
-	.isWinning()
 	return has_won
 
 func get_random_fingers() -> void:

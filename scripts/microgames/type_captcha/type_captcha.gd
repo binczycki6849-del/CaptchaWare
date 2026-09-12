@@ -13,7 +13,6 @@ func _ready() -> void:
 	line_edit.call_deferred("grab_focus")
 
 func isWinning() -> bool:
-	.isWinning()
 	return line_edit.text.to_lower() == cur_text.to_lower()
 
 func canSkip() -> bool:

@@ -35,7 +35,7 @@ func set_speed(speed : float) -> void:
 
 func spawn_cactus() -> void:
 	var cactus_type = [CACTUS_SMALL_INSTANCE, CACTUS_BIG_INSTANCE]
-	var cactus_instance : cactus = cactus_type.pick_random().instance()
+	var cactus_instance : cactus = cactus_type[randi() % cactus_type.size()].instance()
 
 	cactus_instance.position = cactus_spawn.position
 	cactus_instance.speed_set = cur_speed

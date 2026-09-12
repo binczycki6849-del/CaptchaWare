@@ -38,7 +38,6 @@ func generate_equation() -> Array:
 	return [first_num, second_num, cur_math_signs, set_answer]
 
 func isWinning() -> bool:
-	.isWinning()
 	return answer == int(line_edit.text)
 
 func canSkip() -> bool:

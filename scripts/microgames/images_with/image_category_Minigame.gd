@@ -90,7 +90,6 @@ func count_selected(a:int) -> void:
 	cur_selected += a
 
 func isWinning() -> bool:
-	.isWinning()
 	return required_points == points
 
 func canSkip() -> bool:
