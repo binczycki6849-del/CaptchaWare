@@ -18,8 +18,8 @@ func _ready() -> void:
 
 func _on_animation_player_animation_finished(_anim_name: String) -> void:
 	var scene_path = str(ProjectSettings.get_setting("application/run/main_scene"))
-	if !scene_path.begins_with("res://"):
-		var file = File.new()
+	var file = File.new()
+	if !scene_path.begins_with("res://") or !file.file_exists(scene_path):
 		scene_path = MAIN_SCENE_PATH if file.file_exists(MAIN_SCENE_PATH) else MAIN_SCENE_FALLBACK_PATH
 	get_tree().change_scene(scene_path)
 

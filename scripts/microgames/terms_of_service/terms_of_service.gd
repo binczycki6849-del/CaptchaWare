@@ -121,7 +121,7 @@ func update_tos_text(article_index : int) -> void:
 	cur_article_pos_check += (FONT_SEPARATION * next_article_child.get_line_count()) + FONT_SEPARATION
 
 func stop_microgame() -> void:
-	.stop_microgame()
+	force_stopped = true
 	scroll_velocity = 0
 	emit_signal("set_camera_shake", 0, 0)
 	scroll_fast_sound.volume_db = -80

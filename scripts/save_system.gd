@@ -38,9 +38,10 @@ func load_data(file_name : String, data_dictionary : Dictionary = {}) -> Diction
 			cur_save[key] = loaded_save[key]
 	
 	file.close()
-	file.open(_SAVE_PATH + file_name, File.WRITE)
-	file.store_var(cur_save)
-	file.close()
+	var write_file = File.new()
+	write_file.open(_SAVE_PATH + file_name, File.WRITE)
+	write_file.store_var(cur_save)
+	write_file.close()
 	
 	return cur_save
 

@@ -50,9 +50,10 @@ func _input(event: InputEvent) -> void:
 		global_position = get_global_mouse_position() + set_click_offset
 
 func hole_check() -> void:
-	if point_hitbox.get_collider() == null or point_hitbox.get_collider().get_parent() != cur_puzzle_hole: return
+	var collider = point_hitbox.get_collider()
+	if collider == null or collider.get_parent() != cur_puzzle_hole: return
 	
-	var hole : Node2D = point_hitbox.get_collider().get_parent()
+	var hole : Node2D = collider.get_parent()
 	global_position = hole.global_position
 	check.visible = true
 	lock_puzzle_piece()
