@@ -17,7 +17,7 @@ onready var puzzle_grab: AudioStreamPlayer = $puzzleGrab
 onready var point_hitbox: RayCast2D = $RayCast2D
 
 signal count_puzzles
-func set_puzzle_texture(puzzleMaskIndex: int = 0, puzzleTexture: Texture2D = null, puzzleTexturePos : Vector2 = Vector2.ZERO) -> void:
+func set_puzzle_texture(puzzleMaskIndex: int = 0, puzzleTexture: Texture = null, puzzleTexturePos : Vector2 = Vector2.ZERO) -> void:
 	
 	puzzle_piece_mask.texture = load("res://sprites/puzzle_piece/masks/puzzle" + str(puzzleMaskIndex) + ".png")
 	

@@ -103,8 +103,9 @@ func close_all_popups(destroyed = false) -> void:
 func _on_pop_up_timer_timeout() -> void:
 	ticking_sound.stop()
 
-	var cam_tween = create_tween()
-	cam_tween.tween_property(camera, "zoom", Vector2.ONE * 1.43, .07)
+	if camera != null:
+		var cam_tween = create_tween()
+		cam_tween.tween_property(camera, "zoom", Vector2.ONE * 1.43, .07)
 
 	emit_signal("set_camera_shake", 5, .5)
 
