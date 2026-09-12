@@ -22,13 +22,13 @@ var reaction_time_start_time = 0.0
 
 var difficulty_window = [1, .8, .6, .4]
 
-var minmum_time = 0.0
+var minimum_time = 0.0
 
 var success = false
 var done = false
 
 func _ready() -> void:
-	minmum_time = difficulty_window[difficulty - 1]
+	minimum_time = difficulty_window[difficulty - 1]
 
 	yield(get_tree().create_timer(1), "timeout")
 
@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 
 	reaction_time_start_time += delta
 
-	if reaction_time_start_time > minmum_time:
+	if reaction_time_start_time > minimum_time:
 		finish_test()
 
 func _on_reaction_time_button_pressed() -> void:
@@ -75,7 +75,7 @@ func result() -> void:
 
 	emit_signal("set_camera_shake", 10, 0.5)
 
-	if reaction_time_start_time <= minmum_time and click_now:
+	if reaction_time_start_time <= minimum_time and click_now:
 		anim.play("win")
 		success = true
 		done = true
@@ -83,7 +83,7 @@ func result() -> void:
 	else:
 		done = true
 		anim.play("lose")
-		if reaction_time_start_time > minmum_time:
+		if reaction_time_start_time > minimum_time:
 			result_text.text = "Too Late!"
 		else:
 			result_text.text = "Too Early!"

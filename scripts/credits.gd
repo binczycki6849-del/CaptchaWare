@@ -16,7 +16,10 @@ func _ready() -> void:
 	GameData.save_cur_data(GameData.GAME_SAVE_NAME)
 
 func _on_animation_player_animation_finished(_anim_name: String) -> void:
-	get_tree().change_scene(MAIN_SCENE_PATH)
+	var scene_path = str(ProjectSettings.get_setting("application/run/main_scene"))
+	if !scene_path.begins_with("res://"):
+		scene_path = MAIN_SCENE_PATH
+	get_tree().change_scene(scene_path)
 
 func _on_skip_pressed() -> void:
 	animation_player.play("end")

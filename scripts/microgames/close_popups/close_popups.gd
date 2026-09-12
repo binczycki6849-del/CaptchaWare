@@ -7,7 +7,7 @@ const DIFFICULTY_POPUP_COUNT = [5, 6, 7, 8]
 
 const AD_IMAGES_PATH = "res://sprites/close_popups/ads/"
 
-onready var camera = get_tree().get_nodes_in_group("camera")[0]
+onready var camera = _get_first_node_in_group("camera")
 
 onready var pop_ups: Control = $popUps
 onready var count_down: Label = $ad/CountDown
@@ -27,6 +27,13 @@ var ad_images : Array = []
 var cleared = false
 
 const rand_pos_clamp = [Vector2(-246.0, 100.0), Vector2(611.0, 340.0)]
+
+func _get_first_node_in_group(group_name : String):
+	var nodes = get_tree().get_nodes_in_group(group_name)
+	if nodes.empty():
+		return null
+	return nodes[0]
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	popup_amount = DIFFICULTY_POPUP_COUNT[difficulty - 1]

@@ -6,11 +6,17 @@ onready var monitors_text_sprites: Sprite2D = $nuclear/Monitors
 onready var sound_press: AudioStreamPlayer = $nuclear/Monitors/press
 onready var sound_it: AudioStreamPlayer = $nuclear/Monitors/it
 
-onready var the_main_code : Node2D = get_tree().get_nodes_in_group("main_game")[0]
+onready var the_main_code : Node2D = _get_first_node_in_group("main_game")
 onready var audio: AudioStreamPlayer = $audio
 
 var cur_monitor_frame = false
 var activate_monitors = true
+
+func _get_first_node_in_group(group_name : String):
+	var nodes = get_tree().get_nodes_in_group(group_name)
+	if nodes.empty():
+		return null
+	return nodes[0]
 
 func on_transition_complete() -> void:
 	monitors()

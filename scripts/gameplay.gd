@@ -336,13 +336,19 @@ func end_game() -> void:
 	game_started = false
 
 func disconnect_prev_microgame_signals() -> void:
-	if prev_microgame == null or !is_connected("on_transition_complete", prev_microgame, "on_transition_complete"): return
-	disconnect("on_transition_complete", prev_microgame, "on_transition_complete")
-	prev_microgame.disconnect("override_instruction_text", self, "override_instructions")
-	prev_microgame.disconnect("set_camera_shake", self, "camera_shake")
-	prev_microgame.disconnect("skip_timer", self, "skip_timer")
-	prev_microgame.disconnect("end_microgame", self, "transition_game")
-	prev_microgame.disconnect("freeze_timer_signal", self, "freeze_timer")
+	if prev_microgame == null: return
+	if is_connected("on_transition_complete", prev_microgame, "on_transition_complete"):
+		disconnect("on_transition_complete", prev_microgame, "on_transition_complete")
+	if prev_microgame.is_connected("override_instruction_text", self, "override_instructions"):
+		prev_microgame.disconnect("override_instruction_text", self, "override_instructions")
+	if prev_microgame.is_connected("set_camera_shake", self, "camera_shake"):
+		prev_microgame.disconnect("set_camera_shake", self, "camera_shake")
+	if prev_microgame.is_connected("skip_timer", self, "skip_timer"):
+		prev_microgame.disconnect("skip_timer", self, "skip_timer")
+	if prev_microgame.is_connected("end_microgame", self, "transition_game"):
+		prev_microgame.disconnect("end_microgame", self, "transition_game")
+	if prev_microgame.is_connected("freeze_timer_signal", self, "freeze_timer"):
+		prev_microgame.disconnect("freeze_timer_signal", self, "freeze_timer")
 
 func freeze_timer() -> void:
 	timer.paused = true
