@@ -37,7 +37,7 @@ func _get_first_node_in_group(group_name : String):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	popup_amount = DIFFICULTY_POPUP_COUNT[difficulty - 1]
-	connect("end_microgame", self, "times_up")
+	self.connect("end_microgame", self, "times_up")
 	timer.max_value = pop_up_timer.wait_time
 
 	var directory = Directory.new()

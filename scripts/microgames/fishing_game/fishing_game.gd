@@ -83,7 +83,7 @@ func spawn_fish() -> void:
 	if spawn_shark:
 		amount_of_sharks_on_screen += 1
 	
-	connect("scare_fishes", fish_instance, "run_away")
+	self.connect("scare_fishes", fish_instance, "run_away")
 
 	fish_instance.position = Vector2(SPAWN_DIR[direction_facing], rand_range(219.695, 481.695))
 

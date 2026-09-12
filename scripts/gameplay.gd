@@ -120,10 +120,10 @@ func _ready() -> void:
 	file.close()
 	
 	file.open(JSON_FILE_LOCATION, File.READ)
-	var parsed_json = JSON.parse(file.get_as_text())
+	var parsed_json = parse_json(file.get_as_text())
 	file.close()
-	if parsed_json.error == OK:
-		microgame_pool_json = parsed_json.result
+	if typeof(parsed_json) == TYPE_DICTIONARY:
+		microgame_pool_json = parsed_json
 	
 	var game_name_list = _list_directory("res://microgames/")
 
@@ -457,7 +457,7 @@ func change_game(is_boss = false) -> void:
 	
 	disconnect_prev_microgame_signals()
 	
-	connect("on_transition_complete", cur_microgame, "on_transition_complete")
+	self.connect("on_transition_complete", cur_microgame, "on_transition_complete")
 	cur_microgame.connect("override_instruction_text", self, "override_instructions")
 	cur_microgame.connect("set_camera_shake", self, "camera_shake")
 	cur_microgame.connect("skip_timer", self, "skip_timer")

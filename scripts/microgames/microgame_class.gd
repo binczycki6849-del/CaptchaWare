@@ -54,11 +54,11 @@ func get_file_list(path : String, file_type : String = ".png") -> Array:
 func get_json_data(path : String) -> Dictionary:
 	var file = File.new()
 	file.open(path + ".json", File.READ)
-	var parse_result = JSON.parse(file.get_as_text())
+	var parse_result = parse_json(file.get_as_text())
 	file.close()
-	if parse_result.error != OK:
+	if typeof(parse_result) != TYPE_DICTIONARY:
 		return {}
-	return parse_result.result
+	return parse_result
 
 func canSkip() -> bool:
 	return isWinning()

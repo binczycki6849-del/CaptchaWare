@@ -107,7 +107,7 @@ func change_game():
 	
 	override_instructions(cur_microgame_data.instructionsBig, cur_microgame_data.instructionsSmall, cur_microgame_data.referenceImage)
 	
-	connect("on_transition_complete", cur_microgame, "on_transition_complete")
+	self.connect("on_transition_complete", cur_microgame, "on_transition_complete")
 	cur_microgame.connect("override_instruction_text", self, "override_instructions")
 	cur_microgame.connect("set_camera_shake", self, "camera_shake")
 	cur_microgame.connect("skip_timer", self, "skip_timer")
