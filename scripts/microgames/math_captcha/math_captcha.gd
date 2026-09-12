@@ -7,7 +7,7 @@ var answer : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	line_edit.grab_focus.call_deferred()
+	line_edit.call_deferred("grab_focus")
 	generate_math_eq()
 	emit_signal("override_instruction_text", cur_text_problem)
 	pass # Replace with function body.

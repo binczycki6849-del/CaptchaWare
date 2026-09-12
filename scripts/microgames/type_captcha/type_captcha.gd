@@ -10,7 +10,7 @@ func _ready() -> void:
 	
 	emit_signal("override_instruction_text", "res://sprites/type_captcha/" + cur_text + ".png")
 	
-	line_edit.grab_focus.call_deferred()
+	line_edit.call_deferred("grab_focus")
 
 func isWinning() -> bool:
 	.isWinning()

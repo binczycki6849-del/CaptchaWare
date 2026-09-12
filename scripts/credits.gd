@@ -1,6 +1,7 @@
 extends Control
 
-const MAIN_SCENE_PATH = "res://scenes/Main.scn"
+const MAIN_SCENE_PATH = "res://scenes/Main.tscn"
+const MAIN_SCENE_FALLBACK_PATH = "res://scenes/Main.scn"
 
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 onready var black: ColorRect = $ColorRect
@@ -18,7 +19,8 @@ func _ready() -> void:
 func _on_animation_player_animation_finished(_anim_name: String) -> void:
 	var scene_path = str(ProjectSettings.get_setting("application/run/main_scene"))
 	if !scene_path.begins_with("res://"):
-		scene_path = MAIN_SCENE_PATH
+		var file = File.new()
+		scene_path = MAIN_SCENE_PATH if file.file_exists(MAIN_SCENE_PATH) else MAIN_SCENE_FALLBACK_PATH
 	get_tree().change_scene(scene_path)
 
 func _on_skip_pressed() -> void:
