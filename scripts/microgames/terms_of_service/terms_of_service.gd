@@ -1,30 +1,30 @@
 extends Microgame
 
-const FONT_SEPARATION := 23
+const FONT_SEPARATION = 23
 
-@onready var scroll_container: ScrollContainer = $ScrollContainer
-@onready var v_box_container: VBoxContainer = $ScrollContainer/VBoxContainer
-@onready var v_scroll_bar : VScrollBar = scroll_container.get_v_scroll_bar()
+onready var scroll_container: ScrollContainer = $ScrollContainer
+onready var v_box_container: VBoxContainer = $ScrollContainer/VBoxContainer
+onready var v_scroll_bar : VScrollBar = scroll_container.get_v_scroll_bar()
 
-@onready var check_box: CheckBox = $CheckBox
+onready var check_box: CheckBox = $CheckBox
 
-@onready var the_end_of_bar : int
+onready var the_end_of_bar : int
 
-@onready var scroll_fast_sound: AudioStreamPlayer = $scroll_fast
-@onready var scroll_impact_sound: AudioStreamPlayer = $scroll_impact
+onready var scroll_fast_sound: AudioStreamPlayer = $scroll_fast
+onready var scroll_impact_sound: AudioStreamPlayer = $scroll_impact
 
-var process_delta := 0.0
+var process_delta = 0.0
 
-var scroll_velocity := 0.0
-var full_tos_text : PackedStringArray
+var scroll_velocity = 0.0
+var full_tos_text : PoolStringArray
 
-var scroll_length : Array[int] = [
+var scroll_length : Array = [
 	20792,
 	20792,
 	27127,
 	32338,
 ]
-var article_amount_set : Array[int] = [
+var article_amount_set : Array = [
 	35,
 	35,
 	50,
@@ -41,19 +41,19 @@ func _ready() -> void:
 	full_tos_text = get_tos_text(article_amount_set[difficulty - 1])
 	
 	v_scroll_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	v_scroll_bar.value_changed.connect(on_value_changed)
-	v_box_container.custom_minimum_size = Vector2.DOWN * scroll_length[difficulty - 1]
-	the_end_of_bar = int(v_box_container.custom_minimum_size.y) - 376
+	v_scroll_bar.connect("value_changed", self, "on_value_changed")
+	v_box_container.custom_minmum_size = Vector2.DOWN * scroll_length[difficulty - 1]
+	the_end_of_bar = int(v_box_container.custom_minmum_size.y) - 376
 	
 	set_up_articles()
 
 func set_up_articles() -> void:
-	var prev_offset_text := 0
-	var prev_y_pos := 0
+	var prev_offset_text = 0
+	var prev_y_pos = 0
 	
 	for i in v_box_container.get_child_count():
-		var cur_child := v_box_container.get_child(i)
-		var rich_text_child := cur_child.get_child(0)
+		var cur_child = v_box_container.get_child(i)
+		var rich_text_child = cur_child.get_child(0)
 		
 		if i == 0:
 			cur_article_pos_check = (rich_text_child.get_line_count() * FONT_SEPARATION) + FONT_SEPARATION
@@ -73,8 +73,8 @@ func _input(event: InputEvent) -> void:
 			scroll_velocity += 40
 
 func _physics_process(delta: float) -> void:
-	scroll_container.scroll_vertical += int((scroll_velocity) * minf(delta * 20, 1.0))
-	scroll_velocity = lerpf(scroll_velocity, 0, minf(delta, 1))
+	scroll_container.scroll_vertical += int((scroll_velocity) * min(delta * 20, 1.0))
+	scroll_velocity = lerp(scroll_velocity, 0, min(delta, 1))
 
 var prev_value : int = 0
 var value_velocity : float = 0.0
@@ -85,17 +85,17 @@ func on_value_changed(value : float) -> void:
 	
 	value_velocity = value - float(prev_value)
 	
-	scroll_fast_sound.volume_db = lerpf(-80, -10, minf(abs(value_velocity) / 20.0, 1.0))
-	set_camera_shake.emit(scroll_velocity / 200.0, 0)
+	scroll_fast_sound.volume_db = lerp(-80, -10, min(abs(value_velocity) / 20.0, 1.0))
+	emit_signal("set_camera_shake", scroll_velocity / 200.0, 0)
 	
-	if int(value) == the_end_of_bar || int(value) == 0:
+	if int(value) == the_end_of_bar or int(value) == 0:
 		finished_scrolling()
 	
 	prev_value = int(value)
 
 func finished_scrolling() -> void:
 	if abs(scroll_velocity) > 180.0:
-		set_camera_shake.emit(10, 0.5)
+		emit_signal("set_camera_shake", 10, 0.5)
 		scroll_impact_sound.play()
 	scroll_fast_sound.volume_db = -80
 	
@@ -103,39 +103,42 @@ func finished_scrolling() -> void:
 		check_box.disabled = false
 
 func tos_scrolling_system(scrolling_value : int) -> void:
-	if cur_article_pos_check >= scrolling_value || cur_article > article_limit: return
+	if cur_article_pos_check >= scrolling_value or cur_article > article_limit: return
 	update_tos_text(cur_article)
 	cur_article += 1
 
 func update_tos_text(article_index : int) -> void:
-	var cur_vbox_child := article_index % 4
-	var next_vbox_child := (article_index + 1) % 4
-	var cur_article_child := v_box_container.get_child(cur_vbox_child).get_child(0)
+	var cur_vbox_child = article_index % 4
+	var next_vbox_child = (article_index + 1) % 4
+	var cur_article_child = v_box_container.get_child(cur_vbox_child).get_child(0)
 	
-	cur_article_child.text = full_tos_text[mini(article_index + 4, full_tos_text.size() - 1)]
+	cur_article_child.text = full_tos_text[min(article_index + 4, full_tos_text.size() - 1)]
 	cur_article_child.position.y = cur_article_pos_offset
 	
 	cur_article_pos_offset = cur_article_child.position.y + (cur_article_child.get_line_count() * FONT_SEPARATION) + FONT_SEPARATION
 	
-	var next_article_child := v_box_container.get_child(next_vbox_child).get_child(0)
+	var next_article_child = v_box_container.get_child(next_vbox_child).get_child(0)
 	cur_article_pos_check += (FONT_SEPARATION * next_article_child.get_line_count()) + FONT_SEPARATION
 
 func stop_microgame() -> void:
-	super.stop_microgame()
+	.stop_microgame()
 	scroll_velocity = 0
-	set_camera_shake.emit(0, 0)
+	emit_signal("set_camera_shake", 0, 0)
 	scroll_fast_sound.volume_db = -80
 
 func _on_check_box_toggled(toggled_on: bool) -> void:
 	if !toggled_on: return
 	check_box.disabled = true
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	finished = true
 
-func get_tos_text(article_count : int) -> PackedStringArray:
-	var text_file := FileAccess.open("res://scripts/microgames/terms_of_service/the_terms_of_service.txt", FileAccess.READ).get_as_text()
-	var text_array : PackedStringArray = []
-	var temp_array : PackedStringArray = []
+func get_tos_text(article_count : int) -> PoolStringArray:
+	var file = File.new()
+	file.open("res://scripts/microgames/terms_of_service/the_terms_of_service.txt", File.READ)
+	var text_file = file.get_as_text()
+	file.close()
+	var text_array : PoolStringArray = []
+	var temp_array : PoolStringArray = []
 	
 	temp_array = text_file.split("[br][br]", false)
 	

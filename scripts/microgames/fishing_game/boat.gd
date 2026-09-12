@@ -46,7 +46,7 @@ func collect_fish() -> void:
 	
 	if surfaced:
 		return
-	get_fish.emit()
+	emit_signal("get_fish")
 	surfaced = true
 
 func success_microgame() -> void:

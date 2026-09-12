@@ -1,13 +1,13 @@
 extends Microgame
 
-@onready var card: Node2D = $card
-@onready var text_anim: AnimationPlayer = $textAnim
+onready var card: Node2D = $card
+onready var text_anim: AnimationPlayer = $textAnim
 
-var complete := false
+var complete = false
 
 func _on_card_swipe_completed() -> void:
 	text_anim.play("task completed")
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	complete = true
 
 func isWinning() -> bool:
