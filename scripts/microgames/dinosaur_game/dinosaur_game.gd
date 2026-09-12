@@ -5,17 +5,17 @@ const CACTUS_BIG_INSTANCE = preload("uid://81qgltjkv3h8")
 
 const SPEED_DIFFICULTY_SCALE = [700, 750, 800, 900]
 
-@onready var dinosaurgame_bg: Parallax2D = $dinosaurgameBG
-@onready var clouds: CPUParticles2D = $clouds
+onready var dinosaurgame_bg = $dinosaurgameBG
+onready var clouds: CPUParticles2D = $clouds
 
-@onready var cactus_spawn: Marker2D = $CactusSpawn
-@onready var cactus_spawn_rate: Timer = $CactusSpawnRate
+onready var cactus_spawn = $CactusSpawn
+onready var cactus_spawn_rate: Timer = $CactusSpawnRate
 
-@onready var sounds: Node = $the_dino/sounds
+onready var sounds: Node = $the_dino/sounds
 
 var died := false
 
-@export var cur_speed := 0.0
+export var cur_speed := 0.0
 
 func _ready() -> void:
 	set_speed(SPEED_DIFFICULTY_SCALE[difficulty - 1])
@@ -35,7 +35,7 @@ func set_speed(speed : float) -> void:
 
 func spawn_cactus() -> void:
 	var cactus_type := [CACTUS_SMALL_INSTANCE, CACTUS_BIG_INSTANCE]
-	var cactus_instance : cactus = cactus_type.pick_random().instantiate()
+	var cactus_instance : cactus = cactus_type[randi() % cactus_type.size()].instance()
 
 	cactus_instance.position = cactus_spawn.position
 	cactus_instance.speed_set = cur_speed
@@ -48,7 +48,7 @@ func _on_the_dino_killed() -> void:
 	cactus_spawn_rate.stop()
 	died = true
 
-	skip_timer.emit()
+	emit_signal("skip_timer")
 
 func on_transition_complete() -> void:
 	cactus_spawn_rate.start()

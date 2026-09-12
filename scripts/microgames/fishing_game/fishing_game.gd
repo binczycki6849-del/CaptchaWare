@@ -12,10 +12,10 @@ const DIFFICULTY_ARRAY ={
 	"spawn_rate" : [0.5, .45, .3, .2]
 }
 
-@onready var boat: Node2D = $boat
-@onready var fishes: Node2D = $fishes
+onready var boat: Node2D = $boat
+onready var fishes: Node2D = $fishes
 
-@onready var score: Label = $score
+onready var score: Label = $score
 
 var grabbed := false
 
@@ -29,14 +29,14 @@ var max_fishes := 5
 
 var cur_fishes : Fish = null
 
-@onready var spawn_timer: Timer = $SpawnTimer
+onready var spawn_timer: Timer = $SpawnTimer
 
-@onready var shark_bite_sound: AudioStreamPlayer = $sounds/SharkBite
-@onready var fish_hooked_sound: AudioStreamPlayer = $sounds/FishHooked
-@onready var collected_fish_sound: AudioStreamPlayer = $sounds/CollectedFish
-@onready var win_sound: AudioStreamPlayer = $sounds/Win
+onready var shark_bite_sound: AudioStreamPlayer = $sounds/SharkBite
+onready var fish_hooked_sound: AudioStreamPlayer = $sounds/FishHooked
+onready var collected_fish_sound: AudioStreamPlayer = $sounds/CollectedFish
+onready var win_sound: AudioStreamPlayer = $sounds/Win
 
-@onready var tutorial: Label = $tutorial
+onready var tutorial: Label = $tutorial
 
 var has_shown_tutorial := false
 
@@ -63,8 +63,8 @@ func _on_fish_failed_microgame() -> void:
 	tutorial.text = "AVOID THE SHARKS"
 	tutorial.visible = true
 
-	skip_timer.emit()
-	scare_fishes.emit()
+	emit_signal("skip_timer")
+	emit_signal("scare_fishes")
 	boat.failed = true
 	boat.hook.visible = false
 	shark_bite_sound.play()
@@ -77,13 +77,13 @@ func spawn_fish() -> void:
 	var shark_chance := randi_range(0,100)
 	var spawn_shark := shark_chance < shark_chance_value && max_sharks > amount_of_sharks_on_screen
 
-	var fish_instance : Fish = INSTANCES_ARRAY[int(spawn_shark)].instantiate()
+	var fish_instance : Fish = INSTANCES_ARRAY[int(spawn_shark)].instance()
 	var direction_facing := randi_range(0, 1)
 
 	if spawn_shark:
 		amount_of_sharks_on_screen += 1
 	
-	scare_fishes.connect(fish_instance.run_away)
+	connect("scare_fishes", fish_instance, "run_away")
 
 	fish_instance.position = Vector2(SPAWN_DIR[direction_facing], randf_range(219.695, 481.695))
 
@@ -92,8 +92,8 @@ func spawn_fish() -> void:
 	
 	fish_instance.cur_dir = direction_facing
 
-	fish_instance.fish_grabbed.connect(fish_collecting)
-	fish_instance.failed_microgame.connect(_on_fish_failed_microgame)
+	fish_instance.connect("fish_grabbed", self, "fish_collecting")
+	fish_instance.connect("failed_microgame", self, "_on_fish_failed_microgame")
 
 	fishes.add_child(fish_instance)
 
@@ -117,14 +117,14 @@ func fish_collecting(fish_thing : Fish) -> void:
 func _on_boat_get_fish() -> void:
 	if cur_fishes == null || boat.failed: return
 
-	set_camera_shake.emit(5, .5)
+	emit_signal("set_camera_shake", 5, .5)
 	collected_fishes += 1
 
 	tutorial.visible = false
 
 	if collected_fishes >= max_fishes:
 		boat.success_microgame()
-		skip_timer.emit()
+		emit_signal("skip_timer")
 		win_sound.play()
 
 	cur_fishes.queue_free()

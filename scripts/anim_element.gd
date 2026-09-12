@@ -1,6 +1,6 @@
-extends Sprite2D
+extends Sprite
 
-@export var shake_amount := 0.0
+export var shake_amount := 0.0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta: float) -> void:

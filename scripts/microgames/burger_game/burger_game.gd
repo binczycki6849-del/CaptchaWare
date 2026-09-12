@@ -50,17 +50,17 @@ const DIFFICULTY_INGREDIENT_AMOUNT_RANGE := [
 var used_ingredients := []
 
 var cur_order_array := []
-var cur_order_string : PackedStringArray = []
+var cur_order_string = []
 
 var cur_order : = 0
 
-@onready var burger_pos: Marker2D = $burger_pos
+onready var burger_pos = $burger_pos
 
-@onready var button_grid: GridContainer = $'ingredients tab/ButtonGrid'
+onready var button_grid: GridContainer = $'ingredients tab/ButtonGrid'
 
-@onready var fail_text: Label = $'Fail text'
+onready var fail_text: Label = $'Fail text'
 
-@onready var ingredients_list_text: RichTextLabel = $notepad/Label
+onready var ingredients_list_text: RichTextLabel = $notepad/Label
 
 var prev_ingredient: Ingredients = Ingredients.BOTTOM_BUN
 var prev_ingredient_pos : Vector2 = Vector2.ZERO
@@ -71,9 +71,9 @@ var finished_burger : bool = false
 
 var stop_game : bool = false
 
-@onready var slap_ingredient_sound: AudioStreamPlayer = $sounds/SlapIngredientSound
-@onready var ding_sound: AudioStreamPlayer = $sounds/DingSound
-@onready var buzzer_sound: AudioStreamPlayer = $sounds/BuzzerSound
+onready var slap_ingredient_sound: AudioStreamPlayer = $sounds/SlapIngredientSound
+onready var ding_sound: AudioStreamPlayer = $sounds/DingSound
+onready var buzzer_sound: AudioStreamPlayer = $sounds/BuzzerSound
 
 func _ready() -> void:
 	set_random_order()
@@ -104,7 +104,7 @@ func update_ingredients_list(setting_up_text := false, cur_ingredient : Ingredie
 		var cur_string := cur_order_string[cur_order]
 
 		if cur_order_array[cur_order] != cur_ingredient: #when you fail
-			set_camera_shake.emit(5, .5)
+			emit_signal("set_camera_shake", 5, .5)
 			complete_microgame()
 
 			buzzer_sound.play()
@@ -133,7 +133,7 @@ func stop_all_buttons() -> void:
 func place_ingredient(ingredient_type: Ingredients) -> void:
 	if used_ingredients.has(ingredient_type) : return
 
-	var cur_ingredient := INGREDIENT_INSTANCE.instantiate()
+	var cur_ingredient := INGREDIENT_INSTANCE.instance()
 	cur_ingredient.set_ingredient(ingredient_type)
 
 	burger_pos.add_child(cur_ingredient)
@@ -160,7 +160,7 @@ func place_ingredient(ingredient_type: Ingredients) -> void:
 
 func complete_microgame() -> void:
 	stop_game = true
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	stop_all_buttons()
 
 func canSkip() -> bool:

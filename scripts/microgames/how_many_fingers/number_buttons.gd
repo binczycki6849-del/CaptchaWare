@@ -1,8 +1,8 @@
 extends Control
 
 signal button_answered(button: Button)
-@onready var button: Button = $Button
-@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+onready var button: Button = $Button
+onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 var cur_numbers : int = 1
 
@@ -22,5 +22,5 @@ func reaveal_numbers() -> void:
 	button.text = str(cur_numbers)
 
 func _on_button_button_down() -> void:
-	button_answered.emit(button)
+	emit_signal("button_answered", button)
 	audio_stream_player.play()
