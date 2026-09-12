@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Sprite
 
 const INGREDIENT_TYPES = {
 	0: ["top_bun", Vector2(0, -20)],

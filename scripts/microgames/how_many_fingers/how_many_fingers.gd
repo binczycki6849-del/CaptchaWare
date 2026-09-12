@@ -2,7 +2,7 @@ extends Microgame
 
 const BUTTON_ANSWERS = preload("res://instances/howManyFingers/buttonAnswers.tscn")
 
-onready var hand: Sprite2D = $hand_group/hand
+onready var hand: Sprite = $hand_group/hand
 onready var grid_container: GridContainer = $GridContainer
 onready var hand_anim: AnimationPlayer = $hand_group/hand/anim
 onready var numbers_label_node: Label = $Numbers

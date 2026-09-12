@@ -59,6 +59,11 @@ const random_emails = [
 	"impossiblechris@gmail.com"
 ]
 
+func _pick_random_item(items : Array):
+	if items.empty():
+		return null
+	return items[randi() % items.size()]
+
 func _ready() -> void:
 	if GameData.stored_data.played_intro:
 		start_with_no_intro()
@@ -72,7 +77,7 @@ func intro_cutscene_start() -> void:
 	intro_cutscene = true
 	captcha_animation_player.play("intro_cutscene_1")
 	change_text_box_intro()
-	cur_text_node.text = random_emails.pick_random()
+	cur_text_node.text = _pick_random_item(random_emails)
 
 func _input(event: InputEvent) -> void:
 	if !(intro_cutscene and event is InputEventKey): return

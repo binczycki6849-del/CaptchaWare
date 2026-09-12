@@ -1,17 +1,17 @@
-[gd_scene format=3 uid="uid://ceavec6yp3k7y"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://c33tf7db1ih2y" path="res://scripts/microgames/touch_grass/touch_grass.gd" id="1_f6ok3"]
-[ext_resource type="Texture2D" uid="uid://hbaxg7brte0p" path="res://sprites/touch_grass/grass_images/grass1.png" id="2_4gcub"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_qrep6"]
-[ext_resource type="Script" uid="uid://b3dufowj6wkr7" path="res://scripts/microgames/touch_grass/hand.gd" id="3_2tcok"]
-[ext_resource type="Texture2D" uid="uid://uvx2iptbv40j" path="res://sprites/touch_grass/hand_open.png" id="4_667yt"]
-[ext_resource type="Texture2D" uid="uid://c4isjifihfhrl" path="res://sprites/touch_grass/hand_close.png" id="5_i301x"]
-[ext_resource type="Texture2D" uid="uid://c53urjsqv183f" path="res://sprites/touch_grass/hand_thumbs.png" id="6_4gcub"]
-[ext_resource type="Theme" uid="uid://cu51pqcwmnm0l" path="res://captcha_theme.tres" id="6_q0dx4"]
-[ext_resource type="AudioStream" uid="uid://6aelfr0kl86f" path="res://sounds/microgames/touch_grass/grass_1.mp3" id="7_i301x"]
-[ext_resource type="AudioStream" uid="uid://c0cu2rq7uruvh" path="res://sounds/microgames/touch_grass/grass_2.mp3" id="8_q0dx4"]
-[ext_resource type="AudioStream" uid="uid://dstblkxeciiy4" path="res://sounds/microgames/touch_grass/grass_3.mp3" id="9_qrep6"]
-[ext_resource type="AudioStream" uid="uid://cd8vjih1cse40" path="res://sounds/microgames/touch_grass/whip.mp3" id="10_q0dx4"]
+[ext_resource type="Script" path="res://scripts/microgames/touch_grass/touch_grass.gd" id="1_f6ok3"]
+[ext_resource type="Texture" path="res://sprites/touch_grass/grass_images/grass1.png" id="2_4gcub"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_qrep6"]
+[ext_resource type="Script" path="res://scripts/microgames/touch_grass/hand.gd" id="3_2tcok"]
+[ext_resource type="Texture" path="res://sprites/touch_grass/hand_open.png" id="4_667yt"]
+[ext_resource type="Texture" path="res://sprites/touch_grass/hand_close.png" id="5_i301x"]
+[ext_resource type="Texture" path="res://sprites/touch_grass/hand_thumbs.png" id="6_4gcub"]
+[ext_resource type="Theme" path="res://captcha_theme.tres" id="6_q0dx4"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/touch_grass/grass_1.mp3" id="7_i301x"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/touch_grass/grass_2.mp3" id="8_q0dx4"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/touch_grass/grass_3.mp3" id="9_qrep6"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/touch_grass/whip.mp3" id="10_q0dx4"]
 
 [sub_resource type="Resource" id="Resource_hihd0"]
 script = ExtResource("2_qrep6")
@@ -22,7 +22,6 @@ referenceImage = ExtResource("2_4gcub")
 errorMessage = "Please fill up the bar"
 set_size = Vector2(430, 573.835)
 bonusTime = 2.0
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
 [sub_resource type="Animation" id="Animation_0qy5o"]
 length = 0.001
@@ -285,7 +284,7 @@ _data = {
 &"shake": SubResource("Animation_kuf18")
 }
 
-[node name="touchGrass" type="ColorRect" unique_id=520749725]
+[node name="touchGrass" type="ColorRect"]
 clip_children = 1
 z_index = 2
 offset_right = 414.0
@@ -293,7 +292,7 @@ offset_bottom = 533.0
 script = ExtResource("1_f6ok3")
 microgame_data = SubResource("Resource_hihd0")
 
-[node name="grass" type="TextureRect" parent="." unique_id=778794721]
+[node name="grass" type="TextureRect" parent="."]
 clip_children = 2
 z_index = 1
 layout_mode = 1
@@ -305,39 +304,39 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_4gcub")
 
-[node name="hand" type="Node2D" parent="grass" unique_id=1195840222 node_paths=PackedStringArray("gameplay_code")]
+[node name="hand" type="Node2D" parent="grass" node_paths=PackedStringArray("gameplay_code")]
 position = Vector2(247, 138)
 script = ExtResource("3_2tcok")
 gameplay_code = NodePath("../..")
 
-[node name="particles" type="Node2D" parent="grass/hand" unique_id=1456886220]
+[node name="particles" type="Node2D" parent="grass/hand"]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="grass/hand" unique_id=909341792]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="grass/hand"]
 libraries/ = SubResource("AnimationLibrary_7nf3m")
 
-[node name="grass" type="AudioStreamPlayer" parent="grass/hand/AnimationPlayer" unique_id=1753042277]
+[node name="grass" type="AudioStreamPlayer" parent="grass/hand/AnimationPlayer"]
 stream = SubResource("AudioStreamRandomizer_hihd0")
 bus = &"Microgame Sounds"
 
-[node name="whip" type="AudioStreamPlayer" parent="grass/hand/AnimationPlayer" unique_id=981756419]
+[node name="whip" type="AudioStreamPlayer" parent="grass/hand/AnimationPlayer"]
 stream = ExtResource("10_q0dx4")
 bus = &"Microgame Sounds"
 
-[node name="handSprite" type="Node2D" parent="grass/hand" unique_id=1031999382]
+[node name="handSprite" type="Node2D" parent="grass/hand"]
 
-[node name="handSpriteImage" type="Sprite2D" parent="grass/hand/handSprite" unique_id=1040571850]
+[node name="handSpriteImage" type="Sprite" parent="grass/hand/handSprite"]
 scale = Vector2(2.23, 2.23)
 texture = ExtResource("4_667yt")
 offset = Vector2(12.037, 34.2593)
 
-[node name="handShake" type="AnimationPlayer" parent="grass/hand/handSprite" unique_id=707647332]
+[node name="handShake" type="AnimationPlayer" parent="grass/hand/handSprite"]
 libraries/ = SubResource("AnimationLibrary_n0wup")
 autoplay = &"shake"
 
-[node name="handPosition" type="Marker2D" parent="grass" unique_id=1700976573]
+[node name="handPosition" type="Position2D" parent="grass"]
 position = Vector2(415, 664)
 
-[node name="ProgressBar" type="ProgressBar" parent="." unique_id=646879676]
+[node name="ProgressBar" type="ProgressBar" parent="."]
 layout_mode = 0
 offset_top = 386.0
 offset_right = 414.0

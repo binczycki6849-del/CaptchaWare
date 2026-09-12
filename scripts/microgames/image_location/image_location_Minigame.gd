@@ -22,7 +22,7 @@ func set_image() -> void:
 	var cur_image_value : String
 	
 	while true:
-		cur_image_value = image_array.pick_random()
+		cur_image_value = pick_random_item(image_array)
 		if (difficulty >= 2 or !difficulty_2_images.has(cur_image_value)): break
 	
 	#debug code

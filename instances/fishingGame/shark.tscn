@@ -1,13 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://8jnviul8fcqk"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" uid="uid://dcrdjtq0e6use" path="res://scripts/microgames/fishing_game/fish.gd" id="1_0l0qt"]
-[ext_resource type="Texture2D" uid="uid://w7410njp288j" path="res://sprites/fishing_game/shark/shark_0.png" id="2_u7u5w"]
+[ext_resource type="Script" path="res://scripts/microgames/fishing_game/fish.gd" id="1_0l0qt"]
+[ext_resource type="Texture" path="res://sprites/fishing_game/shark/shark_0.png" id="2_u7u5w"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4rwuo"]
 radius = 21.999998
 height = 194.0
 
-[node name="shark" type="CharacterBody2D"]
+[node name="shark" type="KinematicBody2D"]
 input_pickable = true
 motion_mode = 1
 slide_on_ceiling = false
@@ -17,7 +17,7 @@ script = ExtResource("1_0l0qt")
 fish_type = "shark"
 speed = 100.0
 
-[node name="sprite" type="Sprite2D" parent="."]
+[node name="sprite" type="Sprite" parent="."]
 modulate = Color(0, 0, 0, 1)
 scale = Vector2(0.50143623, 0.50143623)
 texture = ExtResource("2_u7u5w")

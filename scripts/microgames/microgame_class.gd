@@ -60,6 +60,23 @@ func get_json_data(path : String) -> Dictionary:
 		return {}
 	return parse_result
 
+func pick_random_item(items):
+	if items == null or items.size() == 0:
+		return null
+	return items[randi() % items.size()]
+
+func tween_property_compat(target: Object, property: String, final_value, duration: float, trans_type: int = Tween.TRANS_LINEAR, ease_type: int = Tween.EASE_IN_OUT, initial_value = null, use_initial_value: bool = false) -> Tween:
+	var tween = Tween.new()
+	add_child(tween)
+	if use_initial_value:
+		target.set(property, initial_value)
+		tween.interpolate_property(target, property, initial_value, final_value, duration, trans_type, ease_type)
+	else:
+		tween.interpolate_property(target, property, target.get(property), final_value, duration, trans_type, ease_type)
+	tween.connect("tween_all_completed", tween, "queue_free")
+	tween.start()
+	return tween
+
 func canSkip() -> bool:
 	return isWinning()
 

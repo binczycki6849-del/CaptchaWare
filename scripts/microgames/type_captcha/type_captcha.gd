@@ -6,7 +6,7 @@ var cur_text = ""
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var image_list : Array = get_file_list("res://sprites/type_captcha")
-	cur_text = image_list.pick_random().replace(".png", "")
+	cur_text = pick_random_item(image_list).replace(".png", "")
 	
 	emit_signal("override_instruction_text", "res://sprites/type_captcha/" + cur_text + ".png", "", null)
 	

@@ -1,24 +1,24 @@
-[gd_scene format=3 uid="uid://bfaa6ff8240hq"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://crsxod7bwc171" path="res://scripts/microgames/burger_game/burger_game.gd" id="1_p6c3f"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_wfoii"]
-[ext_resource type="Texture2D" uid="uid://cjrhi1cfmnocs" path="res://sprites/burger_game/plate.png" id="3_yhqx6"]
-[ext_resource type="Texture2D" uid="uid://4h774pflh20u" path="res://sprites/burger_game/bottom_bun.png" id="4_r73wq"]
-[ext_resource type="Script" uid="uid://c4mlrpxbljuth" path="res://scripts/microgames/burger_game/buttons.gd" id="5_nhw6e"]
-[ext_resource type="Texture2D" uid="uid://dyi7cw1wmbx6g" path="res://sprites/burger_game/top_bun.png" id="6_uxjr7"]
-[ext_resource type="Texture2D" uid="uid://bd2xfrkkd1m5x" path="res://sprites/burger_game/onion.png" id="7_77qjh"]
-[ext_resource type="Texture2D" uid="uid://oiort30ia0n1" path="res://sprites/burger_game/lettuce.png" id="8_wx8mm"]
-[ext_resource type="Texture2D" uid="uid://cbb8ewetl13iv" path="res://sprites/burger_game/tomato.png" id="9_ub72g"]
-[ext_resource type="Texture2D" uid="uid://dxwa13voxs2w7" path="res://sprites/burger_game/cheese.png" id="10_ixie1"]
-[ext_resource type="Texture2D" uid="uid://cyr6b7bru1uwj" path="res://sprites/burger_game/burger.png" id="11_u2nfb"]
-[ext_resource type="Texture2D" uid="uid://7tbve0p5okt6" path="res://sprites/burger_game/order_notepad.png" id="12_1p5fd"]
-[ext_resource type="FontFile" uid="uid://cdnchjeq4dvv2" path="res://font/comic.ttf" id="13_54dvj"]
-[ext_resource type="AudioStream" uid="uid://bdtgb61teneds" path="res://sounds/microgames/burger_game/ingredient_1.mp3" id="14_nhw6e"]
-[ext_resource type="AudioStream" uid="uid://dmf1f5m065xih" path="res://sounds/microgames/burger_game/ingredient_2.mp3" id="15_uxjr7"]
-[ext_resource type="AudioStream" uid="uid://db1rdcxeq6mqj" path="res://sounds/microgames/burger_game/ingredient_3.mp3" id="16_77qjh"]
-[ext_resource type="AudioStream" uid="uid://1j83homfy7sh" path="res://sounds/microgames/burger_game/ingredient_4.mp3" id="17_wx8mm"]
-[ext_resource type="AudioStream" uid="uid://b6ela1xw6kt3e" path="res://sounds/microgames/burger_game/ding.mp3" id="18_uxjr7"]
-[ext_resource type="AudioStream" uid="uid://b8prtotky50i4" path="res://sounds/microgames/simonSays/wrong.mp3" id="19_77qjh"]
+[ext_resource type="Script" path="res://scripts/microgames/burger_game/burger_game.gd" id="1_p6c3f"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_wfoii"]
+[ext_resource type="Texture" path="res://sprites/burger_game/plate.png" id="3_yhqx6"]
+[ext_resource type="Texture" path="res://sprites/burger_game/bottom_bun.png" id="4_r73wq"]
+[ext_resource type="Script" path="res://scripts/microgames/burger_game/buttons.gd" id="5_nhw6e"]
+[ext_resource type="Texture" path="res://sprites/burger_game/top_bun.png" id="6_uxjr7"]
+[ext_resource type="Texture" path="res://sprites/burger_game/onion.png" id="7_77qjh"]
+[ext_resource type="Texture" path="res://sprites/burger_game/lettuce.png" id="8_wx8mm"]
+[ext_resource type="Texture" path="res://sprites/burger_game/tomato.png" id="9_ub72g"]
+[ext_resource type="Texture" path="res://sprites/burger_game/cheese.png" id="10_ixie1"]
+[ext_resource type="Texture" path="res://sprites/burger_game/burger.png" id="11_u2nfb"]
+[ext_resource type="Texture" path="res://sprites/burger_game/order_notepad.png" id="12_1p5fd"]
+[ext_resource type="FontFile" path="res://font/comic.ttf" id="13_54dvj"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/burger_game/ingredient_1.mp3" id="14_nhw6e"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/burger_game/ingredient_2.mp3" id="15_uxjr7"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/burger_game/ingredient_3.mp3" id="16_77qjh"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/burger_game/ingredient_4.mp3" id="17_wx8mm"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/burger_game/ding.mp3" id="18_uxjr7"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/simonSays/wrong.mp3" id="19_77qjh"]
 
 [sub_resource type="Resource" id="Resource_7a5sd"]
 script = ExtResource("2_wfoii")
@@ -28,7 +28,6 @@ instructionSmall2 = "Click verify when the order is completed"
 errorMessage = "Please finish the order"
 set_size = Vector2(430, 691.835)
 bonusTime = 3.0
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rmvoj"]
 bg_color = Color(0.54, 0.54, 0.54, 0.54509807)
@@ -102,7 +101,7 @@ stream_1/stream = ExtResource("15_uxjr7")
 stream_2/stream = ExtResource("16_77qjh")
 stream_3/stream = ExtResource("17_wx8mm")
 
-[node name="burgerGame" type="Control" unique_id=21408461]
+[node name="burgerGame" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 414.0
@@ -110,7 +109,7 @@ offset_bottom = 536.27496
 script = ExtResource("1_p6c3f")
 microgame_data = SubResource("Resource_7a5sd")
 
-[node name="bg" type="ColorRect" parent="." unique_id=860986292]
+[node name="bg" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -121,7 +120,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.9515795, 0.95157963, 0.9515794, 1)
 
-[node name="plate" type="TextureRect" parent="." unique_id=1213576577]
+[node name="plate" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 261.275
@@ -130,14 +129,14 @@ offset_bottom = 364.275
 scale = Vector2(0.76, 0.76)
 texture = ExtResource("3_yhqx6")
 
-[node name="burger_pos" type="Marker2D" parent="." unique_id=520635631]
+[node name="burger_pos" type="Position2D" parent="."]
 position = Vector2(207, 290.27496)
 
-[node name="ingredients" type="Sprite2D" parent="burger_pos" unique_id=328952100]
+[node name="ingredients" type="Sprite" parent="burger_pos"]
 scale = Vector2(0.39, 0.39)
 texture = ExtResource("4_r73wq")
 
-[node name="ingredients tab" type="ColorRect" parent="." unique_id=2118962032]
+[node name="ingredients tab" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,7 +148,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.85606724, 0.85606736, 0.85606664, 1)
 
-[node name="ButtonGrid" type="GridContainer" parent="ingredients tab" unique_id=1827564521]
+[node name="ButtonGrid" type="GridContainer" parent="ingredients tab"]
 layout_mode = 0
 offset_left = 31.0
 offset_top = 13.0
@@ -159,11 +158,11 @@ theme_override_constants/h_separation = 124
 theme_override_constants/v_separation = 84
 columns = 3
 
-[node name="top_bun" type="Control" parent="ingredients tab/ButtonGrid" unique_id=1065599683]
+[node name="top_bun" type="Control" parent="ingredients tab/ButtonGrid"]
 layout_mode = 2
 script = ExtResource("5_nhw6e")
 
-[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/top_bun" unique_id=1078833535]
+[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/top_bun"]
 layout_mode = 0
 offset_left = 13.0
 offset_right = 84.0
@@ -174,7 +173,7 @@ text = "B"
 icon = ExtResource("6_uxjr7")
 expand_icon = true
 
-[node name="name" type="Label" parent="ingredients tab/ButtonGrid/top_bun" unique_id=860288113]
+[node name="name" type="Label" parent="ingredients tab/ButtonGrid/top_bun"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 45.0
@@ -184,11 +183,11 @@ theme = SubResource("Theme_8u1fw")
 text = "Bun"
 horizontal_alignment = 1
 
-[node name="button5" type="Control" parent="ingredients tab/ButtonGrid" unique_id=85844460]
+[node name="button5" type="Control" parent="ingredients tab/ButtonGrid"]
 layout_mode = 2
 script = ExtResource("5_nhw6e")
 
-[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button5" unique_id=1741478551]
+[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button5"]
 layout_mode = 0
 offset_left = 13.0
 offset_right = 84.0
@@ -199,7 +198,7 @@ text = "O"
 icon = ExtResource("7_77qjh")
 expand_icon = true
 
-[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button5" unique_id=1046756179]
+[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button5"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 45.0
@@ -209,11 +208,11 @@ theme = SubResource("Theme_8u1fw")
 text = "Onion"
 horizontal_alignment = 1
 
-[node name="button4" type="Control" parent="ingredients tab/ButtonGrid" unique_id=1510050732]
+[node name="button4" type="Control" parent="ingredients tab/ButtonGrid"]
 layout_mode = 2
 script = ExtResource("5_nhw6e")
 
-[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button4" unique_id=1130350051]
+[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button4"]
 layout_mode = 0
 offset_left = 13.0
 offset_right = 84.0
@@ -224,7 +223,7 @@ text = "L"
 icon = ExtResource("8_wx8mm")
 expand_icon = true
 
-[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button4" unique_id=808522620]
+[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button4"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 45.0
@@ -234,11 +233,11 @@ theme = SubResource("Theme_8u1fw")
 text = "Lettuce"
 horizontal_alignment = 1
 
-[node name="button6" type="Control" parent="ingredients tab/ButtonGrid" unique_id=1239738956]
+[node name="button6" type="Control" parent="ingredients tab/ButtonGrid"]
 layout_mode = 2
 script = ExtResource("5_nhw6e")
 
-[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button6" unique_id=1283721730]
+[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button6"]
 layout_mode = 0
 offset_left = 13.0
 offset_right = 84.0
@@ -249,7 +248,7 @@ text = "T"
 icon = ExtResource("9_ub72g")
 expand_icon = true
 
-[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button6" unique_id=2128185008]
+[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button6"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 45.0
@@ -259,11 +258,11 @@ theme = SubResource("Theme_8u1fw")
 text = "Tomato"
 horizontal_alignment = 1
 
-[node name="button3" type="Control" parent="ingredients tab/ButtonGrid" unique_id=1069107345]
+[node name="button3" type="Control" parent="ingredients tab/ButtonGrid"]
 layout_mode = 2
 script = ExtResource("5_nhw6e")
 
-[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button3" unique_id=1220424768]
+[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button3"]
 layout_mode = 0
 offset_left = 13.0
 offset_right = 84.0
@@ -274,7 +273,7 @@ text = "C"
 icon = ExtResource("10_ixie1")
 expand_icon = true
 
-[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button3" unique_id=557740914]
+[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button3"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 45.0
@@ -284,11 +283,11 @@ theme = SubResource("Theme_8u1fw")
 text = "Cheese"
 horizontal_alignment = 1
 
-[node name="button2" type="Control" parent="ingredients tab/ButtonGrid" unique_id=1020228849]
+[node name="button2" type="Control" parent="ingredients tab/ButtonGrid"]
 layout_mode = 2
 script = ExtResource("5_nhw6e")
 
-[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button2" unique_id=1449525111]
+[node name="Button" type="Button" parent="ingredients tab/ButtonGrid/button2"]
 layout_mode = 0
 offset_left = 13.0
 offset_right = 84.0
@@ -299,7 +298,7 @@ text = "P"
 icon = ExtResource("11_u2nfb")
 expand_icon = true
 
-[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button2" unique_id=1602387153]
+[node name="name" type="Label" parent="ingredients tab/ButtonGrid/button2"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 45.0
@@ -309,7 +308,7 @@ theme = SubResource("Theme_8u1fw")
 text = "Patty"
 horizontal_alignment = 1
 
-[node name="notepad" type="TextureRect" parent="." unique_id=3783491]
+[node name="notepad" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 304.0
 offset_top = 3.0
@@ -319,7 +318,7 @@ texture = ExtResource("12_1p5fd")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="RichTextLabel" parent="notepad" unique_id=1329003754]
+[node name="Label" type="RichTextLabel" parent="notepad"]
 modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 4.0
@@ -336,7 +335,7 @@ TOMATO
 CHEESE"
 horizontal_alignment = 1
 
-[node name="Fail text" type="Label" parent="." unique_id=894363500]
+[node name="Fail text" type="Label" parent="."]
 visible = false
 layout_mode = 0
 offset_left = 88.0
@@ -351,19 +350,19 @@ text = "WRONG ORDER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="sounds" type="Node" parent="." unique_id=1527399975]
+[node name="sounds" type="Node" parent="."]
 
-[node name="SlapIngredientSound" type="AudioStreamPlayer" parent="sounds" unique_id=1799924977]
+[node name="SlapIngredientSound" type="AudioStreamPlayer" parent="sounds"]
 stream = SubResource("AudioStreamRandomizer_ub72g")
 volume_db = 2.0
 bus = &"Sounds"
 
-[node name="DingSound" type="AudioStreamPlayer" parent="sounds" unique_id=1599109594]
+[node name="DingSound" type="AudioStreamPlayer" parent="sounds"]
 stream = ExtResource("18_uxjr7")
 volume_db = 1.0
 bus = &"Sounds"
 
-[node name="BuzzerSound" type="AudioStreamPlayer" parent="sounds" unique_id=617881853]
+[node name="BuzzerSound" type="AudioStreamPlayer" parent="sounds"]
 stream = ExtResource("19_77qjh")
 volume_db = -8.0
 bus = &"Sounds"

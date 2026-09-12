@@ -109,6 +109,18 @@ func _list_directory(path : String) -> Array:
 	directory.list_dir_end()
 	return files
 
+func _tween_property_compat(target: Object, property: String, final_value, duration: float, trans_type: int = Tween.TRANS_LINEAR, ease_type: int = Tween.EASE_IN_OUT, initial_value = null, use_initial_value: bool = false) -> Tween:
+	var tween = Tween.new()
+	add_child(tween)
+	if use_initial_value:
+		target.set(property, initial_value)
+		tween.interpolate_property(target, property, initial_value, final_value, duration, trans_type, ease_type)
+	else:
+		tween.interpolate_property(target, property, target.get(property), final_value, duration, trans_type, ease_type)
+	tween.connect("tween_all_completed", tween, "queue_free")
+	tween.start()
+	return tween
+
 func _ready() -> void:
 	var file = File.new()
 	file.open(JUDGEMENT_TEXT_LOCATION + "win_judgement_text.txt", File.READ)
@@ -387,8 +399,7 @@ func end_intro_sequence() -> void:
 	
 	if captcha_bg.self_modulate.a != 0.0: return
 	
-	var captcha_bg_tween : Tween = create_tween()
-	captcha_bg_tween.tween_property(captcha_bg, "self_modulate", Color("e3e3e35a"), 2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_tween_property_compat(captcha_bg, "self_modulate", Color("e3e3e35a"), 2, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 
 func play_captcha_anim_tree() -> void:
 	captcha_transition.active = false
@@ -494,7 +505,7 @@ func change_game(is_boss = false) -> void:
 #endregion
 
 #region MICROGAME SIGNAL FUNCTIONS
-func override_instructions(big:String = "..n",small:String = "..n",ref:Texture2D = null) -> void:
+func override_instructions(big:String = "..n",small:String = "..n",ref:Texture = null) -> void:
 	var txt : Array = [big,small]
 	for text_index in range(txt.size()):
 		if txt[text_index] == "":

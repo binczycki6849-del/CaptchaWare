@@ -1,6 +1,6 @@
-[gd_resource type="Theme" format=3 uid="uid://cu51pqcwmnm0l"]
+[gd_resource type="Theme" format=3]
 
-[ext_resource type="FontFile" uid="uid://bqkbtlxbjg48r" path="res://font/Futura Book font.ttf" id="1_1jqte"]
+[ext_resource type="FontFile" path="res://font/Futura Book font.ttf" id="1_1jqte"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tb273"]
 bg_color = Color(0.184314, 0.501961, 0.917647, 0.454902)

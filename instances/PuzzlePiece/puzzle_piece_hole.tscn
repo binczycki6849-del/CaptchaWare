@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://sa53vml1ad7w"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" uid="uid://chjcp0umu2bkr" path="res://scripts/microgames/puzzle_piece/puzzle_piece_hole.gd" id="1_km0fu"]
-[ext_resource type="Shader" uid="uid://dqueufv8p703l" path="res://shaders/puzzle_piece_hole.gdshader" id="2_fw7y3"]
+[ext_resource type="Script" path="res://scripts/microgames/puzzle_piece/puzzle_piece_hole.gd" id="1_km0fu"]
+[ext_resource type="Shader" path="res://shaders/puzzle_piece_hole.gdshader" id="2_fw7y3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3qxl6"]
 shader = ExtResource("2_fw7y3")
@@ -19,7 +19,7 @@ radius = 39.4588
 [node name="puzzlePieceHole" type="Node2D"]
 script = ExtResource("1_km0fu")
 
-[node name="puzzle" type="Sprite2D" parent="."]
+[node name="puzzle" type="Sprite" parent="."]
 clip_children = 2
 light_mask = 0
 material = SubResource("ShaderMaterial_3qxl6")

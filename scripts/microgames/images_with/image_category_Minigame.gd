@@ -70,7 +70,7 @@ func get_categories(amount_categories : int) -> Array:
 		var category : String
 		
 		while (true):
-			category = image_data.category.keys().pick_random()
+			category = pick_random_item(image_data.category.keys())
 			
 			if !category_list.has(category):  break
 		
@@ -80,7 +80,7 @@ func get_categories(amount_categories : int) -> Array:
 
 func _load_json_data() -> void:
 	image_data = get_json_data(IMAGE_DIRECTORY + "imageTypes")
-	cur_object = image_data.category.keys().pick_random()
+	cur_object = pick_random_item(image_data.category.keys())
 
 func gain_points(yes:int) -> void:
 	points += yes

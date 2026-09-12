@@ -1,14 +1,14 @@
-[gd_scene format=3 uid="uid://uipmjtpr2u87"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://dtcijp2n81x1w" path="res://scripts/microgames/dinosaur_game/dinosaur_game.gd" id="1_vtmen"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_dex16"]
-[ext_resource type="Script" uid="uid://cfh3l6tcunebw" path="res://scripts/microgames/dinosaur_game/dino.gd" id="3_ltpk3"]
-[ext_resource type="Texture2D" uid="uid://b5v77si8kl7dd" path="res://sprites/dinosaur_game/dino-sheet.png" id="4_0e6ii"]
-[ext_resource type="AudioStream" uid="uid://0ma4t12vb3ug" path="res://sounds/microgames/dinosaur_game/jump.mp3" id="5_ltpk3"]
-[ext_resource type="Texture2D" uid="uid://icslug766esd" path="res://sprites/dinosaur_game/Chromium_T-Rex-horizon.png" id="5_mhoe6"]
-[ext_resource type="AudioStream" uid="uid://bmwb51p8wgdgt" path="res://sounds/microgames/dinosaur_game/YOU JUST FRICKIN KILLED THE DINOSAUR YOU INSANE MONSTER!!!.mp3" id="6_0e6ii"]
-[ext_resource type="Texture2D" uid="uid://j2hf8us7o1qf" path="res://sprites/dinosaur_game/cloud.png" id="6_mef3x"]
-[ext_resource type="Texture2D" uid="uid://ctsd7uipv1g0y" path="res://sprites/dinosaur_game/Chromium_T-Rex-text-sprite.png" id="9_0e6ii"]
+[ext_resource type="Script" path="res://scripts/microgames/dinosaur_game/dinosaur_game.gd" id="1_vtmen"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_dex16"]
+[ext_resource type="Script" path="res://scripts/microgames/dinosaur_game/dino.gd" id="3_ltpk3"]
+[ext_resource type="Texture" path="res://sprites/dinosaur_game/dino-sheet.png" id="4_0e6ii"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/dinosaur_game/jump.mp3" id="5_ltpk3"]
+[ext_resource type="Texture" path="res://sprites/dinosaur_game/Chromium_T-Rex-horizon.png" id="5_mhoe6"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/dinosaur_game/YOU JUST FRICKIN KILLED THE DINOSAUR YOU INSANE MONSTER!!!.mp3" id="6_0e6ii"]
+[ext_resource type="Texture" path="res://sprites/dinosaur_game/cloud.png" id="6_mef3x"]
+[ext_resource type="Texture" path="res://sprites/dinosaur_game/Chromium_T-Rex-text-sprite.png" id="9_0e6ii"]
 
 [sub_resource type="Resource" id="Resource_xc6lx"]
 script = ExtResource("2_dex16")
@@ -17,7 +17,6 @@ instructionSmall1 = "Survive the"
 instructionSmall2 = "Survive as long as you can"
 errorMessage = "Please enjoy the game"
 set_size = Vector2(430, 573.835)
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
 [sub_resource type="Animation" id="Animation_wku30"]
 length = 0.001
@@ -108,7 +107,7 @@ size = Vector2(57, 71)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7a5sd"]
 size = Vector2(424, 120)
 
-[node name="dinosaurGame" type="Control" unique_id=979847457]
+[node name="dinosaurGame" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 414.0
@@ -117,7 +116,7 @@ script = ExtResource("1_vtmen")
 cur_speed = 800.0
 microgame_data = SubResource("Resource_xc6lx")
 
-[node name="BGColor" type="ColorRect" parent="." unique_id=1714942230]
+[node name="BGColor" type="ColorRect" parent="."]
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -127,68 +126,68 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.96862745, 0.96862745, 0.96862745, 1)
 
-[node name="the_dino" type="CharacterBody2D" parent="." unique_id=1543953219]
+[node name="the_dino" type="KinematicBody2D" parent="."]
 position = Vector2(0, 2)
 collision_mask = 6
 platform_floor_layers = 4294967042
 script = ExtResource("3_ltpk3")
 
-[node name="dino" type="Sprite2D" parent="the_dino" unique_id=101110972]
+[node name="dino" type="Sprite" parent="the_dino"]
 texture_filter = 1
 position = Vector2(94, 261)
 texture = ExtResource("4_0e6ii")
 hframes = 3
 
-[node name="anim" type="AnimationPlayer" parent="the_dino" unique_id=773109012]
+[node name="anim" type="AnimationPlayer" parent="the_dino"]
 libraries/ = SubResource("AnimationLibrary_8u1fw")
 autoplay = &"run"
 
-[node name="CactusDetector" type="Area2D" parent="the_dino" unique_id=1541651315]
+[node name="CactusDetector" type="Area2D" parent="the_dino"]
 collision_mask = 4
 monitorable = false
 
-[node name="Hitbox" type="CollisionShape2D" parent="the_dino/CactusDetector" unique_id=1302059164]
+[node name="Hitbox" type="CollisionShape2D" parent="the_dino/CactusDetector"]
 position = Vector2(88.5, 262.5)
 shape = SubResource("CapsuleShape2D_8u1fw")
 debug_color = Color(0.8807375, 0.338418, 0, 0.41960785)
 
-[node name="Hitbox" type="CollisionShape2D" parent="the_dino" unique_id=1149501132]
+[node name="Hitbox" type="CollisionShape2D" parent="the_dino"]
 position = Vector2(90.5, 267.5)
 shape = SubResource("RectangleShape2D_wku30")
 
-[node name="sounds" type="Node" parent="the_dino" unique_id=1250569675]
+[node name="sounds" type="Node" parent="the_dino"]
 
-[node name="jump" type="AudioStreamPlayer" parent="the_dino/sounds" unique_id=2130493948]
+[node name="jump" type="AudioStreamPlayer" parent="the_dino/sounds"]
 stream = ExtResource("5_ltpk3")
 volume_db = -12.0
 bus = &"Sounds"
 
-[node name="hit" type="AudioStreamPlayer" parent="the_dino/sounds" unique_id=1917977687]
+[node name="hit" type="AudioStreamPlayer" parent="the_dino/sounds"]
 stream = ExtResource("6_0e6ii")
 volume_db = -8.0
 bus = &"Sounds"
 
-[node name="GroundHitbox" type="StaticBody2D" parent="." unique_id=217375554]
+[node name="GroundHitbox" type="StaticBody2D" parent="."]
 position = Vector2(0, 1)
 collision_layer = 2
 collision_mask = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundHitbox" unique_id=1126740574]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundHitbox"]
 position = Vector2(208, 364)
 shape = SubResource("RectangleShape2D_7a5sd")
 
-[node name="dinosaurgameBG" type="Parallax2D" parent="." unique_id=1256502386]
+[node name="dinosaurgameBG" type="Parallax2D" parent="."]
 repeat_size = Vector2(2400.015, 0)
 autoscroll = Vector2(-800, 0)
 
-[node name="ground" type="Sprite2D" parent="dinosaurgameBG" unique_id=738523859]
+[node name="ground" type="Sprite" parent="dinosaurgameBG"]
 z_index = -1
 texture_filter = 1
 texture_repeat = 2
 position = Vector2(304, 292)
 texture = ExtResource("5_mhoe6")
 
-[node name="clouds" type="CPUParticles2D" parent="." unique_id=1780638759]
+[node name="clouds" type="CPUParticles2D" parent="."]
 z_index = -1
 position = Vector2(465, 108)
 amount = 2
@@ -202,12 +201,12 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 150.0
 initial_velocity_max = 150.0
 
-[node name="CactusSpawn" type="Marker2D" parent="." unique_id=78992529]
+[node name="CactusSpawn" type="Position2D" parent="."]
 position = Vector2(456, 304)
 
-[node name="CactusSpawnRate" type="Timer" parent="." unique_id=623027992]
+[node name="CactusSpawnRate" type="Timer" parent="."]
 
-[node name="GameoverText" type="TextureRect" parent="." unique_id=319638451]
+[node name="GameoverText" type="TextureRect" parent="."]
 visible = false
 texture_filter = 1
 layout_mode = 1

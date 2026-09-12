@@ -13,7 +13,7 @@ onready var pop_ups: Control = $popUps
 onready var count_down: Label = $ad/CountDown
 onready var timer: TextureProgressBar = $ad/timer
 onready var pop_up_timer: Timer = $PopUpTimer
-onready var crosshair_sprite: Sprite2D = $crosshair
+onready var crosshair_sprite: Sprite = $crosshair
 
 onready var ticking_sound: AudioStreamPlayer = $sounds/tickingSound
 onready var riflesounds_sound: AudioStreamPlayer = $sounds/riflesounds
@@ -91,8 +91,7 @@ func close_all_popups(destroyed = false) -> void:
 		popup_closing_sound.play()
 
 		if destroyed:
-			var crosshair_tween = create_tween()
-			crosshair_tween.tween_property(crosshair_sprite , "position", popup.position, .07).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+			tween_property_compat(crosshair_sprite , "position", popup.position, .07, Tween.TRANS_EXPO, Tween.EASE_OUT)
 
 			emit_signal("set_camera_shake", 3, .2)
 			popup.destroyed()
@@ -105,8 +104,7 @@ func _on_pop_up_timer_timeout() -> void:
 	ticking_sound.stop()
 
 	if camera != null:
-		var cam_tween = create_tween()
-		cam_tween.tween_property(camera, "zoom", Vector2.ONE * 1.43, .07)
+		tween_property_compat(camera, "zoom", Vector2.ONE * 1.43, .07)
 
 	emit_signal("set_camera_shake", 5, .5)
 
@@ -130,8 +128,7 @@ func on_popup_closed() -> void:
 func popup_blocker_clicked() -> void:
 	crosshair_sprite.visible = true
 	
-	var crosshair_tween = create_tween()
-	crosshair_tween.tween_property(crosshair_sprite , "position", pop_ups.get_child(pop_ups.get_child_count() -1).position, .5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	tween_property_compat(crosshair_sprite , "position", pop_ups.get_child(pop_ups.get_child_count() -1).position, .5, Tween.TRANS_EXPO, Tween.EASE_OUT)
 
 	reload_sound.play()
 	freeze_timer()
@@ -153,8 +150,7 @@ func on_transition_complete() -> void:
 	ticking_sound.play()
 
 	if camera != null:
-		var cam_tween = create_tween()
-		cam_tween.tween_property(camera, "zoom", Vector2.ONE * 1.80, 1.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)	
+		tween_property_compat(camera, "zoom", Vector2.ONE * 1.80, 1.0, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 
 func _on_timer_value_changed(value: float) -> void:
 	count_down.text = str(int(ceil(value)))
