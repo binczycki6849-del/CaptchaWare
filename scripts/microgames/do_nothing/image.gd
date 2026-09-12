@@ -1,7 +1,7 @@
 extends Microgame
 
 const IMAGE_DIR : String = "res://sprites/do_nothing/"
-@onready var image: TextureRect = $image
+onready var image: TextureRect = $image
 var has_skipped : bool = false
 func _ready() -> void:
 	var cur_image : Array = get_file_list(IMAGE_DIR)

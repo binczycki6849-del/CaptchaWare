@@ -1,5 +1,7 @@
 extends Node2D
 
+const CREDITS_SCENE_PATH = "res://scenes/credits.tscn"
+
 enum MenuType {
 	SETTINGS,
 	CREDITS
@@ -12,24 +14,24 @@ enum SettingsSliders{
 	SCROLL
 }
 
-@onready var settings_sliders: VBoxContainer = $menuStuff/windowmenustuff/menus/options/VBoxContainer
+onready var settings_sliders: VBoxContainer = $menuStuff/windowmenustuff/menus/options/VBoxContainer
 
-@onready var windowmenustuff: Control = $menuStuff/windowmenustuff
-@onready var menus: Control = $menuStuff/windowmenustuff/menus
+onready var windowmenustuff: Control = $menuStuff/windowmenustuff
+onready var menus: Control = $menuStuff/windowmenustuff/menus
 
-@onready var bg: TextureRect = $"../MicrogameGameplay/bg"
+onready var bg: TextureRect = $"../MicrogameGameplay/bg"
 
-@onready var volume_check: AudioStreamPlayer = $menuStuff/windowmenustuff/menus/options/VolumeCheck
+onready var volume_check: AudioStreamPlayer = $menuStuff/windowmenustuff/menus/options/VolumeCheck
 
-@onready var ui_anim: AnimationPlayer = $"../CanvasLayer/AnimationPlayer"
-@onready var captcha_animation_player: AnimationPlayer = $"../MicrogameGameplay/captchaTransition/captchaAnimationPlayer"
+onready var ui_anim: AnimationPlayer = $"../CanvasLayer/AnimationPlayer"
+onready var captcha_animation_player: AnimationPlayer = $"../MicrogameGameplay/captchaTransition/captchaAnimationPlayer"
 
-@onready var endless_mode: CheckButton = $menuStuff/endless_mode
+onready var endless_mode: CheckButton = $menuStuff/endless_mode
 
-@onready var email_n_password: Control = $intro
+onready var email_n_password: Control = $intro
 
-var intro_cutscene := false
-var cur_tab_text_typing := 0
+var intro_cutscene = false
+var cur_tab_text_typing = 0
 
 var cur_text_node : Label
 
@@ -73,9 +75,9 @@ func intro_cutscene_start() -> void:
 	cur_text_node.text = random_emails.pick_random()
 
 func _input(event: InputEvent) -> void:
-	if !(intro_cutscene && event is InputEventKey): return
+	if !(intro_cutscene and event is InputEventKey): return
 	
-	if event.is_pressed() && !event.is_echo() && !Input.is_action_just_pressed("ui_text_submit"):
+	if event.is_pressed() and !event.is_echo() and !Input.is_action_just_pressed("ui_text_submit"):
 		if cur_text_node.visible_characters == 0:
 			cur_text_node.get_parent().placeholder_text = ""
 		cur_text_node.visible_characters += 1
@@ -123,7 +125,7 @@ func load_settings() -> void:
 	endless_mode.button_pressed = GameData.save_file.endless_mode
 
 func set_value_settings(value_type : SettingsSliders) -> void:
-	var cur_slider := settings_sliders.get_child(value_type).get_child(0)
+	var cur_slider = settings_sliders.get_child(value_type).get_child(0)
 	
 	match value_type:
 		SettingsSliders.MASTER:
@@ -181,16 +183,16 @@ func _on_reset_default_pressed() -> void:
 func _on_submit_button_pressed() -> void:
 	ui_anim.play("end")
 
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if anim_name != "end": return
-	get_tree().change_scene_to_file("uid://b1ie1wbaj5lne")
+	get_tree().change_scene(CREDITS_SCENE_PATH)
 
 
 func _on_endless_mode_toggled(toggled_on: bool) -> void:
 	GameData.save_file.endless_mode = toggled_on
 	GameData.save_cur_data(GameData.GAME_SAVE_NAME)
 
-func _on_captcha_animation_player_animation_finished(anim_name: StringName) -> void:
+func _on_captcha_animation_player_animation_finished(anim_name: String) -> void:
 	if anim_name != "intro_cutscene_2": return
 	start_with_no_intro()
 

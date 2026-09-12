@@ -27,7 +27,7 @@ func _on_decline_pressed():
 	ringing.stop()
 	decline.play()
 
-	call_declined.emit()
+	emit_signal("call_declined")
 	end_call()
 
 func _on_accept_pressed():
@@ -60,7 +60,7 @@ func end_call():
 	
 	if answered:
 		anim.play("answered_end")
-		call_answered.emit()
+		emit_signal("call_answered")
 	else:
 		anim.play("ignored")
 	
@@ -69,7 +69,7 @@ func end_call():
 	queue_free()
 
 func _on_ring_time_timeout():
-	call_declined.emit()
+	emit_signal("call_declined")
 	end_call()
 
 
@@ -77,8 +77,8 @@ func _on_x_pressed():
 	ring_time.stop()
 
 	if answered:
-		call_answered.emit()
+		emit_signal("call_answered")
 	else:
-		call_declined.emit()
+		emit_signal("call_declined")
 	
 	queue_free()

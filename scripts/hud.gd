@@ -1,7 +1,7 @@
 extends Control
 
-const INSTRUCTIONS_FILE_PATH := "res://scripts/instructions/"
-const ERROR_OFFSET := 25
+const INSTRUCTIONS_FILE_PATH = "res://scripts/instructions/"
+const ERROR_OFFSET = 25
 
 export var testing = false
 export (NodePath) var main_code_path

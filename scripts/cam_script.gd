@@ -2,12 +2,12 @@ extends Camera2D
 
 class_name cam_effects
 
-@export var parallax_offset_amount : float = 0
-@export var shake_amount : float = 0
+export var parallax_offset_amount : float = 0
+export var shake_amount : float = 0
 
 var shake_vector : Vector2 = Vector2.ZERO
-var parallax_offset := Vector2.ZERO
-@onready var default_zoom :Vector2 = zoom
+var parallax_offset = Vector2.ZERO
+onready var default_zoom :Vector2 = zoom
 
 var force_pause : bool = false
 
@@ -33,7 +33,7 @@ func camera_bop_in(zoom_amount: float, duration:float) -> void:
 func camera_shake_process() -> void:
 	if shake_amount == 0: return
 	var final_amount : float = shake_amount
-	shake_vector = Vector2(randf_range(-final_amount,final_amount), randf_range(-final_amount,final_amount))
+	shake_vector = Vector2(rand_range(-final_amount,final_amount), rand_range(-final_amount,final_amount))
 
 func parallax_system() -> void:
 	if parallax_offset_amount == 0: return
@@ -41,7 +41,7 @@ func parallax_system() -> void:
 
 func hit_stop(duration: float) -> void:
 	get_tree().paused = true
-	await get_tree().create_timer(duration).timeout
+	yield(get_tree().create_timer(duration), "timeout")
 	get_tree().paused = force_pause
 #endregion
 

@@ -1,9 +1,9 @@
 extends TextureRect
 
-@export var parallax_offset_amount : float = 0
-var parallax_offset := Vector2.ZERO
+export var parallax_offset_amount : float = 0
+var parallax_offset = Vector2.ZERO
 
-@onready var cur_pos := position
+onready var cur_pos = position
 
 func _ready() -> void:
 	parallax_system()

@@ -10,9 +10,9 @@ onready var bg: TextureRect = $bg
 onready var resource_preloader: ResourcePreloader = $ResourcePreloader
 
 onready var timer: Timer = $Timer
-onready var cur_wait_time := timer.wait_time
-onready var total_wait_time := cur_wait_time
-onready var og_wait_time := cur_wait_time
+onready var cur_wait_time = timer.wait_time
+onready var total_wait_time = cur_wait_time
+onready var og_wait_time = cur_wait_time
 
 onready var captcha_window: TextureRect = $window/captcha_window
 
@@ -107,12 +107,12 @@ func change_game():
 	
 	override_instructions(cur_microgame_data.instructionsBig, cur_microgame_data.instructionsSmall, cur_microgame_data.referenceImage)
 	
-	on_transition_complete.connect(cur_microgame.on_transition_complete)
-	cur_microgame.override_instruction_text.connect(override_instructions)
-	cur_microgame.set_camera_shake.connect(camera_shake)
-	cur_microgame.skip_timer.connect(skip_timer)
-	cur_microgame.end_microgame.connect(results)
-	cur_microgame.freeze_timer_signal.connect(freeze_timer)
+	self.connect("on_transition_complete", cur_microgame, "on_transition_complete")
+	cur_microgame.connect("override_instruction_text", self, "override_instructions")
+	cur_microgame.connect("set_camera_shake", self, "camera_shake")
+	cur_microgame.connect("skip_timer", self, "skip_timer")
+	cur_microgame.connect("end_microgame", self, "results")
+	cur_microgame.connect("freeze_timer_signal", self, "freeze_timer")
 	cur_microgame.difficulty = cur_difficulty_test
 	
 	if force_microgame != "":
@@ -120,7 +120,7 @@ func change_game():
 	
 	cur_microgame.global_position = ui_captcha_window.cur_game.global_position
 
-	on_transition_complete.emit()
+	emit_signal("on_transition_complete")
 
 	if  not cur_microgame_data.noTimer:
 		if cur_microgame_data.has("staticTimer") and cur_microgame_data.staticTimer:
@@ -153,7 +153,7 @@ func skip_game() -> void:
 	if cur_microgame.canSkip():
 		timer.stop()
 
-		cur_microgame.end_microgame.emit()
+		cur_microgame.emit_signal("end_microgame")
 	else:
 		ui_captcha_window._display_error_text(cur_microgame_data.errorMessage)
 
@@ -172,7 +172,7 @@ func get_microgame(force_game : String) -> Node:
 	return cur_game
 
 func _on_timer_timeout() -> void:
-	cur_microgame.end_microgame.emit()
+	cur_microgame.emit_signal("end_microgame")
 
 func results() -> void:
 	if cur_microgame == null or cur_microgame.skipped: return

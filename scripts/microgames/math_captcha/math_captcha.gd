@@ -1,15 +1,15 @@
 extends Microgame
 
-@onready var line_edit: LineEdit = $LineEdit
+onready var line_edit: LineEdit = $LineEdit
 
 var cur_text_problem : String = ""
 var answer : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	line_edit.grab_focus.call_deferred()
+	line_edit.call_deferred("grab_focus")
 	generate_math_eq()
-	override_instruction_text.emit(cur_text_problem)
+	emit_signal("override_instruction_text", cur_text_problem, "", null)
 	pass # Replace with function body.
 
 func generate_math_eq() -> void:
@@ -30,7 +30,7 @@ func generate_equation() -> Array:
 			second_num = randi_range(0, 7)
 		set_answer = first_num - second_num
 	else:
-		while first_num == 0 && second_num == 0:
+		while first_num == 0 and second_num == 0:
 			first_num = randi_range(0, 7)
 			second_num = randi_range(0, 7)
 		set_answer = first_num + second_num
@@ -38,7 +38,6 @@ func generate_equation() -> Array:
 	return [first_num, second_num, cur_math_signs, set_answer]
 
 func isWinning() -> bool:
-	super.isWinning()
 	return answer == int(line_edit.text)
 
 func canSkip() -> bool:
@@ -46,4 +45,4 @@ func canSkip() -> bool:
 
 func _on_line_edit_text_changed(_new_text: String) -> void:
 	if is_intro: return
-	set_camera_shake.emit(3, 0.25)
+	emit_signal("set_camera_shake", 3, 0.25)

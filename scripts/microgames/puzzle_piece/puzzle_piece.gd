@@ -7,17 +7,17 @@ var selected : bool = false
 var cur_puzzle_hole : Node2D = null
 var cur_index : int = 0
 
-@onready var check: Sprite2D = $check
+onready var check: Sprite = $check
 
-@onready var puzzle_piece_mask: Sprite2D = $puzzlePieceMask
-@onready var click_shape: CollisionShape2D = $clickArea/clickShape
+onready var puzzle_piece_mask: Sprite = $puzzlePieceMask
+onready var click_shape: CollisionShape2D = $clickArea/clickShape
 
-@onready var puzzle_place: AudioStreamPlayer = $PuzzlePlace
-@onready var puzzle_grab: AudioStreamPlayer = $puzzleGrab
-@onready var point_hitbox: RayCast2D = $RayCast2D
+onready var puzzle_place: AudioStreamPlayer = $PuzzlePlace
+onready var puzzle_grab: AudioStreamPlayer = $puzzleGrab
+onready var point_hitbox: RayCast2D = $RayCast2D
 
 signal count_puzzles
-func set_puzzle_texture(puzzleMaskIndex: int = 0, puzzleTexture: Texture2D = null, puzzleTexturePos : Vector2 = Vector2.ZERO) -> void:
+func set_puzzle_texture(puzzleMaskIndex: int = 0, puzzleTexture: Texture = null, puzzleTexturePos : Vector2 = Vector2.ZERO) -> void:
 	
 	puzzle_piece_mask.texture = load("res://sprites/puzzle_piece/masks/puzzle" + str(puzzleMaskIndex) + ".png")
 	
@@ -29,7 +29,7 @@ func set_puzzle_texture(puzzleMaskIndex: int = 0, puzzleTexture: Texture2D = nul
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if Input.is_action_just_pressed("Left Click") && mouse_hovering:
+		if Input.is_action_just_pressed("Left Click") and mouse_hovering:
 			selected = true
 			set_click_offset = global_position - get_global_mouse_position()
 			puzzle_grab.play()
@@ -38,7 +38,7 @@ func _input(event: InputEvent) -> void:
 			var puzzle_tween : Tween = create_tween()
 			puzzle_tween.tween_property(self, "scale", Vector2.ONE * 1.2, .3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 		
-		if Input.is_action_just_released("Left Click") && selected:
+		if Input.is_action_just_released("Left Click") and selected:
 			selected = false
 			puzzle_place.play()
 			hole_check()
@@ -46,17 +46,18 @@ func _input(event: InputEvent) -> void:
 			var puzzle_tween : Tween = create_tween()
 			puzzle_tween.tween_property(self, "scale", Vector2.ONE * 1.0, .3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO).from(Vector2.ONE * 0.9)
 	
-	if event is InputEventMouseMotion && (selected && Input.is_action_pressed("Left Click")):
+	if event is InputEventMouseMotion and (selected and Input.is_action_pressed("Left Click")):
 		global_position = get_global_mouse_position() + set_click_offset
 
 func hole_check() -> void:
-	if point_hitbox.get_collider() == null || point_hitbox.get_collider().get_parent() != cur_puzzle_hole: return
+	var collider = point_hitbox.get_collider()
+	if collider == null or collider.get_parent() != cur_puzzle_hole: return
 	
-	var hole : Node2D = point_hitbox.get_collider().get_parent()
+	var hole : Node2D = collider.get_parent()
 	global_position = hole.global_position
 	check.visible = true
 	lock_puzzle_piece()
-	count_puzzles.emit()
+	emit_signal("count_puzzles")
 
 func lock_puzzle_piece() -> void:
 	click_shape.disabled = true

@@ -6,13 +6,13 @@ const FISH_IMAGE_DIR = "res://sprites/fishing_game/"
 const HOOK_OFFSET = Vector2(-10, 50)
 
 export(String, "fish", "shark") var fish_type = "fish"
-export var speed := 300.0
+export var speed = 300.0
 onready var sprite = $sprite
 onready var mouse_pos = get_node('../../boat/boat_sprite/mouse_pos')
-var cur_dir := 1
+var cur_dir = 1
 
-var mouse_hovered := false
-var grabbed := false
+var mouse_hovered = false
+var grabbed = false
 
 signal fish_grabbed(fish)
 signal failed_microgame
@@ -20,7 +20,7 @@ signal failed_microgame
 func _ready() -> void:
 	sprite.texture = get_fish_sprite()
 
-	var rand_speed := rand_range(-20, 20)
+	var rand_speed = rand_range(-20, 20)
 	speed += rand_speed
 
 func _physics_process(delta: float) -> void:
@@ -34,9 +34,19 @@ func _process(_delta: float) -> void:
 	global_position = mouse_pos.global_position + HOOK_OFFSET
 
 func get_fish_sprite():
-	var fish_dir := FISH_IMAGE_DIR + fish_type + "/"
-	var fish_sprite_list := ResourceLoader.list_directory(fish_dir)
-	var random_image := fish_sprite_list[randi() % max(1, fish_sprite_list.size())]
+	var fish_dir = FISH_IMAGE_DIR + fish_type + "/"
+	var directory = Directory.new()
+	var fish_sprite_list : Array = []
+	if directory.open(fish_dir) == OK:
+		directory.list_dir_begin(true, true)
+		var file_name = directory.get_next()
+		while file_name != "":
+			fish_sprite_list.append(file_name)
+			file_name = directory.get_next()
+		directory.list_dir_end()
+	if fish_sprite_list.empty():
+		return null
+	var random_image = fish_sprite_list[randi() % max(1, fish_sprite_list.size())]
 
 	if cur_dir == 1:
 		sprite.flip_h = true
@@ -59,9 +69,9 @@ func _on_input_event(_viewport, _event, _shape_idx) -> void:
 		return
 
 	if Input.is_action_just_pressed("Left Click"):
-		fish_grabbed.emit(self)
+		emit_signal("fish_grabbed", self)
 
 func _on_mouse_entered() -> void:
 	if fish_type == "fish":
 		return
-	failed_microgame.emit()
+	emit_signal("failed_microgame")

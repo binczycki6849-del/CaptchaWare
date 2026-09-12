@@ -8,13 +8,13 @@ const ROTATE_INTERVAL = 45
 
 const DIFFICULTY_AMOUNT = [1, 1, 2, 3]
 
-@onready var hbox_container: HBoxContainer = $HBoxContainer
-@onready var the_ball: Node2D = $Circle
-@onready var anims: AnimationPlayer = $anims
-@onready var align_timer: Timer = $alignTimer
-@onready var ball_image: TextureRect = $Circle/circle/image
+onready var hbox_container: HBoxContainer = $HBoxContainer
+onready var the_ball: Node2D = $Circle
+onready var anims: AnimationPlayer = $anims
+onready var align_timer: Timer = $alignTimer
+onready var ball_image: TextureRect = $Circle/circle/image
 
-var image_pool : PackedStringArray = []
+var image_pool : PoolStringArray = []
 
 var how_many_balls : int = 1
 var current_ball : int = 1
@@ -35,7 +35,7 @@ func _ready() -> void:
 	cur_degrees = the_ball.rotation_degrees
 
 	for i in range(how_many_balls):
-		var dot_instance = load(DOT_INSTANCE).instantiate()
+		var dot_instance = load(DOT_INSTANCE).instance()
 		hbox_container.add_child(dot_instance)
 
 func set_random_rotation() -> float:
@@ -47,7 +47,7 @@ func set_random_rotation() -> float:
 	return target_rotation
 
 func get_all_images() -> void:
-	var list := get_file_list(IMAGES_FOLDER)
+	var list = get_file_list(IMAGES_FOLDER)
 	list.shuffle()
 
 	for i in range(how_many_balls):
@@ -68,7 +68,7 @@ func push_ball() -> void:
 		anims.stop()
 	anims.play("bounce")
 
-	var ball_tween := create_tween()
+	var ball_tween = create_tween()
 	
 	var target_rotation : float = cur_degrees + (ROTATE_INTERVAL * ball_spin_dir)
 
@@ -79,7 +79,7 @@ func push_ball() -> void:
 func done_check() -> void:
 	var normalized_rotation : float = abs(fmod(cur_degrees, 360.0))
 
-	if normalized_rotation < 0.3 || normalized_rotation > 359.8:
+	if normalized_rotation < 0.3 or normalized_rotation > 359.8:
 		align_timer.start()
 	else:
 		align_timer.stop()
@@ -120,16 +120,16 @@ func _on_align_timer_timeout() -> void:
 		anims.play("switch")
 		return
 	
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	finished = true
 
 	if skipped: return
 	anims.play("finish")
 
 func isWinning() -> bool:
-	return current_ball >= how_many_balls && (!align_timer.is_stopped() || finished)
+	return current_ball >= how_many_balls and (!align_timer.is_stopped() or finished)
 
-func _on_anims_animation_finished(anim_name: StringName) -> void:
+func _on_anims_animation_finished(anim_name: String) -> void:
 	if anim_name != "switch":
 		return
 	

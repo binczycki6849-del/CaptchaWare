@@ -2,12 +2,12 @@ extends Microgame
 
 const BUTTON_ANSWERS = preload("res://instances/howManyFingers/buttonAnswers.tscn")
 
-@onready var hand: Sprite2D = $hand_group/hand
-@onready var grid_container: GridContainer = $GridContainer
-@onready var hand_anim: AnimationPlayer = $hand_group/hand/anim
-@onready var numbers_label_node: Label = $Numbers
+onready var hand: Sprite2D = $hand_group/hand
+onready var grid_container: GridContainer = $GridContainer
+onready var hand_anim: AnimationPlayer = $hand_group/hand/anim
+onready var numbers_label_node: Label = $Numbers
 
-var correct_fingers_array : Array[int] = []
+var correct_fingers_array : Array = []
 var fingers_shown : int = 0
 var how_many_should_answer : int = 0
 
@@ -16,9 +16,9 @@ var answered : int = 0
 
 var buttons_pool : Array = []
 
-var number_label : Array[String]
+var number_label : Array
 
-signal disable_buttons(curButtonAnswer: int, correct : bool)
+signal disable_buttons(curButtonAnswer, correct)
 signal reveal_buttons
 
 func _ready() -> void:
@@ -55,13 +55,13 @@ func generate_answers_n_buttons() -> void:
 		var cur_rand_num : int
 		while true:
 			cur_rand_num = randi_range(1,5)
-			if (!random_answers.has(cur_rand_num) && cur_rand_num != correct_fingers): break
+			if (!random_answers.has(cur_rand_num) and cur_rand_num != correct_fingers): break
 		random_answers.append(cur_rand_num)
 	
-	var rand_answers_index := 0
+	var rand_answers_index = 0
 	
 	for button in range(4):
-		var button_instance := BUTTON_ANSWERS.instantiate()
+		var button_instance = BUTTON_ANSWERS.instance()
 		
 		if button == correct_button:
 			button_instance.cur_numbers = str(correct_fingers)
@@ -69,10 +69,10 @@ func generate_answers_n_buttons() -> void:
 			button_instance.cur_numbers = str(random_answers[rand_answers_index])
 			rand_answers_index += 1
 		
-		button_instance.button_answered.connect(answer_button_pressed)
+		button_instance.connect("button_answered", self, "answer_button_pressed")
 		
-		disable_buttons.connect(button_instance.disable_buttons)
-		reveal_buttons.connect(button_instance.reaveal_numbers)
+		connect("disable_buttons", button_instance, "disable_buttons")
+		connect("reveal_buttons", button_instance, "reaveal_numbers")
 		
 		grid_container.add_child(button_instance)
 		buttons_pool.append(button_instance)
@@ -86,10 +86,10 @@ func regenerate_answers() -> void:
 		var cur_rand_num : int
 		while true:
 			cur_rand_num = randi_range(1,5)
-			if (!random_answers.has(cur_rand_num) && cur_rand_num != correct_fingers): break
+			if (!random_answers.has(cur_rand_num) and cur_rand_num != correct_fingers): break
 		random_answers.append(cur_rand_num)
 	
-	var rand_answers_index := 0
+	var rand_answers_index = 0
 	
 	for button in range(4):
 		var button_instance : Control = buttons_pool[button]
@@ -111,28 +111,27 @@ func answer_button_pressed(cur_button:Button) -> void:
 	answered += 1
 	
 	if !is_correct: 
-		disable_buttons.emit(int(cur_button.text), is_correct)
-		skip_timer.emit()
+		emit_signal("disable_buttons", int(cur_button.text), is_correct)
+		emit_signal("skip_timer")
 		return
 	
 	if answered != how_many_should_answer:
 		regenerate_answers()
 		return
 	
-	disable_buttons.emit(int(cur_button.text), is_correct)
+	emit_signal("disable_buttons", int(cur_button.text), is_correct)
 	has_won = true
-	skip_timer.emit()
+	emit_signal("skip_timer")
 	hand_anim.play("thumbs up")
 
 func reveal_buttons_func() -> void:
-	override_instruction_text.emit("fingers", "How many--Choose the answer from the box")
-	reveal_buttons.emit()
+	emit_signal("override_instruction_text", "fingers", "How many--Choose the answer from the box", null)
+	emit_signal("reveal_buttons")
 
 func canSkip() -> bool:
 	return answered >= how_many_should_answer
 
 func isWinning() -> bool:
-	super.isWinning()
 	return has_won
 
 func get_random_fingers() -> void:
