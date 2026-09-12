@@ -1,7 +1,7 @@
 extends Microgame
 
-const FISH_INSTANCE = preload("uid://rebue6f2d3vi")
-const SHARK_INSTANCE = preload("uid://8jnviul8fcqk")
+const FISH_INSTANCE = preload("res://instances/fishingGame/fish.tscn")
+const SHARK_INSTANCE = preload("res://instances/fishingGame/shark.tscn")
 
 const INSTANCES_ARRAY = [FISH_INSTANCE, SHARK_INSTANCE]
 const SPAWN_DIR = [530.0, -140.0]
@@ -17,15 +17,15 @@ onready var fishes: Node2D = $fishes
 
 onready var score: Label = $score
 
-var grabbed := false
+var grabbed = false
 
-var collected_fishes := 0
+var collected_fishes = 0
 
-var amount_of_sharks_on_screen := 0
-var max_sharks := 1
-var shark_chance_value := 0
+var amount_of_sharks_on_screen = 0
+var max_sharks = 1
+var shark_chance_value = 0
 
-var max_fishes := 5
+var max_fishes = 5
 
 var cur_fishes : Fish = null
 
@@ -38,7 +38,7 @@ onready var win_sound: AudioStreamPlayer = $sounds/Win
 
 onready var tutorial: Label = $tutorial
 
-var has_shown_tutorial := false
+var has_shown_tutorial = false
 
 signal scare_fishes
 
@@ -50,7 +50,7 @@ func _ready() -> void:
 	score.text = "0/" + str(max_fishes) + " FISHES"
 
 func _on_visible_area_body_exited(body: Node2D) -> void:
-	if !(body is Fish && body != null): return
+	if !(body is Fish and body != null): return
 
 	if body.fish_type == "shark":
 		amount_of_sharks_on_screen -= 1
@@ -58,7 +58,7 @@ func _on_visible_area_body_exited(body: Node2D) -> void:
 	body.queue_free()
 
 func _on_fish_failed_microgame() -> void:
-	if boat.win || boat.failed: return
+	if boat.win or boat.failed: return
 
 	tutorial.text = "AVOID THE SHARKS"
 	tutorial.visible = true
@@ -74,8 +74,8 @@ func _on_spawn_timer_timeout() -> void:
 	spawn_fish()
 
 func spawn_fish() -> void:
-	var shark_chance := randi_range(0,100)
-	var spawn_shark := shark_chance < shark_chance_value && max_sharks > amount_of_sharks_on_screen
+	var shark_chance = randi_range(0,100)
+	var spawn_shark = shark_chance < shark_chance_value and max_sharks > amount_of_sharks_on_screen
 
 	var fish_instance : Fish = INSTANCES_ARRAY[int(spawn_shark)].instance()
 	var direction_facing := randi_range(0, 1)
@@ -85,7 +85,7 @@ func spawn_fish() -> void:
 	
 	connect("scare_fishes", fish_instance, "run_away")
 
-	fish_instance.position = Vector2(SPAWN_DIR[direction_facing], randf_range(219.695, 481.695))
+	fish_instance.position = Vector2(SPAWN_DIR[direction_facing], rand_range(219.695, 481.695))
 
 	if direction_facing == 0:
 		direction_facing = -1
@@ -98,7 +98,7 @@ func spawn_fish() -> void:
 	fishes.add_child(fish_instance)
 
 func fish_collecting(fish_thing : Fish) -> void:
-	if grabbed || boat.failed || boat.win: return
+	if grabbed or boat.failed or boat.win: return
 
 	if !has_shown_tutorial:
 		tutorial.visible = true
@@ -115,7 +115,7 @@ func fish_collecting(fish_thing : Fish) -> void:
 	cur_fishes = fish_thing
 
 func _on_boat_get_fish() -> void:
-	if cur_fishes == null || boat.failed: return
+	if cur_fishes == null or boat.failed: return
 
 	emit_signal("set_camera_shake", 5, .5)
 	collected_fishes += 1
@@ -138,4 +138,4 @@ func isWinning() -> bool:
 	return collected_fishes >= max_fishes
 
 func canSkip() -> bool:
-	return boat.failed || boat.win
+	return boat.failed or boat.win

@@ -1,6 +1,6 @@
 extends Microgame
 
-const INGREDIENT_INSTANCE := preload("uid://ciwbi38tanbmb")
+const INGREDIENT_INSTANCE = preload("res://instances/burgerGame/ingredient.tscn")
 
 enum Ingredients {
 	TOP_BUN,
@@ -12,7 +12,7 @@ enum Ingredients {
 	BOTTOM_BUN
 }
 
-const INGREDIENT_THICKNESS := [
+const INGREDIENT_THICKNESS = [
 	20,
 	7,
 	10,
@@ -22,7 +22,7 @@ const INGREDIENT_THICKNESS := [
 	25
 ]
 
-const INGREDIENT_STRING := [
+const INGREDIENT_STRING = [
 	"BUN",
 	"ONION",
 	"LETTUCE",
@@ -31,7 +31,7 @@ const INGREDIENT_STRING := [
 	"PATTY"
 ]
 
-const KEYBIND_ARRAY := [
+const KEYBIND_ARRAY = [
 	66, #B
 	79, #O
 	76, #L
@@ -40,19 +40,19 @@ const KEYBIND_ARRAY := [
 	80  #P
 ]
 
-const DIFFICULTY_INGREDIENT_AMOUNT_RANGE := [
+const DIFFICULTY_INGREDIENT_AMOUNT_RANGE = [
 	[1, 1],
 	[1, 2],
 	[2, 3],
 	[3, 4]
 ]
 
-var used_ingredients := []
+var used_ingredients = []
 
 var cur_order_array := []
 var cur_order_string = []
 
-var cur_order : = 0
+var cur_order = 0
 
 onready var burger_pos = $burger_pos
 
@@ -81,7 +81,7 @@ func _ready() -> void:
 func set_random_order() -> void:
 	cur_order_array = [Ingredients.BURGER]
 
-	var available_ingredients := [Ingredients.ONION, Ingredients.LETTUCE, Ingredients.TOMATO, Ingredients.CHEESE]
+	var available_ingredients = [Ingredients.ONION, Ingredients.LETTUCE, Ingredients.TOMATO, Ingredients.CHEESE]
 	
 	var range_set : Array = DIFFICULTY_INGREDIENT_AMOUNT_RANGE[difficulty - 1]
 	for i in range(randi_range(range_set[0], range_set[1])):
@@ -92,16 +92,16 @@ func set_random_order() -> void:
 	
 	cur_order_array.append(Ingredients.TOP_BUN)
 
-	var num := 1
+	var num = 1
 	for i in cur_order_array:
 		cur_order_string.append(str(num) + ". " +INGREDIENT_STRING[i])
 		num += 1
 
 	update_ingredients_list(true)
 
-func update_ingredients_list(setting_up_text := false, cur_ingredient : Ingredients = Ingredients.BOTTOM_BUN) -> void:
+func update_ingredients_list(setting_up_text = false, cur_ingredient : Ingredients = Ingredients.BOTTOM_BUN) -> void:
 	if !setting_up_text:
-		var cur_string := cur_order_string[cur_order]
+		var cur_string = cur_order_string[cur_order]
 
 		if cur_order_array[cur_order] != cur_ingredient: #when you fail
 			emit_signal("set_camera_shake", 5, .5)
@@ -120,9 +120,9 @@ func update_ingredients_list(setting_up_text := false, cur_ingredient : Ingredie
 		ingredients_list_text.text += cur_order_string[i] + "[br]"
 
 func _input(event: InputEvent) -> void:
-	if stop_game || !(event is InputEventKey and event.pressed) || !KEYBIND_ARRAY.has(event.keycode): return
+	if stop_game or !(event is InputEventKey and event.pressed) or !KEYBIND_ARRAY.has(event.keycode): return
 
-	var cur_ingred_index := KEYBIND_ARRAY.find(event.keycode)
+	var cur_ingred_index = KEYBIND_ARRAY.find(event.keycode)
 
 	button_grid.get_child(cur_ingred_index)._on_button_pressed()
 		
@@ -133,7 +133,7 @@ func stop_all_buttons() -> void:
 func place_ingredient(ingredient_type: Ingredients) -> void:
 	if used_ingredients.has(ingredient_type) : return
 
-	var cur_ingredient := INGREDIENT_INSTANCE.instance()
+	var cur_ingredient = INGREDIENT_INSTANCE.instance()
 	cur_ingredient.set_ingredient(ingredient_type)
 
 	burger_pos.add_child(cur_ingredient)
@@ -150,7 +150,7 @@ func place_ingredient(ingredient_type: Ingredients) -> void:
 
 	slap_ingredient_sound.play()
 
-	if cur_order_array[cur_order - 1] != ingredient_type || ingredient_type != 0: return
+	if cur_order_array[cur_order - 1] != ingredient_type or ingredient_type != 0: return
 
 	ding_sound.play()
 	

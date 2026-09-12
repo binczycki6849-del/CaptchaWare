@@ -4,7 +4,7 @@ onready var button: Button = $Button
 onready var button_grid: GridContainer = $'..'
 onready var cur_button_value := button_grid.get_children().find(self)
 
-signal ingredient_button_pressed(ingredient_type : int)
+signal ingredient_button_pressed(ingredient_type)
 
 func _on_button_pressed() -> void:
 	emit_signal("ingredient_button_pressed", cur_button_value)

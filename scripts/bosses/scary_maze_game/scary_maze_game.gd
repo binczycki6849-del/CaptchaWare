@@ -1,14 +1,14 @@
 extends Microgame
 
-@onready var levels: Control = $levels
-@onready var jumpscare_texture: TextureRect = $Jumpscare
-@onready var jumpscare_sound: AudioStreamPlayer = $"jumpscare sound"
+onready var levels: Control = $levels
+onready var jumpscare_texture: TextureRect = $Jumpscare
+onready var jumpscare_sound: AudioStreamPlayer = $"jumpscare sound"
 
-var cur_level := 0
+var cur_level = 0
 
-var beaten_game := false
+var beaten_game = false
 
-const TOTAL_LEVELS := 3
+const TOTAL_LEVELS = 3
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
@@ -18,7 +18,7 @@ func change_level(level: int) -> void:
 	for i in range(levels.get_child_count()):
 		if i == level:
 			continue
-		var cur_level_child := levels.get_child(i)
+		var cur_level_child = levels.get_child(i)
 		cur_level_child.visible = false
 	
 	levels.get_child(level).visible = true
@@ -53,7 +53,7 @@ func jumpscare(_area: Area2D) -> void:
 	jumpscare_texture.visible = true
 	jumpscare_sound.play()
 
-	await get_tree().create_timer(2.0).timeout
+	yield(get_tree().create_timer(2.0), "timeout")
 
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	end_microgame.emit()
+	emit_signal("end_microgame")

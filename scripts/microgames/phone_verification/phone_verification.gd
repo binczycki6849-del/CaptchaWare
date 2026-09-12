@@ -41,11 +41,11 @@ func _ready() -> void:
 
 func pop_up_window() -> void:
 	var phone_call_window = PHONE_CALL_WINDOW.instance()
-	phone_call_window.call_answered.connect(on_call_answered)
-	phone_call_window.call_declined.connect(on_call_declined)
+	phone_call_window.connect("call_answered", self, "on_call_answered")
+	phone_call_window.connect("call_declined", self, "on_call_declined")
 	add_child(phone_call_window)
 
-	set_camera_shake.emit(10, 0.5)
+	emit_signal("set_camera_shake", 10, 0.5)
 	popup.play()
 
 	if how_many_fake_calls <= number_of_calls:

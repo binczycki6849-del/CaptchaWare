@@ -1,19 +1,19 @@
 extends Control
 
-const AD_IMAGES_PATH := "res://sprites/close_popups/"
+const AD_IMAGES_PATH = "res://sprites/close_popups/"
 
-@onready var ad_sprite: TextureRect = $ad
-@onready var window_texture: ColorRect = $ad/window
+onready var ad_sprite: TextureRect = $ad
+onready var window_texture: ColorRect = $ad/window
 
-@onready var bang_particles: CPUParticles2D = $bang
+onready var bang_particles: CPUParticles2D = $bang
 
-var is_blocker := false
+var is_blocker = false
 
-var grabbed := false
-var grab_offset := Vector2.ZERO
+var grabbed = false
+var grab_offset = Vector2.ZERO
 
-var focused := false
-var clicked := false
+var focused = false
+var clicked = false
 
 signal block_popups
 signal popup_closed
@@ -26,7 +26,7 @@ func set_popup_image(texture_file : Texture2D) -> void:
 	ad_sprite.texture = texture_file
 
 func _on_x_pressed() -> void:
-	popup_closed.emit()
+	emit_signal("popup_closed")
 	queue_free()
 
 func destroyed() -> void:
@@ -47,16 +47,16 @@ func _on_window_tab_button_down() -> void:
 	push_to_front()
 
 func push_to_front() -> void:
-	var parent := get_parent()
+	var parent = get_parent()
 	parent.move_child(self, parent.get_child_count() - 1)
 
 func _input(event: InputEvent) -> void:
-	if !focused || clicked: return
+	if !focused or clicked: return
 
 	if event is InputEventMouseButton:
-		if Input.is_action_just_pressed("Left Click") && get_parent().get_child(-1) == self:
+		if Input.is_action_just_pressed("Left Click") and get_parent().get_child(-1) == self:
 			clicked = true
-			block_popups.emit()
+			emit_signal("block_popups")
 
 func _on_ad_mouse_exited() -> void:
 	if is_blocker:

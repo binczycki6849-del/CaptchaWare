@@ -1,8 +1,8 @@
 extends Microgame
 
-@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
-const BUTTON = preload("uid://cvj5co1i86i5s")
+const BUTTON = preload("res://instances/ImageWith/button.tscn")
 const IMAGE_DIRECTORY : String = "res://sprites/images_with/"
 var image_data: Dictionary = {}
 var cur_object:String = ""
@@ -10,7 +10,7 @@ var prev_image_number : int = 0
 
 var images_name_pool : Array = []
 
-var cur_selected := 0
+var cur_selected = 0
 
 var points : int = 0
 var required_points : int = 0
@@ -20,13 +20,13 @@ func _ready() -> void:
 	load_buttons()
 
 func load_buttons() -> void:
-	var cur_image : Texture2D = load("res://sprites/images_with/images/1_" + cur_object + ".png")
-	override_instruction_text.emit(cur_object.replace("_"," "), "", cur_image)
+	var cur_image : Texture = load("res://sprites/images_with/images/1_" + cur_object + ".png")
+	emit_signal("override_instruction_text", cur_object.replace("_"," "), "", cur_image)
 	
-	var cur_categ_button : Array[String] = get_categories(3)
+	var cur_categ_button : Array = get_categories(3)
 	
 	for category in cur_categ_button:
-		var button : Button = BUTTON.instantiate()
+		var button : Button = BUTTON.instance()
 		
 		button.cur_image = get_unique_image(category)
 		
@@ -34,8 +34,8 @@ func load_buttons() -> void:
 			button.correct_option = true
 			required_points += 1
 		
-		button.gainPoints.connect(gain_points)
-		button.count_selected.connect(count_selected)
+		button.connect("gainPoints", self, "gain_points")
+		button.connect("count_selected", self, "count_selected")
 		
 		add_child(button)
 
@@ -59,8 +59,8 @@ func get_number(category_range : Array) -> int:
 	
 	return cur_num
 
-func get_categories(amount_categories : int) -> Array[String]:
-	var category_list : Array[String]
+func get_categories(amount_categories : int) -> Array:
+	var category_list : Array
 	
 	for i in range(amount_categories):
 		if !category_list.has(cur_object):
@@ -90,8 +90,7 @@ func count_selected(a:int) -> void:
 	cur_selected += a
 
 func isWinning() -> bool:
-	super.isWinning()
 	return required_points == points
 
 func canSkip() -> bool:
-	return cur_selected >= mini(required_points,1)
+	return cur_selected >= min(required_points,1)

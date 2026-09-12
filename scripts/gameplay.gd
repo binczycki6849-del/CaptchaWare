@@ -7,46 +7,44 @@ const TOTAL_CAPTCHAS = 20
 
 export(String, "normal", "absurd", "all", "campaign") var cur_microgame_pool = "all"
 
-export var cur_speed = 1.0
+export var cur_speed : float = 1
 onready var original_speed = cur_speed
 
-export var games_left_to_speed_up = 5
+export var games_left_to_speed_up : int = 5
 export var games_on_intro = 3
 var intro_sequence = true
 
-onready var bg = $bg
-onready var resource_preloader = $ResourcePreloader
+onready var bg: TextureRect = $bg
 
-onready var timer = $Timer
+onready var resource_preloader: ResourcePreloader = $ResourcePreloader
+
+onready var timer: Timer = $Timer
 onready var cur_wait_time = timer.wait_time
 onready var total_wait_time = cur_wait_time
 onready var og_wait_time = cur_wait_time
 
-onready var captcha_window = $window/captcha_window
-onready var captcha_input_disabler = $window/captcha_window/blocker
-onready var captcha_transition = $captchaTransition
-onready var captcha_anim_tree = captcha_transition["parameters/playback"]
-onready var captcha_animation_player = $captchaTransition/captchaAnimationPlayer
-onready var error_message = $"../MainMenu/captchabox/captchaSprite/ErrorMessage"
-onready var captcha_bg = $bg
+onready var captcha_window: TextureRect = $window/captcha_window
+onready var captcha_input_disabler: ColorRect = $window/captcha_window/blocker
+onready var captcha_transition: AnimationTree = $captchaTransition
+onready var captcha_anim_tree : AnimationNodeStateMachinePlayback = captcha_transition["parameters/playback"]
+onready var captcha_animation_player: AnimationPlayer = $captchaTransition/captchaAnimationPlayer
+onready var error_message: Label = $"../MainMenu/captchabox/captchaSprite/ErrorMessage"
+onready var captcha_bg: TextureRect = $bg
 
-onready var camera = $camera
-onready var intermission_text = $window/intermissionText/judgement
-onready var ui_captcha_window = $window
-onready var sounds = $sounds
-onready var music = $captchaTransition/captchaAnimationPlayer/Mosik
+onready var camera: Camera2D = $camera
+onready var intermission_text: Control = $window/intermissionText/judgement
+onready var ui_captcha_window: Control = $window
+onready var sounds: Node = $sounds
+onready var music: AudioStreamPlayer = $captchaTransition/captchaAnimationPlayer/Mosik
 
-onready var verify_button = $window/captcha_window/lowbar/verifyButton
-
-var prev_microgame = null
-var cur_window_size = Vector2.ZERO
+onready var verify_button: Button = $window/captcha_window/lowbar/verifyButton
 
 var cur_microgame = null
 var transitioning = false
 
 var cur_microgame_pool_array = []
 
-var games_played = 0
+var cur_microgame_pool_array : PoolStringArray = []
 
 var microgame_pool_json = {}
 
@@ -69,11 +67,12 @@ var judgement_text = {
 	"win_dialogue": {},
 	"lose_dialogue": {}
 }
-onready var judgement_text_intro = $window/intermissionText/judgementTextIntro
+onready var judgement_text_intro: Label = $window/intermissionText/judgementTextIntro
+
+onready var scores: Control = $window/captcha_window/blueBorder/scores
 
 onready var scores = $window/captcha_window/blueBorder/scores
 
-var difficulty = 1
 var game_started = false
 
 var ui_data = {
@@ -91,27 +90,35 @@ var fails = 0
 
 signal on_transition_complete
 
+func _list_directory(path : String) -> Array:
+	var directory = Directory.new()
+	var files : Array = []
+	if directory.open(path) != OK:
+		return files
+	directory.list_dir_begin(true, true)
+	var file_name = directory.get_next()
+	while file_name != "":
+		files.append(file_name)
+		file_name = directory.get_next()
+	directory.list_dir_end()
+	return files
 
 func _ready() -> void:
 	var file = File.new()
-	if file.open(JUDGEMENT_TEXT_LOCATION + "win_judgement_text.txt", File.READ) == OK:
-		judgement_text.win_dialogue = file.get_as_text().split(",", false)
-		file.close()
-
-	file = File.new()
-	if file.open(JUDGEMENT_TEXT_LOCATION + "lose_judgement_text.txt", File.READ) == OK:
-		judgement_text.lose_dialogue = file.get_as_text().split(",", false)
-		file.close()
-
-	file = File.new()
-	if file.open(JSON_FILE_LOCATION, File.READ) == OK:
-		var parsed = JSON.parse(file.get_as_text())
-		file.close()
-		if parsed.error == OK:
-			microgame_pool_json = parsed.result
-		else:
-			microgame_pool_json = {}
-
+	file.open(JUDGEMENT_TEXT_LOCATION + "win_judgement_text.txt", File.READ)
+	judgement_text.win_dialogue = file.get_as_text().split(",", false)
+	file.close()
+	
+	file.open(JUDGEMENT_TEXT_LOCATION + "lose_judgement_text.txt", File.READ)
+	judgement_text.lose_dialogue = file.get_as_text().split(",", false)
+	file.close()
+	
+	file.open(JSON_FILE_LOCATION, File.READ)
+	var parsed_json = parse_json(file.get_as_text())
+	file.close()
+	if typeof(parsed_json) == TYPE_DICTIONARY:
+		microgame_pool_json = parsed_json
+	
 	var game_name_list = _list_directory("res://microgames/")
 
 	for game in game_name_list:
@@ -174,6 +181,11 @@ func start_game() -> void:
 	captcha_transition.set("parameters/conditions/no lives", false)
 	game_started = true
 
+func get_game_pool(pool_override : String) -> Array:
+	if pool_override.to_lower() == "all":
+		var cur_array = []
+		
+		cur_array = microgame_pool_json[pool_override]
 
 func get_game_pool(pool_override):
 	if not microgame_pool_json.has(pool_override):
@@ -205,11 +217,11 @@ func set_game_speed(speed = 0.0) -> void:
 				continue
 			captcha_transition.set("parameters/" + anim + "/TimeScale/scale", 1)
 		return
-
+	
 	var anim_speed = max(speed * 1.15, 3.0)
-	var wait_time = max(cur_wait_time - ((cur_wait_time / 2.0) / og_wait_time), 3.0)
+	var wait_time = max(cur_wait_time - ((cur_wait_time / 2) / og_wait_time), 3.0)
 	var added_speed = speed / (cur_speed + speed)
-
+	
 	cur_speed += added_speed
 
 	if cur_wait_time >= 2.0:
@@ -227,7 +239,7 @@ func set_game_speed(speed = 0.0) -> void:
 func get_boss_game() -> void:
 	set_game_speed(0)
 	captcha_transition.set("parameters/conditions/boss", true)
-
+	
 	var boss_int = 0
 	if GameData.stored_data.previous_boss == 0:
 		boss_int = randi() % 2
@@ -237,15 +249,11 @@ func get_boss_game() -> void:
 	GameData.stored_data.previous_boss = boss_int + 1
 	get_microgame_data(microgame_pool_json["bosses"][boss_int])
 
-
-func set_up_window_size(tween_window = false, play_sound = true, size_override = Vector2.ZERO) -> void:
-	var microgame_size = Vector2(cur_microgame_data.Width, cur_microgame_data.Length)
-	var target_size = size_override if size_override != Vector2.ZERO else microgame_size
-
+func set_up_window_size(tween_window: bool = false, play_sound = true, size_override : Vector2 = Vector2.ZERO) -> void:
 	ui_captcha_window.set_up_ui_data({
-		"windowSize": target_size,
-		"windowTween": tween_window,
-		"tweenSpeed": min(cur_speed * 0.8, 2.3)
+		"windowSize" : size_override if size_override != Vector2.ZERO else Vector2(cur_microgame_data.Width, cur_microgame_data.Length),
+		"windowTween" : tween_window,
+		"tweenSpeed" : min(cur_speed * 0.8, 2.3)
 	})
 
 	if prev_window_size == target_size:
@@ -258,9 +266,7 @@ func set_up_window_size(tween_window = false, play_sound = true, size_override =
 
 
 func _on_timer_timeout() -> void:
-	if cur_microgame != null:
-		cur_microgame.emit_signal("end_microgame")
-
+	cur_microgame.emit_signal("end_microgame")
 
 func win() -> void:
 	var prev_microgame_anim_name = "gametransition_final_ending_1"
@@ -280,19 +286,16 @@ func transition_game() -> void:
 		win()
 		return
 
-	var completed_microgame = prev_microgame if prev_microgame != null else cur_microgame
-	if completed_microgame == null:
-		return
-
-	if completed_microgame.skipped:
-		return
+	if prev_microgame != null and prev_microgame.skipped: return
 
 	captcha_input_disabler.visible = true
 	completed_microgame.skipped = true
 
 	var did_fail = not completed_microgame.isWinning()
 
-	completed_microgame.stop_microgame()
+	var did_fail : bool = prev_microgame != null and !prev_microgame.isWinning()
+	
+	cur_microgame.stop_microgame()
 	play_captcha_anim_tree()
 
 	transitioning = true
@@ -302,7 +305,7 @@ func transition_game() -> void:
 
 	if not intro_sequence:
 		music_handler(true, did_fail)
-
+	
 	if cur_microgame_pool == "campaign" and games_played == TOTAL_CAPTCHAS:
 		get_boss_game()
 	else:
@@ -333,9 +336,9 @@ func transition_game() -> void:
 		fails += 1
 		if fails >= 4:
 			game_over()
-
+	
 	var can_speed_up = games_played % games_left_to_speed_up == 0
-
+	
 	captcha_transition.set("parameters/conditions/speed up", can_speed_up)
 	if can_speed_up:
 		set_game_speed(1)
@@ -351,10 +354,8 @@ func game_over() -> void:
 
 	captcha_transition.set("parameters/conditions/no lives", true)
 	error_message.visible = true
-
-	if not GameData.save_file.endless_mode:
-		return
-
+	
+	if !GameData.save_file.endless_mode: return
 	if games_played > GameData.save_file.highscore and GameData.save_file.endless_mode:
 		GameData.save_file.highscore = games_played
 		GameData.save_cur_data(GameData.GAME_SAVE_NAME)
@@ -369,12 +370,9 @@ func end_game() -> void:
 
 
 func disconnect_prev_microgame_signals() -> void:
-	if prev_microgame == null:
-		return
-
+	if prev_microgame == null: return
 	if is_connected("on_transition_complete", prev_microgame, "on_transition_complete"):
 		disconnect("on_transition_complete", prev_microgame, "on_transition_complete")
-
 	if prev_microgame.is_connected("override_instruction_text", self, "override_instructions"):
 		prev_microgame.disconnect("override_instruction_text", self, "override_instructions")
 	if prev_microgame.is_connected("set_camera_shake", self, "camera_shake"):
@@ -386,13 +384,11 @@ func disconnect_prev_microgame_signals() -> void:
 	if prev_microgame.is_connected("freeze_timer_signal", self, "freeze_timer"):
 		prev_microgame.disconnect("freeze_timer_signal", self, "freeze_timer")
 
-
 func freeze_timer() -> void:
 	timer.paused = true
 
-
-func music_handler(intermission = false, has_failed = false, reset_music = false) -> void:
-	if not music.playing or reset_music:
+func music_handler(intermission : bool = false, has_failed : bool = false, reset_music = false) -> void:
+	if !music.playing or reset_music:
 		music.play()
 
 	if intermission:
@@ -457,14 +453,14 @@ func _input(event) -> void:
 			sounds.get_node("mouse click up").play()
 
 	if event is InputEventKey:
-		if event.is_pressed() and not event.is_echo():
+		if event.is_pressed() and !event.is_echo():
 			sounds.get_node("keyboard typing").play()
 
 	if not game_started:
 		return
 
 	if event is InputEventKey:
-		if Input.is_action_just_pressed("ui_text_submit") and not verify_button.disabled:
+		if Input.is_action_just_pressed("ui_text_submit") and !verify_button.disabled:
 			skip_game()
 
 
@@ -485,16 +481,16 @@ func set_judgement_text(failed = false) -> void:
 
 
 func count_fail_attempt() -> void:
-	var cur_slot = intermission_text.get_node("attemptBars").get_child(clamp(fails - 1, 0, 3))
-	cur_slot.get_child(0).self_modulate = Color(1, 1, 1, 1)
-
+	var cur_slot : Control = intermission_text.get_node("attemptBars").get_child(clampi(fails-1,0,3))
+	cur_slot.get_child(0).self_modulate = Color(1,1,1,1)
+	
 	intermission_text.get_node("attempts").text = str(min(fails, 4)) + " of 4 failed attempts"
-
+	
 	camera.shake_camera(10, 0.3)
 
 
 func reset_fail_count() -> void:
-	var cur_slot = intermission_text.get_node("attemptBars").get_children()
+	var cur_slot : Array = intermission_text.get_node("attemptBars").get_children()
 	intermission_text.get_node("attempts").text = str(min(fails, 4)) + " of 4 failed attempts"
 	for slot in cur_slot:
 		slot.get_child(0).self_modulate = Color(0, 0, 0, 0.384)
@@ -509,26 +505,30 @@ func remove_game() -> void:
 	if prev_microgame != null:
 		ui_captcha_window.cur_game.remove_child(prev_microgame)
 
-
 func change_game(is_boss = false) -> void:
-	if cur_microgame == null:
+	if cur_microgame == null: 
 		print_debug("Current microgame is null!")
 		return
-
-	if music.playing and not is_boss:
+	if music.playing and !is_boss:
 		music_handler(false, false)
 
 	cur_microgame.z_index += 1
 
 	disconnect_prev_microgame_signals()
-
-	connect("on_transition_complete", cur_microgame, "on_transition_complete")
-	cur_microgame.connect("override_instruction_text", self, "override_instructions")
-	cur_microgame.connect("set_camera_shake", self, "camera_shake")
-	cur_microgame.connect("skip_timer", self, "skip_timer")
-	cur_microgame.connect("end_microgame", self, "transition_game")
-	cur_microgame.connect("freeze_timer_signal", self, "freeze_timer")
-
+	
+	if !self.is_connected("on_transition_complete", cur_microgame, "on_transition_complete"):
+		self.connect("on_transition_complete", cur_microgame, "on_transition_complete")
+	if !cur_microgame.is_connected("override_instruction_text", self, "override_instructions"):
+		cur_microgame.connect("override_instruction_text", self, "override_instructions")
+	if !cur_microgame.is_connected("set_camera_shake", self, "camera_shake"):
+		cur_microgame.connect("set_camera_shake", self, "camera_shake")
+	if !cur_microgame.is_connected("skip_timer", self, "skip_timer"):
+		cur_microgame.connect("skip_timer", self, "skip_timer")
+	if !cur_microgame.is_connected("end_microgame", self, "transition_game"):
+		cur_microgame.connect("end_microgame", self, "transition_game")
+	if !cur_microgame.is_connected("freeze_timer_signal", self, "freeze_timer"):
+		cur_microgame.connect("freeze_timer_signal", self, "freeze_timer")
+	
 	cur_microgame.current_game_speed = cur_speed
 	cur_microgame.difficulty = difficulty
 	cur_microgame.is_intro = intro_sequence
@@ -539,8 +539,8 @@ func change_game(is_boss = false) -> void:
 	cur_microgame.global_position = ui_captcha_window.cur_game.global_position
 
 	prev_microgame = cur_microgame
-
-	if not intro_sequence and not cur_microgame_data.noTimer:
+	
+	if !intro_sequence and !cur_microgame_data.noTimer:
 		timer.paused = false
 		if cur_microgame_data.has("staticTimer") and cur_microgame_data.staticTimer:
 			total_wait_time = og_wait_time + cur_microgame_data.bonusTime
@@ -584,22 +584,16 @@ func get_microgame(force_game = ""):
 	var cur_game_name = ""
 
 	if force_game != "":
-		var forced_game = resource_preloader.get_resource(force_game)
-		if forced_game != null:
-			cur_game = forced_game.instance()
-			return cur_game
-		return null
-
-	if cur_microgame_pool_array.empty():
+		cur_game = resource_preloader.get_resource(force_game).instance()
+		return cur_game
+	
+	if cur_microgame_pool_array.is_empty():
 		cur_microgame_pool_array = get_game_pool(cur_microgame_pool)
 
 	cur_game_name = cur_microgame_pool_array[0]
-	var loaded_game = resource_preloader.get_resource(cur_game_name)
-	if loaded_game == null:
-		cur_microgame_pool_array.erase(cur_game_name)
-		return null
-	cur_game = loaded_game.instance()
-
+	
+	cur_game = resource_preloader.get_resource(cur_game_name).instance()
+	
 	cur_microgame_pool_array.erase(cur_game_name)
 
 	print_debug("Current Microgame Pool: " + str(cur_microgame_pool_array))
@@ -645,19 +639,14 @@ func skip_game() -> void:
 func checkbox_pressed() -> void:
 	start_game()
 
+func _on_captcha_animation_player_animation_finished(anim_name: String) -> void:
+	if !["gametransition_end", 
+	"gametransition_end_beginning", 
+	"gametransition_speedup", 
+	"gametransition_gameover", 
+	"gametransition_speedup_beginning",
+	"gametransition_boss"].has(anim_name): return
 
-func _on_captcha_animation_player_animation_finished(anim_name) -> void:
-	if not [
-		"gametransition_end",
-		"gametransition_end_beginning",
-		"gametransition_speedup",
-		"gametransition_gameover",
-		"gametransition_speedup_beginning",
-		"gametransition_boss"
-	].has(str(anim_name)):
-		return
-
-	if str(anim_name) != "gametransition_gameover":
+	if anim_name != "gametransition_gameover":
 		emit_signal("on_transition_complete")
-
 	captcha_input_disabler.visible = false

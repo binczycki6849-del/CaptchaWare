@@ -1,20 +1,20 @@
 extends Microgame
 
-@onready var circle_1_sprite: Sprite2D = $circle1
-@onready var circle_2_sprite: Sprite2D = $circle2
+onready var circle_1_sprite: Sprite2D = $circle1
+onready var circle_2_sprite: Sprite2D = $circle2
 
-@onready var text_slider: Label = $slider/text
+onready var text_slider: Label = $slider/text
 
-@onready var slide_in_sound: AudioStreamPlayer = $slideIn
-@onready var sliding_sound: AudioStreamPlayer = $sliding
+onready var slide_in_sound: AudioStreamPlayer = $slideIn
+onready var sliding_sound: AudioStreamPlayer = $sliding
 
-@onready var slider: HSlider = $slider
+onready var slider: HSlider = $slider
 var value_velocity : float = 0.0
 var prev_value_slider : float = 0.0
 
 var inserted : bool = false
 
-var rotation_range : Array[float] = [0.0, 0.0]
+var rotation_range : Array = [0.0, 0.0]
 
 var cur_rand_rotation_set : float = 0.0
 
@@ -24,8 +24,8 @@ func _ready() -> void:
 	set_up_circles()
 
 func set_up_circles() -> void:
-	var texture_rect1 := circle_1_sprite.get_child(0)
-	var texture_rect2 := circle_2_sprite.get_child(0)
+	var texture_rect1 = circle_1_sprite.get_child(0)
+	var texture_rect2 = circle_2_sprite.get_child(0)
 	
 	const FILE_PATH = "res://sprites/align_circle/images/"
 
@@ -36,7 +36,7 @@ func set_up_circles() -> void:
 
 	var rand_rotation : float = 0.0
 	while abs(rand_rotation) < 15.0:
-		rand_rotation = randf_range(-90.0, 90.0)
+		rand_rotation = rand_range(-90.0, 90.0)
 	
 	cur_rand_rotation_set = rand_rotation
 	
@@ -52,16 +52,16 @@ func _physics_process(delta: float) -> void:
 
 	if !inserted:
 		value_velocity = abs(prev_value_slider - slider.value)
-		sliding_sound.volume_db = lerpf(-3.0, 7.0, minf(value_velocity * 10, 1.0)) if value_velocity > 0.01 else -80.0
+		sliding_sound.volume_db = lerp(-3.0, 7.0, min(value_velocity * 10, 1.0)) if value_velocity > 0.01 else -80.0
 	else:
 		sliding_sound.volume_db = -80.0
 	
 	prev_value_slider = slider.value
 
 func _on_slider_value_changed(value: float) -> void:
-	var value_to_degrees := lerpf(cur_rand_rotation_set + 90.0,cur_rand_rotation_set - 90.0, value)
+	var value_to_degrees = lerp(cur_rand_rotation_set + 90.0,cur_rand_rotation_set - 90.0, value)
 
-	if value_to_degrees >= rotation_range[0] && value_to_degrees <= rotation_range[1]:
+	if value_to_degrees >= rotation_range[0] and value_to_degrees <= rotation_range[1]:
 		circle_2_sprite.rotation_degrees = 0.0
 		circle_1_sprite.rotation_degrees = 0.0
 		if !inserted:
@@ -78,4 +78,4 @@ func canSkip() -> bool:
 	return !text_slider.visible
 
 func isWinning() -> bool:
-	return circle_2_sprite.rotation_degrees >= rotation_range[0] && circle_2_sprite.rotation_degrees <= rotation_range[1]
+	return circle_2_sprite.rotation_degrees >= rotation_range[0] and circle_2_sprite.rotation_degrees <= rotation_range[1]

@@ -53,4 +53,4 @@ func dead() -> void:
 	hit_sound.play()
 	is_dead = true
 	anim.play("dead")
-	killed.emit()
+	emit_signal("killed")

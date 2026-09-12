@@ -1,6 +1,6 @@
 extends Sprite2D
 
-const INGREDIENT_TYPES := {
+const INGREDIENT_TYPES = {
 	0: ["top_bun", Vector2(0, -20)],
 	1: ["onion", Vector2(0, 0)],
 	2: ["lettuce", Vector2(0, 0)],

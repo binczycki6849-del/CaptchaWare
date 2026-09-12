@@ -1,7 +1,7 @@
 extends Microgame
 
-const CACTUS_SMALL_INSTANCE = preload("uid://rnbce2tcv4cw")
-const CACTUS_BIG_INSTANCE = preload("uid://81qgltjkv3h8")
+const CACTUS_SMALL_INSTANCE = preload("res://instances/dinosaurGame/cactus_small.tscn")
+const CACTUS_BIG_INSTANCE = preload("res://instances/dinosaurGame/cactus_big.tscn")
 
 const SPEED_DIFFICULTY_SCALE = [700, 750, 800, 900]
 
@@ -13,7 +13,7 @@ onready var cactus_spawn_rate: Timer = $CactusSpawnRate
 
 onready var sounds: Node = $the_dino/sounds
 
-var died := false
+var died = false
 
 export var cur_speed := 0.0
 

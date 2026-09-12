@@ -18,7 +18,7 @@ var buttons_pool : Array = []
 
 var number_label : Array = []
 
-signal disable_buttons(curButtonAnswer: int, correct : bool)
+signal disable_buttons(curButtonAnswer, correct)
 signal reveal_buttons
 
 func _ready() -> void:
@@ -55,10 +55,10 @@ func generate_answers_n_buttons() -> void:
 		var cur_rand_num : int
 		while true:
 			cur_rand_num = randi_range(1,5)
-			if (!random_answers.has(cur_rand_num) && cur_rand_num != correct_fingers): break
+			if (!random_answers.has(cur_rand_num) and cur_rand_num != correct_fingers): break
 		random_answers.append(cur_rand_num)
 	
-	var rand_answers_index := 0
+	var rand_answers_index = 0
 	
 	for button in range(4):
 		var button_instance := BUTTON_ANSWERS.instance()
@@ -86,10 +86,10 @@ func regenerate_answers() -> void:
 		var cur_rand_num : int
 		while true:
 			cur_rand_num = randi_range(1,5)
-			if (!random_answers.has(cur_rand_num) && cur_rand_num != correct_fingers): break
+			if (!random_answers.has(cur_rand_num) and cur_rand_num != correct_fingers): break
 		random_answers.append(cur_rand_num)
 	
-	var rand_answers_index := 0
+	var rand_answers_index = 0
 	
 	for button in range(4):
 		var button_instance : Control = buttons_pool[button]
