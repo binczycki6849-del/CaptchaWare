@@ -5,10 +5,10 @@ const CACTUS_BIG_INSTANCE = preload("res://instances/dinosaurGame/cactus_big.tsc
 
 const SPEED_DIFFICULTY_SCALE = [700, 750, 800, 900]
 
-onready var dinosaurgame_bg: Parallax2D = $dinosaurgameBG
+onready var dinosaurgame_bg: Node2D = $dinosaurgameBG
 onready var clouds: CPUParticles2D = $clouds
 
-onready var cactus_spawn: Marker2D = $CactusSpawn
+onready var cactus_spawn: Position2D = $CactusSpawn
 onready var cactus_spawn_rate: Timer = $CactusSpawnRate
 
 onready var sounds: Node = $the_dino/sounds

@@ -2,7 +2,7 @@ extends Node2D
 
 const GRASS_PARTICLES = preload("res://instances/touchGrass/grass_particles.tscn")
 
-onready var hand_position: Marker2D = $"../handPosition"
+onready var hand_position: Position2D = $"../handPosition"
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 onready var grass: TextureRect = $".."

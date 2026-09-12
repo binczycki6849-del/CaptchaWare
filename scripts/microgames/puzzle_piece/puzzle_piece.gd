@@ -7,9 +7,9 @@ var selected : bool = false
 var cur_puzzle_hole : Node2D = null
 var cur_index : int = 0
 
-onready var check: Sprite2D = $check
+onready var check: Sprite = $check
 
-onready var puzzle_piece_mask: Sprite2D = $puzzlePieceMask
+onready var puzzle_piece_mask: Sprite = $puzzlePieceMask
 onready var click_shape: CollisionShape2D = $clickArea/clickShape
 
 onready var puzzle_place: AudioStreamPlayer = $PuzzlePlace

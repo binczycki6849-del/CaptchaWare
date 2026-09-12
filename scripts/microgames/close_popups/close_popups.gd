@@ -60,7 +60,7 @@ func _ready() -> void:
 func times_up() -> void:
 	close_all_popups()
 
-func spawn_popup(image : Texture2D, is_blocker : bool = false) -> void:
+func spawn_popup(image : Texture, is_blocker : bool = false) -> void:
 	var popup_instance = POPUP_INSTANCE.instance()
 
 	var rand_x = randi_range(int(rand_pos_clamp[0].x), int(rand_pos_clamp[1].x))

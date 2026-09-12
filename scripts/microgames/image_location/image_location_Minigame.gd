@@ -1,6 +1,6 @@
 extends Microgame
 
-export var cur_image: Texture2D
+export var cur_image: Texture
 onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 const IMAGE_LOCATE_BUTTON = preload("res://instances/ImageLocate/ImageLocate_button.tscn")
@@ -12,7 +12,7 @@ var selected = 0
 
 var cur_object = ""
 
-func _on_ready() -> void:
+func _ready() -> void:
 	set_image()
 
 func set_image() -> void:
