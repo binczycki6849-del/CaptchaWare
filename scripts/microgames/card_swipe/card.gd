@@ -37,6 +37,11 @@ func _tween_property_compat(target: Object, property: String, final_value, durat
 	tween.start()
 	return tween
 
+func _dispose_tween(tween: Tween) -> void:
+	if tween == null:
+		return
+	tween.queue_free()
+
 # x109.0 y371.265
 func _input(event: InputEvent) -> void:
 	
@@ -55,9 +60,8 @@ func _input(event: InputEvent) -> void:
 			if !card_can_swipe: return
 			mouse_prev_position_x = get_global_mouse_position().x
 
-			if tween_card_pos != null:
-				tween_card_pos.queue_free()
-				tween_card_pos = null
+			_dispose_tween(tween_card_pos)
+			tween_card_pos = null
 			card_grabbed = true
 			sounds.get_node("swipe").play()
 
