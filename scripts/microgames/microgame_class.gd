@@ -38,14 +38,15 @@ func get_file_list(path, file_type = ".png"):
 	var dir = Directory.new()
 	var dir_array = []
 
-	if dir.open(path) != OK:
-		print_debug(error_string(FAILED))
+	var open_err = dir.open(path)
+	if open_err != OK:
+		print_debug(error_string(open_err))
 		return dir_array
 
 	dir.list_dir_begin(true, true)
 	var file = dir.get_next()
 	while file != "":
-		if file.find(file_type) != -1:
+		if file.ends_with(file_type):
 			dir_array.append(file)
 		file = dir.get_next()
 	dir.list_dir_end()
@@ -60,6 +61,8 @@ func get_json_data(path):
 	var parsed = JSON.parse(file.get_as_text())
 	file.close()
 	if parsed.error != OK:
+		return {}
+	if typeof(parsed.result) != TYPE_DICTIONARY:
 		return {}
 	return parsed.result
 

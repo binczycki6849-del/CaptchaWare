@@ -52,7 +52,7 @@ var microgame_pool_json = {}
 
 var cur_microgame_data = {
 	"instructionsBig": "",
-	"InstructionsSmall": "",
+	"instructionsSmall": "",
 	"referenceImage": null,
 	"errorMessage": "",
 	"Length": 0,
@@ -176,20 +176,21 @@ func start_game() -> void:
 
 
 func get_game_pool(pool_override):
-	if pool_override.to_lower() == "all":
-		var cur_array = []
+	if not microgame_pool_json.has(pool_override):
+		return []
 
-		cur_array = microgame_pool_json[pool_override]
-
-		while true:
-			cur_array.shuffle()
-
-			if prev_microgame == null or cur_array[0] != prev_microgame.name:
-				break
-
+	var cur_array = microgame_pool_json[pool_override].duplicate()
+	if pool_override.to_lower() != "all":
 		return cur_array
-	else:
-		return microgame_pool_json[pool_override]
+	if cur_array.size() < 2:
+		return cur_array
+
+	while true:
+		cur_array.shuffle()
+		if prev_microgame == null or cur_array[0] != prev_microgame.name:
+			break
+
+	return cur_array
 
 
 func set_game_speed(speed = 0.0) -> void:
@@ -238,27 +239,35 @@ func get_boss_game() -> void:
 
 
 func set_up_window_size(tween_window = false, play_sound = true, size_override = Vector2.ZERO) -> void:
+	var microgame_size = Vector2(cur_microgame_data.Width, cur_microgame_data.Length)
+	var target_size = size_override if size_override != Vector2.ZERO else microgame_size
+
 	ui_captcha_window.set_up_ui_data({
-		"windowSize": size_override if size_override != Vector2.ZERO else Vector2(cur_microgame_data.Width, cur_microgame_data.Length),
+		"windowSize": target_size,
 		"windowTween": tween_window,
 		"tweenSpeed": min(cur_speed * 0.8, 2.3)
 	})
 
-	if prev_window_size == Vector2(cur_microgame_data.Width, cur_microgame_data.Length):
+	if prev_window_size == target_size:
 		return
 
-	prev_window_size = Vector2(cur_microgame_data.Width, cur_microgame_data.Length)
+	prev_window_size = target_size
 
 	if play_sound:
 		sounds.get_node("stretch resize").play()
 
 
 func _on_timer_timeout() -> void:
-	cur_microgame.emit_signal("end_microgame")
+	if cur_microgame != null:
+		cur_microgame.emit_signal("end_microgame")
 
 
 func win() -> void:
-	var prev_microgame_anim_name = str(prev_microgame.microgame_data.ending_cutscene_name)
+	var prev_microgame_anim_name = "gametransition_final_ending_1"
+	if prev_microgame != null and prev_microgame.microgame_data is BossMicrogameData:
+		var boss_microgame_data = prev_microgame.microgame_data
+		if boss_microgame_data.ending_cutscene_name != "":
+			prev_microgame_anim_name = boss_microgame_data.ending_cutscene_name
 	if captcha_animation_player.has_animation(prev_microgame_anim_name):
 		captcha_animation_player.play(prev_microgame_anim_name)
 	else:
@@ -271,15 +280,19 @@ func transition_game() -> void:
 		win()
 		return
 
-	if prev_microgame != null and prev_microgame.skipped:
+	var completed_microgame = prev_microgame if prev_microgame != null else cur_microgame
+	if completed_microgame == null:
+		return
+
+	if completed_microgame.skipped:
 		return
 
 	captcha_input_disabler.visible = true
-	prev_microgame.skipped = true
+	completed_microgame.skipped = true
 
-	var did_fail = prev_microgame != null and not prev_microgame.isWinning()
+	var did_fail = not completed_microgame.isWinning()
 
-	cur_microgame.stop_microgame()
+	completed_microgame.stop_microgame()
 	play_captcha_anim_tree()
 
 	transitioning = true
@@ -416,6 +429,7 @@ func end_intro_sequence() -> void:
 
 	var captcha_bg_tween = Tween.new()
 	add_child(captcha_bg_tween)
+	captcha_bg_tween.pause_mode = Node.PAUSE_MODE_PROCESS
 	captcha_bg_tween.interpolate_property(
 		captcha_bg,
 		"self_modulate",
@@ -425,6 +439,7 @@ func end_intro_sequence() -> void:
 		Tween.TRANS_CUBIC,
 		Tween.EASE_IN_OUT
 	)
+	captcha_bg_tween.connect("tween_all_completed", captcha_bg_tween, "queue_free")
 	captcha_bg_tween.start()
 
 
@@ -456,8 +471,14 @@ func _input(event) -> void:
 func set_judgement_text(failed = false) -> void:
 	var dialogue = ""
 	if failed:
+		if judgement_text.lose_dialogue.empty():
+			intermission_text.get_node("judgementText").text = "Try Again!"
+			return
 		dialogue = judgement_text.lose_dialogue[randi_range(0, judgement_text.lose_dialogue.size() - 1)]
 	else:
+		if judgement_text.win_dialogue.empty():
+			intermission_text.get_node("judgementText").text = "Good!"
+			return
 		dialogue = judgement_text.win_dialogue[randi_range(0, judgement_text.win_dialogue.size() - 1)]
 
 	intermission_text.get_node("judgementText").text = dialogue.strip_edges()
@@ -563,15 +584,21 @@ func get_microgame(force_game = ""):
 	var cur_game_name = ""
 
 	if force_game != "":
-		cur_game = resource_preloader.get_resource(force_game).instance()
-		return cur_game
+		var forced_game = resource_preloader.get_resource(force_game)
+		if forced_game != null:
+			cur_game = forced_game.instance()
+			return cur_game
+		return null
 
 	if cur_microgame_pool_array.empty():
 		cur_microgame_pool_array = get_game_pool(cur_microgame_pool)
 
 	cur_game_name = cur_microgame_pool_array[0]
-
-	cur_game = resource_preloader.get_resource(cur_game_name).instance()
+	var loaded_game = resource_preloader.get_resource(cur_game_name)
+	if loaded_game == null:
+		cur_microgame_pool_array.erase(cur_game_name)
+		return null
+	cur_game = loaded_game.instance()
 
 	cur_microgame_pool_array.erase(cur_game_name)
 
@@ -583,16 +610,18 @@ func get_microgame(force_game = ""):
 
 func get_microgame_data(force_game = "") -> void:
 	cur_microgame = get_microgame(force_game)
+	if cur_microgame == null:
+		return
+
 	var local_game_data = cur_microgame.microgame_data
-
-	for i in cur_microgame_data.keys():
-		if i in ["instructionsSmall", "set_size"]:
-			continue
-
-		cur_microgame_data[i] = local_game_data.get(i)
-
+	cur_microgame_data.instructionsBig = local_game_data.instructionsBig
 	cur_microgame_data.instructionsSmall = local_game_data.instructionSmall1 + "--" + local_game_data.instructionSmall2
-
+	cur_microgame_data.referenceImage = local_game_data.referenceImage
+	cur_microgame_data.errorMessage = local_game_data.errorMessage
+	cur_microgame_data.bonusTime = local_game_data.bonusTime
+	cur_microgame_data.slowGame = local_game_data.slowGame
+	cur_microgame_data.staticTimer = local_game_data.staticTimer
+	cur_microgame_data.noTimer = local_game_data.noTimer
 	cur_microgame_data.Length = local_game_data.set_size.y
 	cur_microgame_data.Width = local_game_data.set_size.x
 
@@ -601,6 +630,9 @@ func get_microgame_data(force_game = "") -> void:
 
 func skip_game() -> void:
 	if transitioning:
+		return
+
+	if cur_microgame == null:
 		return
 
 	if cur_microgame.canSkip():
