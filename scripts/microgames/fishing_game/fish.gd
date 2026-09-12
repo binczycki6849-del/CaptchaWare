@@ -44,6 +44,8 @@ func get_fish_sprite():
 			fish_sprite_list.append(file_name)
 			file_name = directory.get_next()
 		directory.list_dir_end()
+	if fish_sprite_list.empty():
+		return null
 	var random_image = fish_sprite_list[randi() % max(1, fish_sprite_list.size())]
 
 	if cur_dir == 1:

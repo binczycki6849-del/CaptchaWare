@@ -42,8 +42,8 @@ func _ready() -> void:
 	
 	v_scroll_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v_scroll_bar.connect("value_changed", self, "on_value_changed")
-	v_box_container.custom_minmum_size = Vector2.DOWN * scroll_length[difficulty - 1]
-	the_end_of_bar = int(v_box_container.custom_minmum_size.y) - 376
+	v_box_container.custom_minimum_size = Vector2.DOWN * scroll_length[difficulty - 1]
+	the_end_of_bar = int(v_box_container.custom_minimum_size.y) - 376
 	
 	set_up_articles()
 

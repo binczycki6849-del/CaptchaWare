@@ -1,5 +1,7 @@
 extends Node2D
 
+const CREDITS_SCENE_PATH = "res://scenes/credits.tscn"
+
 enum MenuType {
 	SETTINGS,
 	CREDITS
@@ -183,7 +185,7 @@ func _on_submit_button_pressed() -> void:
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if anim_name != "end": return
-	get_tree().change_scene("res://scenes/credits.tscn")
+	get_tree().change_scene(CREDITS_SCENE_PATH)
 
 
 func _on_endless_mode_toggled(toggled_on: bool) -> void:
