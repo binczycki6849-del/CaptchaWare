@@ -457,12 +457,18 @@ func change_game(is_boss = false) -> void:
 	
 	disconnect_prev_microgame_signals()
 	
-	self.connect("on_transition_complete", cur_microgame, "on_transition_complete")
-	cur_microgame.connect("override_instruction_text", self, "override_instructions")
-	cur_microgame.connect("set_camera_shake", self, "camera_shake")
-	cur_microgame.connect("skip_timer", self, "skip_timer")
-	cur_microgame.connect("end_microgame", self, "transition_game")
-	cur_microgame.connect("freeze_timer_signal", self, "freeze_timer")
+	if !self.is_connected("on_transition_complete", cur_microgame, "on_transition_complete"):
+		self.connect("on_transition_complete", cur_microgame, "on_transition_complete")
+	if !cur_microgame.is_connected("override_instruction_text", self, "override_instructions"):
+		cur_microgame.connect("override_instruction_text", self, "override_instructions")
+	if !cur_microgame.is_connected("set_camera_shake", self, "camera_shake"):
+		cur_microgame.connect("set_camera_shake", self, "camera_shake")
+	if !cur_microgame.is_connected("skip_timer", self, "skip_timer"):
+		cur_microgame.connect("skip_timer", self, "skip_timer")
+	if !cur_microgame.is_connected("end_microgame", self, "transition_game"):
+		cur_microgame.connect("end_microgame", self, "transition_game")
+	if !cur_microgame.is_connected("freeze_timer_signal", self, "freeze_timer"):
+		cur_microgame.connect("freeze_timer_signal", self, "freeze_timer")
 	
 	cur_microgame.current_game_speed = cur_speed
 	cur_microgame.difficulty = difficulty

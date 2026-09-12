@@ -29,7 +29,7 @@ func load_data(file_name : String, data_dictionary : Dictionary = {}) -> Diction
 		file.close()
 		return data_dictionary
 	
-	file.open(_SAVE_PATH + file_name, File.READ_WRITE)
+	file.open(_SAVE_PATH + file_name, File.READ)
 	var loaded_save : Dictionary = file.get_var()
 	var cur_save = data_dictionary
 	
@@ -37,7 +37,8 @@ func load_data(file_name : String, data_dictionary : Dictionary = {}) -> Diction
 		if loaded_save.has(key):
 			cur_save[key] = loaded_save[key]
 	
-	file.seek(0)
+	file.close()
+	file.open(_SAVE_PATH + file_name, File.WRITE)
 	file.store_var(cur_save)
 	file.close()
 	

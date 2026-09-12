@@ -41,7 +41,7 @@ func set_image() -> void:
 	correct_answers = line.split(",", false)
 	
 	cur_object = correct_answers[16].strip_edges()
-	emit_signal("override_instruction_text", cur_object)
+	emit_signal("override_instruction_text", cur_object, "", null)
 
 	for button in range(16):
 		var button_node : Button = IMAGE_LOCATE_BUTTON.instance()

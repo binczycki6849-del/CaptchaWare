@@ -9,7 +9,7 @@ var answer : int = 0
 func _ready() -> void:
 	line_edit.call_deferred("grab_focus")
 	generate_math_eq()
-	emit_signal("override_instruction_text", cur_text_problem)
+	emit_signal("override_instruction_text", cur_text_problem, "", null)
 	pass # Replace with function body.
 
 func generate_math_eq() -> void:

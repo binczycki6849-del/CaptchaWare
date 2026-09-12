@@ -125,7 +125,7 @@ func answer_button_pressed(cur_button:Button) -> void:
 	hand_anim.play("thumbs up")
 
 func reveal_buttons_func() -> void:
-	emit_signal("override_instruction_text", "fingers", "How many--Choose the answer from the box")
+	emit_signal("override_instruction_text", "fingers", "How many--Choose the answer from the box", null)
 	emit_signal("reveal_buttons")
 
 func canSkip() -> bool:

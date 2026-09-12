@@ -8,7 +8,7 @@ func _ready() -> void:
 	var image_list : Array = get_file_list("res://sprites/type_captcha")
 	cur_text = image_list.pick_random().replace(".png", "")
 	
-	emit_signal("override_instruction_text", "res://sprites/type_captcha/" + cur_text + ".png")
+	emit_signal("override_instruction_text", "res://sprites/type_captcha/" + cur_text + ".png", "", null)
 	
 	line_edit.call_deferred("grab_focus")
 

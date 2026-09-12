@@ -4,7 +4,7 @@ class_name Microgame
 
 export var microgame_data : MicrogameData = null
 
-signal override_instruction_text
+signal override_instruction_text(big, small, ref)
 signal set_camera_shake(intensity, duration)
 signal skip_timer
 signal end_microgame

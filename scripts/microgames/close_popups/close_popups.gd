@@ -151,8 +151,9 @@ func win() -> void:
 func on_transition_complete() -> void:
 	ticking_sound.play()
 
-	var cam_tween = create_tween()
-	cam_tween.tween_property(camera, "zoom", Vector2.ONE * 1.80, 1.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)	
+	if camera != null:
+		var cam_tween = create_tween()
+		cam_tween.tween_property(camera, "zoom", Vector2.ONE * 1.80, 1.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)	
 
 func _on_timer_value_changed(value: float) -> void:
 	count_down.text = str(int(ceil(value)))
