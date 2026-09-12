@@ -11,6 +11,18 @@ onready var default_zoom :Vector2 = zoom
 
 var force_pause : bool = false
 
+func _tween_property_compat(target: Object, property: String, final_value, duration: float, trans_type: int = Tween.TRANS_LINEAR, ease_type: int = Tween.EASE_IN_OUT, initial_value = null, use_initial_value: bool = false) -> Tween:
+	var tween = Tween.new()
+	add_child(tween)
+	if use_initial_value:
+		target.set(property, initial_value)
+		tween.interpolate_property(target, property, initial_value, final_value, duration, trans_type, ease_type)
+	else:
+		tween.interpolate_property(target, property, target.get(property), final_value, duration, trans_type, ease_type)
+	tween.connect("tween_all_completed", tween, "queue_free")
+	tween.start()
+	return tween
+
 func _ready() -> void:
 	parallax_system()
 
@@ -23,12 +35,10 @@ func shake_camera(intensity:float, duration:float = 0) -> void:
 	if duration == 0:
 		shake_amount = intensity
 		return
-	var shake_amount_tween : Tween = create_tween()
-	shake_amount_tween.tween_property(self, "shake_amount", 0, duration).from(shake_amount + intensity).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	_tween_property_compat(self, "shake_amount", 0, duration, Tween.TRANS_CUBIC, Tween.EASE_OUT, shake_amount + intensity, true)
 
 func camera_bop_in(zoom_amount: float, duration:float) -> void:
-	var bop_tween : Tween = create_tween()
-	bop_tween.tween_property(self, "zoom", default_zoom, duration).from(Vector2.ONE * zoom_amount).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	_tween_property_compat(self, "zoom", default_zoom, duration, Tween.TRANS_CUBIC, Tween.EASE_OUT, Vector2.ONE * zoom_amount, true)
 
 func camera_shake_process() -> void:
 	if shake_amount == 0: return

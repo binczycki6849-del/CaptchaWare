@@ -1,23 +1,23 @@
-[gd_scene load_steps=30 format=3 uid="uid://bv5q1gs3k68sr"]
+[gd_scene load_steps=30 format=3]
 
-[ext_resource type="Script" uid="uid://bstc0h8tbairl" path="res://scripts/microgames/impossible_quiz/impossible_quiz.gd" id="1_ti0gt"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_pg183"]
-[ext_resource type="Texture2D" uid="uid://d367k8wqsyrwt" path="res://sprites/impossible_quiz/bg.png" id="2_t4cwc"]
-[ext_resource type="Texture2D" uid="uid://bvf2nx7g2a1wk" path="res://sprites/impossible_quiz/hover.png" id="3_pg183"]
-[ext_resource type="Texture2D" uid="uid://cpys3gheg3nmh" path="res://sprites/impossible_quiz/select.png" id="4_y8ele"]
-[ext_resource type="Texture2D" uid="uid://bckwedmtsf54p" path="res://sprites/impossible_quiz/questions/q10--4.png" id="5_gqnc5"]
-[ext_resource type="Texture2D" uid="uid://b6koelyvw3r14" path="res://sprites/impossible_quiz/question_numbers.png" id="6_e6pbm"]
-[ext_resource type="AudioStream" uid="uid://xt7w8ioalfv5" path="res://sounds/microgames/impossible_quiz/correct.mp3" id="7_sniit"]
-[ext_resource type="AudioStream" uid="uid://bsa7x51bhqa27" path="res://sounds/microgames/impossible_quiz/wrong.mp3" id="8_2fhj7"]
-[ext_resource type="AudioStream" uid="uid://dku2jbxwnangk" path="res://sounds/microgames/impossible_quiz/cheer.mp3" id="9_j4muu"]
-[ext_resource type="AudioStream" uid="uid://bytwg4o72lcf4" path="res://sounds/microgames/impossible_quiz/gameover.mp3" id="10_52yq3"]
-[ext_resource type="Texture2D" uid="uid://bqwm7chmcj651" path="res://sprites/impossible_quiz/wrong.png" id="11_8giav"]
-[ext_resource type="Texture2D" uid="uid://csfrcpvwyxrib" path="res://sprites/impossible_quiz/3 life.png" id="11_ti0gt"]
-[ext_resource type="Texture2D" uid="uid://c3cv3v6encgbg" path="res://sprites/impossible_quiz/black_flash.png" id="12_4opi7"]
-[ext_resource type="Texture2D" uid="uid://cw1y004efjor1" path="res://sprites/impossible_quiz/gameover.png" id="13_h5fb1"]
-[ext_resource type="Texture2D" uid="uid://dgy1gtggvby03" path="res://sprites/impossible_quiz/2 life.png" id="14_ut76s"]
-[ext_resource type="Texture2D" uid="uid://bsginnqjg4lk2" path="res://sprites/impossible_quiz/1 life.png" id="15_h6s1h"]
-[ext_resource type="Texture2D" uid="uid://b3kpxqfjfcyib" path="res://sprites/impossible_quiz/ur_win.png" id="16_cklr7"]
+[ext_resource type="Script" path="res://scripts/microgames/impossible_quiz/impossible_quiz.gd" id="1_ti0gt"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_pg183"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/bg.png" id="2_t4cwc"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/hover.png" id="3_pg183"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/select.png" id="4_y8ele"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/questions/q10--4.png" id="5_gqnc5"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/question_numbers.png" id="6_e6pbm"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/impossible_quiz/correct.mp3" id="7_sniit"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/impossible_quiz/wrong.mp3" id="8_2fhj7"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/impossible_quiz/cheer.mp3" id="9_j4muu"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/impossible_quiz/gameover.mp3" id="10_52yq3"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/wrong.png" id="11_8giav"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/3 life.png" id="11_ti0gt"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/black_flash.png" id="12_4opi7"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/gameover.png" id="13_h5fb1"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/2 life.png" id="14_ut76s"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/1 life.png" id="15_h6s1h"]
+[ext_resource type="Texture" path="res://sprites/impossible_quiz/ur_win.png" id="16_cklr7"]
 
 [sub_resource type="Resource" id="Resource_y8ele"]
 script = ExtResource("2_pg183")
@@ -28,7 +28,6 @@ errorMessage = "Please finish the quiz."
 set_size = Vector2(430, 573.835)
 slowGame = true
 noTimer = true
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8u1fw"]
 texture = ExtResource("3_pg183")
@@ -783,7 +782,7 @@ texture = ExtResource("5_gqnc5")
 expand_mode = 4
 stretch_mode = 5
 
-[node name="QuestionNumber" type="Sprite2D" parent="."]
+[node name="QuestionNumber" type="Sprite" parent="."]
 position = Vector2(35, 95.55501)
 scale = Vector2(0.72, 0.72)
 texture = ExtResource("6_e6pbm")
@@ -878,10 +877,10 @@ offset_bottom = 378.555
 scale = Vector2(0.83, 0.83)
 mouse_filter = 2
 
-[node name="lives_number2" type="Sprite2D" parent="lives"]
+[node name="lives_number2" type="Sprite" parent="lives"]
 texture = ExtResource("11_ti0gt")
 
-[node name="lives_number1" type="Sprite2D" parent="lives"]
+[node name="lives_number1" type="Sprite" parent="lives"]
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("14_ut76s")
 

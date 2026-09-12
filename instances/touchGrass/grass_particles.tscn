@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ck1pnmnev0nln"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Texture2D" uid="uid://dbdi5hd6f3gif" path="res://sprites/touch_grass/grass_images/grass1.png" id="1_5nhqd"]
-[ext_resource type="Script" uid="uid://ckfsc8eir6q1m" path="res://scripts/microgames/touch_grass/grass_particles.gd" id="2_h76qo"]
+[ext_resource type="Texture" path="res://sprites/touch_grass/grass_images/grass1.png" id="1_5nhqd"]
+[ext_resource type="Script" path="res://scripts/microgames/touch_grass/grass_particles.gd" id="2_h76qo"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yt280"]
 particles_animation = true

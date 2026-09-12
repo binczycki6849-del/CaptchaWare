@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ciwbi38tanbmb"]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource type="Texture2D" uid="uid://4h774pflh20u" path="res://sprites/burger_game/bottom_bun.png" id="1_u7ti7"]
-[ext_resource type="Script" uid="uid://c134lj2i4q0yd" path="res://scripts/microgames/burger_game/ingredient.gd" id="2_8qvhh"]
+[ext_resource type="Texture" path="res://sprites/burger_game/bottom_bun.png" id="1_u7ti7"]
+[ext_resource type="Script" path="res://scripts/microgames/burger_game/ingredient.gd" id="2_8qvhh"]
 
 [sub_resource type="Animation" id="Animation_xc6lx"]
 length = 0.001
@@ -64,7 +64,7 @@ _data = {
 &"spawn": SubResource("Animation_8thrs")
 }
 
-[node name="ingredient" type="Sprite2D"]
+[node name="ingredient" type="Sprite"]
 scale = Vector2(0.39, 0.39)
 texture = ExtResource("1_u7ti7")
 script = ExtResource("2_8qvhh")

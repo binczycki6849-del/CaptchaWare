@@ -1,8 +1,8 @@
-[gd_scene format=3 uid="uid://c4y0qaq8fism0"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://d1cdmjtboy4md" path="res://scripts/microgames/math_captcha/math_captcha.gd" id="1_l773x"]
-[ext_resource type="Theme" uid="uid://cu51pqcwmnm0l" path="res://captcha_theme.tres" id="2_iwvfa"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_xba88"]
+[ext_resource type="Script" path="res://scripts/microgames/math_captcha/math_captcha.gd" id="1_l773x"]
+[ext_resource type="Theme" path="res://captcha_theme.tres" id="2_iwvfa"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_xba88"]
 
 [sub_resource type="Resource" id="Resource_xoq4e"]
 script = ExtResource("2_xba88")
@@ -10,9 +10,8 @@ instructionSmall1 = "solve this equation"
 instructionSmall2 = "Click verify when done."
 errorMessage = "Please type the answer in the box."
 set_size = Vector2(430, 294.835)
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
-[node name="mathCaptcha" type="Control" unique_id=1577642645]
+[node name="mathCaptcha" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -20,7 +19,7 @@ offset_bottom = 40.0
 script = ExtResource("1_l773x")
 microgame_data = SubResource("Resource_xoq4e")
 
-[node name="LineEdit" type="LineEdit" parent="." unique_id=140526308]
+[node name="LineEdit" type="LineEdit" parent="."]
 light_mask = 0
 layout_mode = 0
 offset_left = 25.0

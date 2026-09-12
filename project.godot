@@ -15,19 +15,19 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="CaptchaWare"
-run/main_scene="uid://clyfqepsqmse8"
+run/main_scene="res://scenes/test_microgame.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
-config/icon="uid://brcg8hshjwq6y"
+config/icon="res://sprites/recaptcha-icon.png"
 
 [audio]
 
-buses/default_bus_layout="uid://cat0jjbtti4ij"
+buses/default_bus_layout="res://default_bus_layout.tres"
 
 [autoload]
 
-GameData="*uid://va7073fxdiyv"
+GameData="*res://scenes/savedata.tscn"
 
 [display]
 

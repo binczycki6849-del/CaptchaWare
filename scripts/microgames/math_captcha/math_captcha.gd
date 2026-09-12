@@ -21,7 +21,7 @@ func generate_math_eq() -> void:
 func generate_equation() -> Array:
 	var first_num : int = randi_range(0, 7)
 	var second_num : int = randi_range(0, 7)
-	var cur_math_signs : String = ["+", "-"].pick_random()
+	var cur_math_signs : String = pick_random_item(["+", "-"])
 	var set_answer : int = 0
 	
 	if cur_math_signs == "-":

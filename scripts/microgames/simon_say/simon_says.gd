@@ -108,10 +108,9 @@ func color_each_button(the_color_in_question : Color) -> void:
 		var the_button = button.get_child(0)
 		the_button.disabled = true
 		
-		var flash_tween = create_tween()
 		var brighter_color = the_color_in_question
 		brighter_color.v += .6
-		flash_tween.tween_property(the_button, "modulate", the_color_in_question, .5).from(brighter_color).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+		tween_property_compat(the_button, "modulate", the_color_in_question, .5, Tween.TRANS_EXPO, Tween.EASE_OUT, brighter_color, true)
 
 func _on_green_pressed() -> void:
 	button_check(GREEN)

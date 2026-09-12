@@ -54,7 +54,7 @@ var cur_order_string : PoolStringArray = []
 
 var cur_order = 0
 
-onready var burger_pos: Marker2D = $burger_pos
+onready var burger_pos: Position2D = $burger_pos
 
 onready var button_grid: GridContainer = $'ingredients tab/ButtonGrid'
 
@@ -85,7 +85,7 @@ func set_random_order() -> void:
 	
 	var range_set : Array = DIFFICULTY_INGREDIENT_AMOUNT_RANGE[difficulty - 1]
 	for i in range(randi_range(range_set[0], range_set[1])):
-		var cur_ingredient : int = available_ingredients.pick_random()
+		var cur_ingredient : int = pick_random_item(available_ingredients)
 
 		cur_order_array.append(cur_ingredient)
 		available_ingredients.erase(cur_ingredient)

@@ -1,7 +1,7 @@
 extends Microgame
 
-onready var circle_1_sprite: Sprite2D = $circle1
-onready var circle_2_sprite: Sprite2D = $circle2
+onready var circle_1_sprite: Sprite = $circle1
+onready var circle_2_sprite: Sprite = $circle2
 
 onready var text_slider: Label = $slider/text
 
@@ -29,7 +29,7 @@ func set_up_circles() -> void:
 	
 	const FILE_PATH = "res://sprites/align_circle/images/"
 
-	var image_file_path : String = FILE_PATH + get_file_list(FILE_PATH, ".png").pick_random()
+	var image_file_path : String = FILE_PATH + pick_random_item(get_file_list(FILE_PATH, ".png"))
 
 	texture_rect1.texture = load(image_file_path)
 	texture_rect2.texture = load(image_file_path)

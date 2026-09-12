@@ -1,16 +1,16 @@
-[gd_scene format=3 uid="uid://b2nugc81w1os7"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://b0udp8rrup8p2" path="res://scripts/microgames/face_right_up/face_right_up.gd" id="1_c51v0"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_qkwia"]
-[ext_resource type="Texture2D" uid="uid://bn2snna3q6d1c" path="res://sprites/align_circle/circle_2.png" id="2_watw4"]
-[ext_resource type="Texture2D" uid="uid://djylc50xgdxpv" path="res://sprites/align_circle/images/1.png" id="3_a8obs"]
-[ext_resource type="Texture2D" uid="uid://dyfer6us63g25" path="res://sprites/face_right_up/arrow.png" id="4_d4j1q"]
-[ext_resource type="Texture2D" uid="uid://cca2x3w2xa5df" path="res://sprites/face_right_up/arrow_select.png" id="5_o52s0"]
-[ext_resource type="Texture2D" uid="uid://bjv0kkys0ofp3" path="res://sprites/face_right_up/arrow_hover.png" id="6_qkwia"]
-[ext_resource type="Texture2D" uid="uid://qginox5djjuo" path="res://sprites/face_right_up/star.png" id="7_watw4"]
-[ext_resource type="AudioStream" uid="uid://cagxs8jnr0i6s" path="res://sounds/microgames/face_right_up/push.mp3" id="8_o52s0"]
-[ext_resource type="AudioStream" uid="uid://dkn1rohotoafi" path="res://sounds/microgames/face_right_up/switch.mp3" id="9_qkwia"]
-[ext_resource type="AudioStream" uid="uid://ekv488s6a4pk" path="res://sounds/microgames/face_right_up/win.mp3" id="10_sjvoe"]
+[ext_resource type="Script" path="res://scripts/microgames/face_right_up/face_right_up.gd" id="1_c51v0"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_qkwia"]
+[ext_resource type="Texture" path="res://sprites/align_circle/circle_2.png" id="2_watw4"]
+[ext_resource type="Texture" path="res://sprites/align_circle/images/1.png" id="3_a8obs"]
+[ext_resource type="Texture" path="res://sprites/face_right_up/arrow.png" id="4_d4j1q"]
+[ext_resource type="Texture" path="res://sprites/face_right_up/arrow_select.png" id="5_o52s0"]
+[ext_resource type="Texture" path="res://sprites/face_right_up/arrow_hover.png" id="6_qkwia"]
+[ext_resource type="Texture" path="res://sprites/face_right_up/star.png" id="7_watw4"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/face_right_up/push.mp3" id="8_o52s0"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/face_right_up/switch.mp3" id="9_qkwia"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/face_right_up/win.mp3" id="10_sjvoe"]
 
 [sub_resource type="Resource" id="Resource_qkwia"]
 script = ExtResource("2_qkwia")
@@ -20,7 +20,6 @@ instructionSmall2 = "Click verify when all circles are aligned."
 errorMessage = "Please align the image first."
 set_size = Vector2(430, 431.265)
 bonusTime = 3.0
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
 [sub_resource type="Animation" id="Animation_4rwuo"]
 length = 0.001
@@ -297,7 +296,7 @@ random_pitch = 1.05
 streams_count = 1
 stream_0/stream = ExtResource("9_qkwia")
 
-[node name="faceRightUp" type="Control" unique_id=247462747]
+[node name="faceRightUp" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 411.0
@@ -305,10 +304,10 @@ offset_bottom = 277.265
 script = ExtResource("1_c51v0")
 microgame_data = SubResource("Resource_qkwia")
 
-[node name="Circle" type="Node2D" parent="." unique_id=634323260]
+[node name="Circle" type="Node2D" parent="."]
 position = Vector2(204, 122.265015)
 
-[node name="cir" type="TextureRect" parent="Circle" unique_id=1017450646]
+[node name="cir" type="TextureRect" parent="Circle"]
 modulate = Color(0.2784314, 0.2784314, 0.2784314, 1)
 z_index = 1
 offset_left = -131.0
@@ -318,13 +317,13 @@ offset_bottom = 215.26501
 scale = Vector2(0.7566984, 0.7566984)
 texture = ExtResource("2_watw4")
 
-[node name="circle" type="Sprite2D" parent="Circle" unique_id=1847872266]
+[node name="circle" type="Sprite" parent="Circle"]
 clip_children = 1
 z_index = 1
 scale = Vector2(0.7172565, 0.7172565)
 texture = ExtResource("2_watw4")
 
-[node name="image" type="TextureRect" parent="Circle/circle" unique_id=1446124228]
+[node name="image" type="TextureRect" parent="Circle/circle"]
 offset_left = -107.0
 offset_top = -107.0
 offset_right = 107.0
@@ -332,7 +331,7 @@ offset_bottom = 107.0
 texture = ExtResource("3_a8obs")
 expand_mode = 1
 
-[node name="arrowLeft" type="TextureButton" parent="." unique_id=1051022776]
+[node name="arrowLeft" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 105.265015
@@ -346,7 +345,7 @@ texture_hover = ExtResource("6_qkwia")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="arrowRight" type="TextureButton" parent="." unique_id=26063742]
+[node name="arrowRight" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 312.0
 offset_top = 105.265015
@@ -361,7 +360,7 @@ ignore_texture_size = true
 stretch_mode = 0
 flip_h = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1840514714]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 modulate = Color(1, 1, 1, 0.674)
 layout_mode = 0
 offset_left = 8.0
@@ -372,14 +371,14 @@ scale = Vector2(1.65, 1.65)
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="anims" type="AnimationPlayer" parent="." unique_id=1267359658]
+[node name="anims" type="AnimationPlayer" parent="."]
 libraries/ = SubResource("AnimationLibrary_xxse2")
 
-[node name="alignTimer" type="Timer" parent="." unique_id=9576283]
+[node name="alignTimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
 
-[node name="bg" type="ColorRect" parent="." unique_id=322946651]
+[node name="bg" type="ColorRect" parent="."]
 z_index = 1
 layout_mode = 1
 anchors_preset = 15
@@ -390,7 +389,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
-[node name="star" type="TextureRect" parent="." unique_id=762364631]
+[node name="star" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0)
 z_index = 1
 layout_mode = 0
@@ -403,19 +402,19 @@ pivot_offset = Vector2(403.31458, 265.28616)
 mouse_filter = 2
 texture = ExtResource("7_watw4")
 
-[node name="sounds" type="Node" parent="." unique_id=356263761]
+[node name="sounds" type="Node" parent="."]
 
-[node name="rotate" type="AudioStreamPlayer" parent="sounds" unique_id=846759190]
+[node name="rotate" type="AudioStreamPlayer" parent="sounds"]
 stream = SubResource("AudioStreamRandomizer_34mw6")
 volume_db = -5.0
 bus = &"Sounds"
 
-[node name="switch" type="AudioStreamPlayer" parent="sounds" unique_id=1215427669]
+[node name="switch" type="AudioStreamPlayer" parent="sounds"]
 stream = SubResource("AudioStreamRandomizer_hco0n")
 volume_db = -12.0
 bus = &"Sounds"
 
-[node name="victory" type="AudioStreamPlayer" parent="sounds" unique_id=1631427472]
+[node name="victory" type="AudioStreamPlayer" parent="sounds"]
 stream = ExtResource("10_sjvoe")
 volume_db = -10.0
 bus = &"Sounds"

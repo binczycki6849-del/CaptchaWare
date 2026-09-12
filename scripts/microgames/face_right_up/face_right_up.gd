@@ -68,11 +68,9 @@ func push_ball() -> void:
 		anims.stop()
 	anims.play("bounce")
 
-	var ball_tween = create_tween()
-	
 	var target_rotation : float = cur_degrees + (ROTATE_INTERVAL * ball_spin_dir)
 
-	ball_tween.tween_property(the_ball, "rotation_degrees", target_rotation, 0.4).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	tween_property_compat(the_ball, "rotation_degrees", target_rotation, 0.4, Tween.TRANS_EXPO, Tween.EASE_OUT)
 
 	cur_degrees = target_rotation
 

@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Sprite
 
 export var shake_amount = 0.0
 

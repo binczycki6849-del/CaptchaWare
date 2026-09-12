@@ -1,21 +1,21 @@
-[gd_scene load_steps=28 format=3 uid="uid://gcyp4l5l7a2k"]
+[gd_scene load_steps=28 format=3]
 
-[ext_resource type="Script" uid="uid://cvmkd7xp27751" path="res://scripts/microgames/reaction_time/reaction_time.gd" id="1_y5pem"]
-[ext_resource type="Texture2D" uid="uid://bn0j5vn6the5e" path="res://sprites/reaction_time/reaction_time_test.png" id="2_1wjb4"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_c3h4l"]
-[ext_resource type="Texture2D" uid="uid://bg8itjjqb03aq" path="res://sprites/reaction_time/wait for green.png" id="3_gb7jq"]
-[ext_resource type="Texture2D" uid="uid://dyh1o55dnscef" path="res://sprites/reaction_time/click.png" id="4_7lrtf"]
-[ext_resource type="Texture2D" uid="uid://by22k23rebd7b" path="res://sprites/reaction_time/captchaware  reaction time bg.png" id="5_nsvfq"]
-[ext_resource type="Texture2D" uid="uid://51sqtcj505nq" path="res://sprites/reaction_time/captchaware  reaction time sprite.png" id="6_0fgbg"]
-[ext_resource type="Script" uid="uid://dlmey7oh0uapb" path="res://scripts/anim_element.gd" id="7_qtm37"]
-[ext_resource type="AudioStream" uid="uid://dbhswl0ut1ick" path="res://sounds/microgames/reaction_time/clothes.mp3" id="8_0fgbg"]
-[ext_resource type="Texture2D" uid="uid://gh40d53fb8lm" path="res://sprites/reaction_time/blood.png" id="8_c3h4l"]
-[ext_resource type="Texture2D" uid="uid://b01rwnyl1fuut" path="res://sprites/reaction_time/captchaware  reaction time hand.png" id="8_qtm37"]
-[ext_resource type="FontFile" uid="uid://vhdncpndbeu7" path="res://font/TEXAT BOLD PERSONAL USE___.otf" id="9_hld4r"]
-[ext_resource type="AudioStream" uid="uid://cgqf6vjjn57lj" path="res://sounds/microgames/reaction_time/ticking.mp3" id="10_gb7jq"]
-[ext_resource type="AudioStream" uid="uid://y42cl38g0sr1" path="res://sounds/microgames/reaction_time/fall.mp3" id="10_qtm37"]
-[ext_resource type="AudioStream" uid="uid://gyqn28rnhlrm" path="res://sounds/microgames/reaction_time/shooting.mp3" id="11_7lrtf"]
-[ext_resource type="AudioStream" uid="uid://bkc0jtjs31co7" path="res://sounds/microgames/reaction_time/ding.mp3" id="11_gb7jq"]
+[ext_resource type="Script" path="res://scripts/microgames/reaction_time/reaction_time.gd" id="1_y5pem"]
+[ext_resource type="Texture" path="res://sprites/reaction_time/reaction_time_test.png" id="2_1wjb4"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_c3h4l"]
+[ext_resource type="Texture" path="res://sprites/reaction_time/wait for green.png" id="3_gb7jq"]
+[ext_resource type="Texture" path="res://sprites/reaction_time/click.png" id="4_7lrtf"]
+[ext_resource type="Texture" path="res://sprites/reaction_time/captchaware  reaction time bg.png" id="5_nsvfq"]
+[ext_resource type="Texture" path="res://sprites/reaction_time/captchaware  reaction time sprite.png" id="6_0fgbg"]
+[ext_resource type="Script" path="res://scripts/anim_element.gd" id="7_qtm37"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/reaction_time/clothes.mp3" id="8_0fgbg"]
+[ext_resource type="Texture" path="res://sprites/reaction_time/blood.png" id="8_c3h4l"]
+[ext_resource type="Texture" path="res://sprites/reaction_time/captchaware  reaction time hand.png" id="8_qtm37"]
+[ext_resource type="FontFile" path="res://font/TEXAT BOLD PERSONAL USE___.otf" id="9_hld4r"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/reaction_time/ticking.mp3" id="10_gb7jq"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/reaction_time/fall.mp3" id="10_qtm37"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/reaction_time/shooting.mp3" id="11_7lrtf"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/reaction_time/ding.mp3" id="11_gb7jq"]
 
 [sub_resource type="Resource" id="Resource_hld4r"]
 script = ExtResource("2_c3h4l")
@@ -25,7 +25,6 @@ instructionSmall2 = "Click verify when the test is completed."
 errorMessage = "Please complete the test."
 set_size = Vector2(430, 573.835)
 bonusTime = 1.5
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b17g0"]
 bg_color = Color(1, 1, 1, 1)
@@ -720,7 +719,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_nsvfq")
 
-[node name="guy" type="Sprite2D" parent="cowboy"]
+[node name="guy" type="Sprite" parent="cowboy"]
 texture_filter = 1
 position = Vector2(190, 228.26503)
 scale = Vector2(2.255, 2.255)
@@ -729,7 +728,7 @@ hframes = 6
 frame = 3
 script = ExtResource("7_qtm37")
 
-[node name="hand" type="Sprite2D" parent="cowboy"]
+[node name="hand" type="Sprite" parent="cowboy"]
 texture_filter = 1
 position = Vector2(337, 340)
 scale = Vector2(2.075, 2.075)

@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Sprite
 
 class_name cactus
 

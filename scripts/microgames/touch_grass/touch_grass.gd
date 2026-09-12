@@ -9,7 +9,7 @@ var points_percentage : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var image_array : Array = get_file_list(GRASS_IMAGE_DIR)
-	grass.texture = load(GRASS_IMAGE_DIR + "/" + image_array.pick_random())
+	grass.texture = load(GRASS_IMAGE_DIR + "/" + pick_random_item(image_array))
 	pass # Replace with function body.
 
 func _input(event: InputEvent) -> void:

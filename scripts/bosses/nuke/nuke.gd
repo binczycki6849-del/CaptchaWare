@@ -1,7 +1,7 @@
 extends Microgame
 
 onready var nuclearanimcutscene: AnimationPlayer = $nuclearanimcutscene
-onready var monitors_text_sprites: Sprite2D = $nuclear/Monitors
+onready var monitors_text_sprites: Sprite = $nuclear/Monitors
 
 onready var sound_press: AudioStreamPlayer = $nuclear/Monitors/press
 onready var sound_it: AudioStreamPlayer = $nuclear/Monitors/it
@@ -57,5 +57,4 @@ func _on_nuclearanimcutscene_animation_finished(anim_name: String) -> void:
 	if anim_name != "press": return
 	force_end_mircogame()
 	
-	var fade_out = create_tween()
-	fade_out.tween_property(audio, "volume_db", -30, 1)
+	tween_property_compat(audio, "volume_db", -30, 1)

@@ -5,7 +5,7 @@ const QUESTION_SPRITES_DIR = "res://sprites/impossible_quiz/questions/"
 const DIFFICULTY_QUESTIONS_AMOUNT = [3, 4, 5, 5]
 
 onready var questions: TextureRect = $questions
-onready var question_number: Sprite2D = $QuestionNumber
+onready var question_number: Sprite = $QuestionNumber
 
 onready var ding_sound: AudioStreamPlayer = $sounds/ding
 onready var fail_sound: AudioStreamPlayer = $sounds/fail
@@ -33,7 +33,7 @@ func _ready() -> void:
 	var all_question_png_files : Array = get_file_list(QUESTION_SPRITES_DIR)
 
 	for i in range(total_questions):
-		var png_file : String = all_question_png_files.pick_random()
+		var png_file : String = pick_random_item(all_question_png_files)
 
 		question_array.append(png_file)
 
@@ -101,8 +101,7 @@ func finish_quiz() -> void:
 
 	force_end_mircogame()
 	
-	var vol_tween = create_tween()
-	vol_tween.tween_property(win_sound, "volume_db", -80, 1)
+	tween_property_compat(win_sound, "volume_db", -80, 1)
 
 func canSkip() -> bool:
 	return won or lives <= 0

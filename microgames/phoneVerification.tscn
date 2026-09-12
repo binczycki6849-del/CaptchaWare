@@ -1,9 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cteks1mmgmvgh"]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="Script" uid="uid://ds8unqyajdlqr" path="res://scripts/microgames/phone_verification/phone_verification.gd" id="1_lkl8v"]
-[ext_resource type="Script" uid="uid://bse3lar4v6hur" path="res://scripts/microgames/microgame_data_script.gd" id="2_026e7"]
-[ext_resource type="AudioStream" uid="uid://bje5vgu5600v" path="res://sounds/microgames/phone_verification/window_popup_0.mp3" id="2_m6y5t"]
-[ext_resource type="AudioStream" uid="uid://cg8inj6elcv4p" path="res://sounds/microgames/phone_verification/window_popup_1.mp3" id="3_l57om"]
+[ext_resource type="Script" path="res://scripts/microgames/phone_verification/phone_verification.gd" id="1_lkl8v"]
+[ext_resource type="Script" path="res://scripts/microgames/microgame_data_script.gd" id="2_026e7"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/phone_verification/window_popup_0.mp3" id="2_m6y5t"]
+[ext_resource type="AudioStream" path="res://sounds/microgames/phone_verification/window_popup_1.mp3" id="3_l57om"]
 
 [sub_resource type="Resource" id="Resource_spfvp"]
 script = ExtResource("2_026e7")
@@ -13,7 +13,6 @@ errorMessage = "Please verify your phone before continuing."
 set_size = Vector2(430, 371.265)
 slowGame = true
 noTimer = true
-metadata/_custom_type_script = "uid://bse3lar4v6hur"
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_l57om"]
 streams_count = 2

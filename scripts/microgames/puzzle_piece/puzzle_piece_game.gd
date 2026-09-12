@@ -48,7 +48,7 @@ func _ready() -> void:
 
 func set_puzzle_pieces(puzzle_amount: int) -> void:
 	var image_array : Array = get_file_list(PUZZLE_PIECE_MASK_LOCATION)
-	image_rect.texture = load("res://sprites/puzzle_piece/" + image_array.pick_random())
+	image_rect.texture = load("res://sprites/puzzle_piece/" + pick_random_item(image_array))
 	cur_puzzle_amount = puzzle_amount
 	
 	var rand_puzzle_pos : Array = random_puzzle_positions[difficulty]
